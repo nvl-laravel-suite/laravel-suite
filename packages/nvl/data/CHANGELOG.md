@@ -4,6 +4,8 @@ All notable changes to `nvl/data` are documented here.
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-09-21
+
 ### Fixed
 
 - Reject symlinked declaration directories, declaration files, and manifests
