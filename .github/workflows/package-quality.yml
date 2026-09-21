@@ -318,7 +318,7 @@ jobs:
   mysql-family:
     name: ${{ matrix.name }} stateful packages
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: ${{ matrix.timeout_minutes }}
 
     strategy:
       fail-fast: false
@@ -327,10 +327,12 @@ jobs:
           - name: MySQL 8.4
             image: mysql:8.4
             connection: mysql
+            timeout_minutes: 25
             health_command: mysqladmin ping -h 127.0.0.1 -uroot -proot --silent
           - name: MariaDB 12.3
             image: mariadb:12.3
             connection: mariadb
+            timeout_minutes: 45
             health_command: healthcheck.sh --connect --innodb_initialized
 
     services:

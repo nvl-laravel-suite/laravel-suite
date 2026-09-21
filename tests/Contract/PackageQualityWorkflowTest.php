@@ -413,7 +413,7 @@ it('exposes the root package quality runner through Composer', function (): void
         ->toBe('@php tools/run-package-quality.php');
 });
 
-it('tests the current stack Laravel 13 lowest and every supported database family', function (): void {
+it('tests the current stack Laravel 13 lowest and every supported database family with bounded timeouts', function (): void {
     $workflow = Yaml::parseFile(dirname(__DIR__, 2).'/.github/workflows/package-quality.yml');
 
     expect($workflow)->toBeArray();
@@ -453,15 +453,19 @@ it('tests the current stack Laravel 13 lowest and every supported database famil
                 'name' => 'MySQL 8.4',
                 'image' => 'mysql:8.4',
                 'connection' => 'mysql',
+                'timeout_minutes' => 25,
                 'health_command' => 'mysqladmin ping -h 127.0.0.1 -uroot -proot --silent',
             ],
             [
                 'name' => 'MariaDB 12.3',
                 'image' => 'mariadb:12.3',
                 'connection' => 'mariadb',
+                'timeout_minutes' => 45,
                 'health_command' => 'healthcheck.sh --connect --innodb_initialized',
             ],
         ])
+        ->and($jobs['mysql-family']['timeout-minutes'] ?? null)
+        ->toBe('${{ matrix.timeout_minutes }}')
         ->and($jobs['mysql-family']['services']['database']['options'] ?? null)
         ->toContain('--health-cmd="${{ matrix.health_command }}"')
         ->and($mysqlCommands)->toContain(
