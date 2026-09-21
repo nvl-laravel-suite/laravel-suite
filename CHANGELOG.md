@@ -19,7 +19,8 @@ Module-level implementation history remains available in each
 ### Fixed
 
 - Corrected Media Doctor persisted-path verification so soft-deleted diagnostic
-  tombstones no longer fail strict readiness after canonical object cleanup.
+  tombstones no longer fail strict readiness after canonical object cleanup,
+  while standalone schemas remain compatible without optional tenant path data.
 
 ## [2.1.0] - 2026-09-21
 
