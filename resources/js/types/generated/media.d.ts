@@ -313,6 +313,12 @@ associableType: string,
 associableId: string,
 collection: string | null,
 };
+export type ImportPlatformMediaData = {
+grantId: string,
+expectedGrantRevision: number,
+expectedSourceRevision: number,
+idempotencyKey: string,
+};
 export type RenameMediaData = {
 filename: string,
 };

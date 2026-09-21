@@ -47,6 +47,7 @@ ownerId: string,
 group: string,
 blocks: Nvl.Content.Data.ContentCompositionSnapshotBlockData[],
 version: string,
+formatVersion: number,
 };
 export type ContentDefinitionData = {
 key: string,

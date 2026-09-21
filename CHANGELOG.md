@@ -9,6 +9,18 @@ Module-level implementation history remains available in each
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-09-21
+
+### Added
+
+- Synchronized generated TypeScript declarations for existing Content
+  composition format versions and Media/Metafields platform-import DTOs.
+
+### Fixed
+
+- Corrected Media Doctor persisted-path verification so soft-deleted diagnostic
+  tombstones no longer fail strict readiness after canonical object cleanup.
+
 ## [2.1.0] - 2026-09-21
 
 - Prove standalone Tenancy archives with only Support/Data, cached configuration,

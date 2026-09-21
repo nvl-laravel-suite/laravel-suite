@@ -24,6 +24,16 @@ deleteValues?: boolean,
 export type DeleteOwnerMetafieldPayload = {
 expectedRevision: number,
 };
+export type ImportPlatformMetafieldDefinitionData = {
+grantId: string,
+expectedGrantRevision: number,
+expectedSourceRevision: number,
+idempotencyKey: string,
+namespace: string,
+key: string,
+assignment: Nvl.Metafields.Data.AssignMetafieldDefinitionPayload,
+referenceMap: Record<string, string>,
+};
 export type MetafieldDefinitionAssignmentPayload = {
 definitionId: string,
 ownerType: string,
