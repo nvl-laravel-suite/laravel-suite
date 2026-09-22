@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Config\Repository;
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use Nvl\Suite\Quality\PackageQualityRunner;
 use Nvl\Suite\Support\SuiteModuleCatalog;
 use Symfony\Component\Filesystem\Filesystem;
@@ -648,6 +650,42 @@ it('lets every proof-consumer runner reuse the candidate archive without rebuild
         )
             ->not->toContain('--ignore-platform-reqs')
             ->not->toContain('sleep ');
+    }
+});
+
+it('keeps every sealed consumer configuration cache serializable', function (): void {
+    $root = dirname(__DIR__, 2);
+    $configurationFiles = glob($root.'/tools/fixtures/*/config/*.php') ?: [];
+    $container = Container::getInstance();
+
+    sort($configurationFiles);
+
+    expect($configurationFiles)->not->toBeEmpty();
+
+    Container::setInstance(new Application($root));
+
+    try {
+        foreach ($configurationFiles as $configurationFile) {
+            $configuration = require $configurationFile;
+            $cachedConfiguration = tempnam(sys_get_temp_dir(), 'nvl-config-cache-');
+
+            if ($cachedConfiguration === false) {
+                throw new RuntimeException('Unable to allocate temporary configuration cache storage.');
+            }
+
+            try {
+                file_put_contents(
+                    $cachedConfiguration,
+                    '<?php return '.var_export($configuration, true).';',
+                );
+
+                expect(require $cachedConfiguration)->toBe($configuration);
+            } finally {
+                unlink($cachedConfiguration);
+            }
+        }
+    } finally {
+        Container::setInstance($container);
     }
 });
 
