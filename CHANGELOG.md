@@ -9,27 +9,7 @@ Module-level implementation history remains available in each
 
 ## [Unreleased]
 
-## [2.1.1] - 2026-09-21
-
-### Added
-
-- Synchronized generated TypeScript declarations for existing Content
-  composition format versions and Media/Metafields platform-import DTOs.
-
-### Changed
-
-- Reduced routine and release CI duplication: SQLite remains exhaustive,
-  external databases run focused persistence contracts, and publication reuses
-  the successful quality result for the exact release commit before exercising
-  the sealed archive on PHP 8.5.
-
-### Fixed
-
-- Corrected Media Doctor persisted-path verification so soft-deleted diagnostic
-  tombstones no longer fail strict readiness after canonical object cleanup,
-  while standalone schemas remain compatible without optional tenant path data.
-
-## [2.1.0] - 2026-09-21
+## [2.0.1] - 2026-09-22
 
 - Prove standalone Tenancy archives with only Support/Data, cached configuration,
   Doctor and disabled compatibility; explicitly provision Filterable composition,
@@ -37,18 +17,27 @@ Module-level implementation history remains available in each
 
 ### Added
 
+- Synchronized generated TypeScript declarations for existing Content
+  composition format versions and Media/Metafields platform-import DTOs.
 - Added the inert-by-default `nvl/tenancy` foundation with deployment
   configuration, scoped context values, adapter contracts, stable failure codes,
   package discovery, and disabled compatibility without tenant schema.
 
 ### Changed
 
+- Reduced routine and release CI duplication: SQLite remains exhaustive,
+  external databases run focused persistence contracts, and publication reuses
+  the successful quality result for the exact release commit before exercising
+  the sealed archive on PHP 8.5.
 - Use standard CSV escaping by default; explicit legacy backslash escaping
   remains supported. Suite upgrade notes also cover the new SEO redirect-lock
   migration and generated-TypeScript symlink restrictions.
 
 ### Fixed
 
+- Corrected Media Doctor persisted-path verification so soft-deleted diagnostic
+  tombstones no longer fail strict readiness after canonical object cleanup,
+  while standalone schemas remain compatible without optional tenant path data.
 - Hardened package validation, authorization, storage, transaction, and
   lifecycle boundaries; detailed fixes are recorded in the affected module
   changelogs.
