@@ -3,7 +3,7 @@
 set -euo pipefail
 
 repository_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-fixture_root="$repository_root/tools/fixtures/auth-production-consumer"
+candidate_fixture_root="$repository_root/tools/fixtures/auth-production-consumer"
 prepared_source_commit="d8feceecc02f436772dca74b260704a535bceca6"
 previous_version="dev-final-1x-prepared"
 candidate_version="${NVL_CANDIDATE_VERSION:-2.0.0}"
@@ -58,6 +58,7 @@ unzip -q "$previous_archive" -d "$rehearsal_workspace/prepared-artifact"
 unzip -q "$candidate_archive" -d "$rehearsal_workspace/candidate-artifact"
 
 consumer_root="$rehearsal_workspace/consumer"
+prepared_fixture_root="$rehearsal_workspace/prepared-source/tools/fixtures/auth-production-consumer"
 bash "$repository_root/tools/retry-composer.sh" create-project \
     --no-interaction \
     --prefer-dist \
@@ -77,12 +78,18 @@ bash "$repository_root/tools/retry-composer.sh" require \
     "nvl/laravel-suite:$previous_version"
 test ! -L vendor/nvl/laravel-suite
 
-cp -R "$fixture_root/app/." app/
-cp -R "$fixture_root/config/." config/
-cp -R "$fixture_root/resources/." resources/
-cp "$fixture_root/bootstrap/providers.php" bootstrap/providers.php
-mkdir -p auth-consumer-types
-cp -R "$fixture_root/typescript/." auth-consumer-types/
+install_fixture_application() {
+    local source_root="$1"
+
+    cp -R "$source_root/app/." app/
+    cp -R "$source_root/resources/." resources/
+    cp "$source_root/bootstrap/providers.php" bootstrap/providers.php
+    mkdir -p auth-consumer-types
+    cp -R "$source_root/typescript/." auth-consumer-types/
+}
+
+install_fixture_application "$prepared_fixture_root"
+cp -R "$prepared_fixture_root/config/." config/
 cp .env.example .env
 touch database/database.sqlite
 rm -f config/nvl-suite.php
@@ -152,6 +159,13 @@ bash "$repository_root/tools/retry-composer.sh" require \
     --with-all-dependencies \
     "nvl/laravel-suite:$candidate_version"
 test ! -L vendor/nvl/laravel-suite
+
+install_fixture_application "$candidate_fixture_root"
+for configuration in "$candidate_fixture_root"/config/*.php; do
+    if [[ "$(basename "$configuration")" != 'nvl-suite.php' ]]; then
+        cp "$configuration" config/
+    fi
+done
 composer dump-autoload --no-interaction
 
 verify_explicit_module_configuration

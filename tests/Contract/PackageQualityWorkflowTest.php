@@ -718,6 +718,10 @@ it('rehearses the prepared final 1.x archive through the complete 2.0 consumer b
         ->and($script)->toBeString()->toContain(
             'prepared_source_commit="'.$catalog['final_1x']['prepared_source'].'"',
             'previous_version="dev-final-1x-prepared"',
+            'prepared_fixture_root="$rehearsal_workspace/prepared-source/tools/fixtures/auth-production-consumer"',
+            'install_fixture_application "$prepared_fixture_root"',
+            'install_fixture_application "$candidate_fixture_root"',
+            "!= 'nvl-suite.php'",
             'git -C "$repository_root" archive "$prepared_source_commit"',
             'COMPOSER_ROOT_VERSION="$previous_version" composer archive',
             'COMPOSER_ROOT_VERSION="$candidate_version" composer archive',

@@ -23,6 +23,7 @@ return [
     'guard' => 'web',
     'identifier' => 'email',
     'services' => [
+        'management_access' => AuthConsumerAccess::class,
         'system_mutation_access' => AuthConsumerAccess::class,
     ],
     'tenancy' => [

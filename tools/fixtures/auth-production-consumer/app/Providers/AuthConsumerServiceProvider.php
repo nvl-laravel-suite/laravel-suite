@@ -14,8 +14,6 @@ use App\Auth\TenantAuthConsumerProbe;
 use App\Console\Commands\AuthConsumerSmokeCommand;
 use Illuminate\Support\ServiceProvider;
 use Nvl\Activity\Services\MappingRegistry;
-use Nvl\Auth\Contracts\AuthManagementAccess;
-use Nvl\Auth\Contracts\SystemMutationAccess;
 use Nvl\MailNotifications\Contracts\MailNotificationReadAuthorization;
 use Nvl\Settings\Contracts\SettingsAuthorization;
 
@@ -26,8 +24,6 @@ final class AuthConsumerServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(AuthConsumerAccess::class);
-        $this->app->alias(AuthConsumerAccess::class, AuthManagementAccess::class);
-        $this->app->alias(AuthConsumerAccess::class, SystemMutationAccess::class);
         if (config('tenancy.enabled') === true) {
             $this->app->bind(AuthConsumerSmoke::class, TenantAuthConsumerProbe::class);
         } else {

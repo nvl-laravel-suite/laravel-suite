@@ -118,8 +118,6 @@ it('uses package Actions and explicit authorization without direct package queri
     );
 
     expect($provider)->toContain(
-        'AuthManagementAccess::class',
-        'SystemMutationAccess::class',
         'SettingsAuthorization::class',
         'MailNotificationReadAuthorization::class',
         'AuthConsumerSmoke::class',
@@ -127,6 +125,10 @@ it('uses package Actions and explicit authorization without direct package queri
         'MappingRegistry::class',
         'UserActivityMapping',
     )
+        ->not->toContain(
+            'AuthManagementAccess::class',
+            'SystemMutationAccess::class',
+        )
         ->and($access)->toContain(
             'AuthorizationException',
             'nvl-auth.rbac.bootstrap',
@@ -136,6 +138,8 @@ it('uses package Actions and explicit authorization without direct package queri
         )
         ->and($auth)->toContain(
             'User::class',
+            "'management_access' => AuthConsumerAccess::class",
+            "'system_mutation_access' => AuthConsumerAccess::class",
             'AuthConsumerPermissionCatalog::class',
             'AuthConsumerRoleTemplates::class',
             "'use_package_storage' => true",
