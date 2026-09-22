@@ -411,7 +411,35 @@ it('exposes the root package quality runner through Composer', function (): void
     );
 
     expect($manifest['scripts']['package:quality'] ?? null)
-        ->toBe('@php tools/run-package-quality.php');
+        ->toBe('@php tools/run-package-quality.php')
+        ->and($manifest['scripts']['test:packages'] ?? null)
+        ->toBe([
+            'Composer\\Config::disableProcessTimeout',
+            '@php tools/run-package-tests.php --concurrency=2',
+        ]);
+});
+
+it('derives bounded package test pools from the canonical family', function (): void {
+    $root = dirname(__DIR__, 2);
+    $catalog = require $root.'/tools/package-family.php';
+    $runner = new Process([
+        PHP_BINARY,
+        $root.'/tools/run-package-tests.php',
+        '--database',
+        '--list',
+    ], $root);
+
+    $runner->mustRun();
+
+    expect(preg_split('/\s+/', trim($runner->getOutput())))
+        ->toBe($catalog['database_tested'])
+        ->and(file_get_contents($root.'/tools/package-test-runner.php'))->toContain(
+            "'migration_tests'",
+            'new Process(',
+            'count($running) < $concurrency',
+            "'APP_BASE_PATH' => \$application",
+            "['DB_DATABASE'] = \$this->databaseName(\$package)",
+        );
 });
 
 it('tests the current stack and focused compatibility contracts on every supported boundary', function (): void {
@@ -445,14 +473,9 @@ it('tests the current stack and focused compatibility contracts on every support
         ->and($jobs['postgresql']['name'] ?? null)->toBe('PostgreSQL database contracts')
         ->and($jobs['postgresql']['timeout-minutes'] ?? null)->toBe(15)
         ->and($postgresCommands)->toContain(
-            'for package in activity auth comments content',
-            'translatable translations',
-            '["migration_tests"]',
-            'Package [nvl/$package] has no database contract tests.',
-            'database="nvl_${package//-/_}_test_ci"',
-            '"${tests[@]}"',
-            'composer test:integration',
+            'php tools/run-package-tests.php --database --concurrency=4',
         )
+        ->not->toContain('for package in activity auth comments content')
         ->not->toContain('mysql')
         ->and(collect($jobs['postgresql']['steps'] ?? [])->firstWhere('name', 'Start isolated S3-compatible storage')['if'] ?? null)
         ->toBe("github.event_name == 'workflow_dispatch'")
@@ -475,14 +498,9 @@ it('tests the current stack and focused compatibility contracts on every support
         ->and($jobs['mysql-family']['services']['database']['options'] ?? null)
         ->toContain('--health-cmd="${{ matrix.health_command }}"')
         ->and($mysqlCommands)->toContain(
-            'for package in activity auth comments content',
-            'translatable translations',
-            '["migration_tests"]',
-            'Package [nvl/$package] has no database contract tests.',
-            'database="nvl_${package//-/_}_test_ci"',
-            '"${tests[@]}"',
-            'DB_DATABASE=nvl_package_test_integration composer test:integration',
-        );
+            'php tools/run-package-tests.php --database --concurrency=4',
+        )
+        ->not->toContain('for package in activity auth comments content');
 });
 
 it('collects coverage only for packages with changed PHP source', function (): void {

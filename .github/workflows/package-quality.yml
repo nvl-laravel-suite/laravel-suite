@@ -177,53 +177,12 @@ jobs:
           DB_PORT: 5432
           DB_USERNAME: nvl
           DB_PASSWORD: nvl
+          DB_ADMIN_DATABASE: nvl_package_test_admin
           PGTZ: UTC
           REDIS_HOST: 127.0.0.1
           REDIS_PORT: 6379
         shell: bash
-        run: |
-          set -euo pipefail
-          for package in activity auth comments content filterable forms mail-notifications media metafields pages seo settings taxonomy templates tenancy translatable translations; do
-            mapfile -t tests < <(
-              PACKAGE_NAME="$package" php -r '
-                $catalog = require "tools/package-family.php";
-                $package = getenv("PACKAGE_NAME");
-                foreach ($catalog["quality"]["packages"][$package]["migration_tests"] ?? [] as $test) {
-                    if (str_ends_with($test, "Test.php")) {
-                        echo "packages/nvl/{$package}/{$test}\n";
-                    }
-                }
-              '
-            )
-            if ((${#tests[@]} == 0)); then
-              echo "Package [nvl/$package] has no database contract tests." >&2
-              exit 1
-            fi
-            database="nvl_${package//-/_}_test_ci"
-            DATABASE_NAME="$database" php -r '
-              $database = getenv("DATABASE_NAME");
-              if (! is_string($database) || preg_match("/^nvl_[a-z_]+_test_ci$/", $database) !== 1) {
-                  throw new RuntimeException("Unsafe test database name.");
-              }
-              $pdo = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=nvl_package_test_admin", "nvl", "nvl");
-              $pdo->exec("CREATE DATABASE \"{$database}\"");
-            '
-            DB_DATABASE="$database" vendor/bin/pest \
-              --test-directory="packages/nvl/$package/tests" \
-              --configuration="packages/nvl/$package/phpunit.xml.dist" \
-              --bootstrap=vendor/autoload.php \
-              --compact \
-              "${tests[@]}"
-          done
-          DATABASE_NAME=nvl_package_test_integration php -r '
-            $database = getenv("DATABASE_NAME");
-            if ($database !== "nvl_package_test_integration") {
-                throw new RuntimeException("Unsafe integration test database name.");
-            }
-            $pdo = new PDO("pgsql:host=127.0.0.1;port=5432;dbname=nvl_package_test_admin", "nvl", "nvl");
-            $pdo->exec("CREATE DATABASE \"{$database}\"");
-          '
-          DB_DATABASE=nvl_package_test_integration composer test:integration
+        run: php tools/run-package-tests.php --database --concurrency=4
 
       - name: Start isolated S3-compatible storage
         if: github.event_name == 'workflow_dispatch'
@@ -350,49 +309,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
         shell: bash
-        run: |
-          set -euo pipefail
-          for package in activity auth comments content filterable forms mail-notifications media metafields pages seo settings taxonomy templates tenancy translatable translations; do
-            mapfile -t tests < <(
-              PACKAGE_NAME="$package" php -r '
-                $catalog = require "tools/package-family.php";
-                $package = getenv("PACKAGE_NAME");
-                foreach ($catalog["quality"]["packages"][$package]["migration_tests"] ?? [] as $test) {
-                    if (str_ends_with($test, "Test.php")) {
-                        echo "packages/nvl/{$package}/{$test}\n";
-                    }
-                }
-              '
-            )
-            if ((${#tests[@]} == 0)); then
-              echo "Package [nvl/$package] has no database contract tests." >&2
-              exit 1
-            fi
-            database="nvl_${package//-/_}_test_ci"
-            DATABASE_NAME="$database" php -r '
-              $database = getenv("DATABASE_NAME");
-              if (! is_string($database) || preg_match("/^nvl_[a-z_]+_test_ci$/", $database) !== 1) {
-                  throw new RuntimeException("Unsafe test database name.");
-              }
-              $pdo = new PDO("mysql:host=127.0.0.1;port=3306", "root", "root");
-              $pdo->exec("CREATE DATABASE `{$database}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-            '
-            DB_DATABASE="$database" vendor/bin/pest \
-              --test-directory="packages/nvl/$package/tests" \
-              --configuration="packages/nvl/$package/phpunit.xml.dist" \
-              --bootstrap=vendor/autoload.php \
-              --compact \
-              "${tests[@]}"
-          done
-          DATABASE_NAME=nvl_package_test_integration php -r '
-            $database = getenv("DATABASE_NAME");
-            if ($database !== "nvl_package_test_integration") {
-                throw new RuntimeException("Unsafe integration test database name.");
-            }
-            $pdo = new PDO("mysql:host=127.0.0.1;port=3306", "root", "root");
-            $pdo->exec("CREATE DATABASE `{$database}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-          '
-          DB_DATABASE=nvl_package_test_integration composer test:integration
+        run: php tools/run-package-tests.php --database --concurrency=4
 
   changed-coverage:
     name: Changed-package coverage

@@ -6,6 +6,7 @@ use Composer\Semver\Intervals;
 use Composer\Semver\VersionParser;
 use Illuminate\Config\Repository;
 use Nvl\Suite\Support\SuiteModuleCatalog;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -415,16 +416,36 @@ if (! str_contains($workflow, 'composer contracts:check')) {
     $fail('family', 'package-quality CI must enforce the public-contract baseline');
 }
 
-preg_match('/for package in ([a-z0-9 -]+); do/', $workflow, $databaseLoop);
-$databaseMatrixPackages = isset($databaseLoop[1])
-    ? preg_split('/\s+/', trim($databaseLoop[1])) ?: []
+$databaseRunnerPath = "{$root}/tools/run-package-tests.php";
+$databaseRunner = new Process([PHP_BINARY, $databaseRunnerPath, '--database', '--list'], $root);
+$databaseRunner->run();
+$databaseMatrixPackages = $databaseRunner->isSuccessful()
+    ? preg_split('/\s+/', trim($databaseRunner->getOutput())) ?: []
     : [];
 $expectedDatabaseTested = $databaseTested;
 sort($databaseMatrixPackages);
 sort($expectedDatabaseTested);
 
 if ($databaseMatrixPackages !== $expectedDatabaseTested) {
-    $fail('family', 'database CI matrix does not contain exactly every database-tested package');
+    $fail('family', 'database package runner does not contain exactly every database-tested package');
+}
+
+$databaseRunnerCommand = 'php tools/run-package-tests.php --database --concurrency=4';
+
+foreach (['postgresql', 'mysql-family'] as $jobName) {
+    $job = $workflowConfiguration['jobs'][$jobName] ?? [];
+    $commands = is_array($job)
+        ? implode("\n", array_values(array_filter(array_map(
+            static fn (mixed $step): ?string => is_array($step) && is_string($step['run'] ?? null)
+                ? $step['run']
+                : null,
+            $job['steps'] ?? [],
+        ))))
+        : '';
+
+    if (! str_contains($commands, $databaseRunnerCommand)) {
+        $fail('family', "database CI job [{$jobName}] does not use the bounded package runner");
+    }
 }
 
 $coverageSteps = $workflowConfiguration['jobs']['changed-coverage']['steps'] ?? [];

@@ -125,8 +125,9 @@ it('keeps worker and race evidence in the focused database quality jobs', functi
     $mysqlContracts = collect($workflow['jobs']['mysql-family']['steps'] ?? [])->firstWhere('name', 'Database contract tests');
     $mysqlRun = is_array($mysqlContracts) ? ($mysqlContracts['run'] ?? '') : '';
 
-    expect($postgres)->toContain('redis:8.0-alpine', 'pdo_pgsql', 'redis', 'REDIS_HOST', 'translatable')
-        ->and($mysqlRun)->toMatch('/for package in [^\n]*\btranslatable\b[^\n]*; do/')
-        ->and($mysqlRun)->toContain('["migration_tests"]', '"${tests[@]}"')
+    expect($postgres)->toContain('redis:8.0-alpine', 'pdo_pgsql', 'redis', 'REDIS_HOST')
+        ->and($mysqlRun)->toBe('php tools/run-package-tests.php --database --concurrency=4')
+        ->and(file_get_contents($root.'/tools/package-test-runner.php'))
+        ->toContain("'database_tested'", "'migration_tests'")
         ->and($mysqlRun)->not->toContain('TranslationTenancySchemaTest.php');
 });

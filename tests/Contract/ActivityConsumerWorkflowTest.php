@@ -22,7 +22,7 @@ it('keeps Activity exhaustive on SQLite and focused on PostgreSQL', function ():
             'composer test:integration',
         )
         ->and($lowest)->not->toContain('composer test:packages')
-        ->and($postgres)->toContain('for package in activity auth comments content')
+        ->and($postgres)->toContain('php tools/run-package-tests.php --database --concurrency=4')
         ->and($databaseContracts['env']['DB_CONNECTION'] ?? null)
         ->toBe('pgsql');
 });

@@ -68,11 +68,7 @@ it('runs the Comments database contracts against PostgreSQL', function (): void 
         ])
         ->and($stepEnvironment)->not->toHaveKey('DB_DATABASE')
         ->and($command)->toContain(
-            'for package in activity auth comments content',
-            'database="nvl_${package//-/_}_test_ci"',
-            'DB_DATABASE="$database" vendor/bin/pest',
-            '"${tests[@]}"',
-            'DB_DATABASE=nvl_package_test_integration composer test:integration',
+            'php tools/run-package-tests.php --database --concurrency=4',
         );
 });
 

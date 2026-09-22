@@ -78,6 +78,14 @@ it('declares executable migration evidence and database-family coverage', functi
     $workflow = Yaml::parseFile($root.'/.github/workflows/package-quality.yml');
     $postgresCommands = workflowCommands($workflow['jobs']['postgresql'] ?? []);
     $mysqlCommands = workflowCommands($workflow['jobs']['mysql-family'] ?? []);
+    $databaseRunner = new Process([
+        PHP_BINARY,
+        $root.'/tools/run-package-tests.php',
+        '--database',
+        '--list',
+    ], $root);
+    $databaseRunner->mustRun();
+    $databasePackages = preg_split('/\s+/', trim($databaseRunner->getOutput())) ?: [];
 
     foreach ($contracts['packages'] ?? [] as $package => $contract) {
         if (($contract['migrations'] ?? []) === []) {
@@ -88,8 +96,9 @@ it('declares executable migration evidence and database-family coverage', functi
 
         expect($evidence)->toBeArray()->not->toBeEmpty()
             ->and($catalog['database_tested'])->toContain($package)
-            ->and($postgresCommands)->toContain($package)
-            ->and($mysqlCommands)->toContain($package);
+            ->and($databasePackages)->toContain($package)
+            ->and($postgresCommands)->toContain('tools/run-package-tests.php --database')
+            ->and($mysqlCommands)->toContain('tools/run-package-tests.php --database');
 
         foreach ($evidence as $testPath) {
             expect($root.'/packages/nvl/'.$package.'/'.$testPath)->toBeFile();

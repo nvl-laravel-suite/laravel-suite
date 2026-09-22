@@ -250,7 +250,10 @@
         ],
         "test:integration": "@php -d memory_limit=1G vendor/bin/pest --compact tests/Feature/Integration",
         "test:media-production": "NVL_MEDIA_PRODUCTION_INTEGRATION=true vendor/bin/pest --test-directory=packages/nvl/media/tests --configuration=packages/nvl/media/phpunit.xml.dist --bootstrap=vendor/autoload.php --compact packages/nvl/media/tests/Integration/ProductionStackTest.php",
-        "test:packages": "for package_dir in packages/nvl/*; do vendor/bin/pest --test-directory=\"$package_dir/tests\" --configuration=\"$package_dir/phpunit.xml.dist\" --bootstrap=vendor/autoload.php --compact \"$package_dir/tests\" || exit $?; done",
+        "test:packages": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php tools/run-package-tests.php --concurrency=2"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
