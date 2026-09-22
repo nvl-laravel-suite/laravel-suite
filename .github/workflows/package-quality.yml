@@ -387,6 +387,7 @@ jobs:
               pages) minimum_line=80 ;;
               seo) minimum_line=89 ;;
               tenancy) minimum_line=89 ;;
+              translations) minimum_line=87 ;;
             esac
 
             vendor/bin/pest \
