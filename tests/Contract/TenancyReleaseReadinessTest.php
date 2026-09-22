@@ -41,7 +41,6 @@ it('keeps the release workflow gated on the sealed adoption proof', function ():
     $release = (string) file_get_contents($root.'/.github/workflows/package-release.yml');
 
     expect($quality.$release)->toContain(
-        'tenancy-release-adoption',
         'RUN_TENANCY_PRODUCTION_CONSUMER: 1',
         'tests/Contract/TenancyReleaseReadinessTest.php',
         'TENANCY_CONSUMER_TAXONOMY_DATABASE',

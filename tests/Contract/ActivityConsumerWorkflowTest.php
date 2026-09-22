@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Symfony\Component\Yaml\Yaml;
 
-it('keeps Activity in the complete and PostgreSQL routine suites', function (): void {
+it('keeps Activity exhaustive on SQLite and focused on PostgreSQL', function (): void {
     $root = dirname(__DIR__, 2);
     $workflow = Yaml::parseFile($root.'/.github/workflows/package-quality.yml');
 
@@ -14,15 +14,17 @@ it('keeps Activity in the complete and PostgreSQL routine suites', function (): 
     $lowest = activityWorkflowCommands($workflow['jobs']['laravel13-lowest'] ?? []);
     $postgresJob = $workflow['jobs']['postgresql'] ?? [];
     $postgres = activityWorkflowCommands($postgresJob);
-    $statefulStep = collect($postgresJob['steps'] ?? [])->firstWhere('name', 'Stateful package tests');
+    $databaseContracts = collect($postgresJob['steps'] ?? [])->firstWhere('name', 'Database contract tests');
 
     expect($current)->toContain('composer test')
         ->and($lowest)->toContain(
             '"laravel/framework:^13.0"',
-            'composer test:packages',
+            'composer test:integration',
         )
+        ->and($lowest)->not->toContain('composer test:packages')
         ->and($postgres)->toContain('for package in activity auth comments content')
-        ->and($statefulStep['env']['DB_CONNECTION'] ?? null)->toBe('pgsql');
+        ->and($databaseContracts['env']['DB_CONNECTION'] ?? null)
+        ->toBe('pgsql');
 });
 
 /**

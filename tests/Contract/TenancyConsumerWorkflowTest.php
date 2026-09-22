@@ -118,14 +118,15 @@ it('boots independent resource archives with inert Tenancy and no Auth', functio
     'Taxonomy' => ['taxonomy', ['nvl/data', 'nvl/support', 'nvl/taxonomy', 'nvl/tenancy', 'nvl/translatable']],
 ]);
 
-it('keeps worker and race evidence in the existing database quality jobs', function (): void {
+it('keeps worker and race evidence in the focused database quality jobs', function (): void {
     $root = dirname(__DIR__, 2);
     $workflow = Yaml::parseFile($root.'/.github/workflows/package-quality.yml');
     $postgres = json_encode($workflow['jobs']['postgresql'] ?? [], JSON_THROW_ON_ERROR);
-    $mysqlStateful = collect($workflow['jobs']['mysql-family']['steps'] ?? [])->firstWhere('name', 'Stateful package tests');
-    $mysqlRun = is_array($mysqlStateful) ? ($mysqlStateful['run'] ?? '') : '';
+    $mysqlContracts = collect($workflow['jobs']['mysql-family']['steps'] ?? [])->firstWhere('name', 'Database contract tests');
+    $mysqlRun = is_array($mysqlContracts) ? ($mysqlContracts['run'] ?? '') : '';
 
     expect($postgres)->toContain('redis:8.0-alpine', 'pdo_pgsql', 'redis', 'REDIS_HOST', 'translatable')
         ->and($mysqlRun)->toMatch('/for package in [^\n]*\btranslatable\b[^\n]*; do/')
+        ->and($mysqlRun)->toContain('["migration_tests"]', '"${tests[@]}"')
         ->and($mysqlRun)->not->toContain('TranslationTenancySchemaTest.php');
 });

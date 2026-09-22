@@ -56,8 +56,9 @@ successful release workflow may create the stable tag.
 - **Publish, release, or tag:** confirm that the requested version matches the
   changelogs and does not already exist, ensure the release-preparation commit
   is on `main`, wait for its six quality jobs, and dispatch `Package release`
-  with that exact version. Never substitute a nearby version or create a local
-  tag as a shortcut.
+  with that exact version. The release workflow verifies that successful run by
+  commit SHA instead of repeating it. Never substitute a nearby version or
+  create a local tag as a shortcut.
 - **Report state precisely:** after preparation, report the commit and that the
   previous stable tag remains current. After publication, report success only
   after the workflow, immutable tag, GitHub Release, archive, and Packagist
@@ -184,9 +185,15 @@ jobs:
 1. Formatting, analysis, manifests and contracts.
 2. PHP 8.4 / Laravel 13 / SQLite.
 3. PHP 8.4 / Laravel 13 / lowest.
-4. PostgreSQL stateful packages.
-5. MySQL 8.4 and MariaDB 12.3 stateful packages.
+4. PostgreSQL database contracts.
+5. MySQL 8.4 and MariaDB 12.3 database contracts.
 6. Changed-package coverage.
+
+SQLite owns the exhaustive behavior suite. The real-database jobs run the
+catalogued migration, persistence, and tenancy contracts instead
+of replaying every database-independent test. An explicit manual **Package
+quality** run additionally exercises the sealed PostgreSQL, Redis, and S3
+consumer rehearsal.
 
 Use the GitHub Actions page, or GitHub CLI:
 
@@ -216,9 +223,10 @@ gh run watch RUN_ID --exit-status
 
 The workflow performs the complete publication transaction:
 
-1. Validates the default branch and semantic version.
-2. Reruns all six routine quality gates and a separate PHP 8.5 / Laravel 13
-   test job.
+1. Validates the default branch and semantic version, then requires a successful
+   **Package quality** push run for the exact release commit.
+2. Builds and exercises the release archive on PHP 8.5 / Laravel 13, preserving
+   upper-runtime compatibility without replaying the source test matrix.
 3. Requires a dated version heading in the suite and every changed module,
    rejects future-target wording, and requires release-ready `Unreleased`
    sections to be blank.
@@ -235,7 +243,8 @@ The workflow performs the complete publication transaction:
 10. Creates and pushes the annotated clean `vX.Y.Z` tag.
 11. Creates the GitHub Release and attaches the verified ZIP.
 
-No tag is created when validation, quality, or archive verification fails.
+No tag is created when commit-quality provenance, validation, or archive
+verification fails.
 
 ## 5. Verify GitHub and Packagist
 

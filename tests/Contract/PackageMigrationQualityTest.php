@@ -97,6 +97,25 @@ it('declares executable migration evidence and database-family coverage', functi
     }
 });
 
+it('selects at least one executable contract for every real database package', function (): void {
+    $root = dirname(__DIR__, 2);
+    $catalog = require $root.'/tools/package-family.php';
+
+    foreach ($catalog['database_tested'] as $package) {
+        $evidence = $catalog['quality']['packages'][$package]['migration_tests'] ?? [];
+        $tests = array_values(array_filter(
+            $evidence,
+            static fn (string $path): bool => str_ends_with($path, 'Test.php'),
+        ));
+
+        expect($tests)->not->toBeEmpty();
+
+        foreach ($tests as $testPath) {
+            expect($root.'/packages/nvl/'.$package.'/'.$testPath)->toBeFile();
+        }
+    }
+});
+
 it('release-reviews the forward-only Comments document migration without changing it', function (): void {
     $root = dirname(__DIR__, 2);
     $catalog = require $root.'/tools/package-family.php';

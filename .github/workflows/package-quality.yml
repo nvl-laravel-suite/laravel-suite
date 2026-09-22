@@ -2,7 +2,6 @@ name: Package quality
 
 on:
   pull_request:
-  workflow_call:
   push:
     branches:
       - main
@@ -90,43 +89,8 @@ jobs:
         shell: bash
         run: bash tools/retry-composer.sh update --no-interaction --prefer-dist --with-all-dependencies
 
-      - name: Resource tenancy composition and recovery
-        run: |
-          vendor/bin/pest --compact \
-            tests/Feature/Integration/TenantResourceCompositionTest.php \
-            tests/Feature/Integration/TenantResourceAdoptionTest.php \
-            tests/Feature/Integration/TenantPagePublicationTest.php \
-            tests/Feature/Integration/TenantWorkflowJourneyTest.php
-
       - name: Complete test suite
         run: composer test
-
-  tenancy-release-adoption:
-    name: Tenancy release adoption contracts
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: '8.4'
-          extensions: ctype, dom, fileinfo, filter, gd, intl, json, libxml, mbstring, pdo_sqlite, zip
-          coverage: none
-          tools: composer:2.10.2
-
-      - name: Install dependencies
-        shell: bash
-        run: bash tools/retry-composer.sh install --no-interaction --prefer-dist
-
-      - name: Verify release, lifecycle and 21-package closure contracts
-        env:
-          RUN_TENANCY_PRODUCTION_CONSUMER: 0
-        run: |
-          vendor/bin/pest --compact \
-            tests/Contract/TenancyProductionConsumerWorkflowTest.php \
-            tests/Contract/TenancyReleaseReadinessTest.php
 
   laravel13-lowest:
     name: PHP 8.4 / Laravel 13 / lowest
@@ -155,14 +119,12 @@ jobs:
         run: bash tools/retry-composer.sh update --no-interaction --prefer-dist --with-all-dependencies --prefer-lowest
 
       - name: Compatibility tests
-        run: |
-          composer test:integration
-          composer test:packages
+        run: composer test:integration
 
   postgresql:
-    name: PostgreSQL stateful packages
+    name: PostgreSQL database contracts
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 15
 
     services:
       postgres:
@@ -208,7 +170,7 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends postgresql-client-17
           bash tools/retry-composer.sh install --no-interaction --prefer-dist
 
-      - name: Stateful package tests
+      - name: Database contract tests
         env:
           DB_CONNECTION: pgsql
           DB_HOST: 127.0.0.1
@@ -222,6 +184,21 @@ jobs:
         run: |
           set -euo pipefail
           for package in activity auth comments content filterable forms mail-notifications media metafields pages seo settings taxonomy templates tenancy translatable translations; do
+            mapfile -t tests < <(
+              PACKAGE_NAME="$package" php -r '
+                $catalog = require "tools/package-family.php";
+                $package = getenv("PACKAGE_NAME");
+                foreach ($catalog["quality"]["packages"][$package]["migration_tests"] ?? [] as $test) {
+                    if (str_ends_with($test, "Test.php")) {
+                        echo "packages/nvl/{$package}/{$test}\n";
+                    }
+                }
+              '
+            )
+            if ((${#tests[@]} == 0)); then
+              echo "Package [nvl/$package] has no database contract tests." >&2
+              exit 1
+            fi
             database="nvl_${package//-/_}_test_ci"
             DATABASE_NAME="$database" php -r '
               $database = getenv("DATABASE_NAME");
@@ -236,7 +213,7 @@ jobs:
               --configuration="packages/nvl/$package/phpunit.xml.dist" \
               --bootstrap=vendor/autoload.php \
               --compact \
-              "packages/nvl/$package/tests"
+              "${tests[@]}"
           done
           DATABASE_NAME=nvl_package_test_integration php -r '
             $database = getenv("DATABASE_NAME");
@@ -249,6 +226,7 @@ jobs:
           DB_DATABASE=nvl_package_test_integration composer test:integration
 
       - name: Start isolated S3-compatible storage
+        if: github.event_name == 'workflow_dispatch'
         shell: bash
         run: |
           set -euo pipefail
@@ -276,6 +254,7 @@ jobs:
             -c 'mc alias set proof http://127.0.0.1:9000 nvl-tenancy nvl-tenancy-proof && mc mb --ignore-existing proof/nvl-tenancy'
 
       - name: Sealed tenancy consumer on PostgreSQL, Redis and S3
+        if: github.event_name == 'workflow_dispatch'
         env:
           DB_HOST: 127.0.0.1
           DB_PORT: 5432
@@ -311,14 +290,14 @@ jobs:
           bash tools/run-tenancy-production-consumer.sh
 
       - name: Stop isolated S3-compatible storage
-        if: always()
+        if: ${{ always() && github.event_name == 'workflow_dispatch' }}
         shell: bash
         run: docker stop nvl-tenancy-minio >/dev/null 2>&1 || true
 
   mysql-family:
-    name: ${{ matrix.name }} stateful packages
+    name: ${{ matrix.name }} database contracts
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ matrix.timeout_minutes }}
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false
@@ -327,12 +306,10 @@ jobs:
           - name: MySQL 8.4
             image: mysql:8.4
             connection: mysql
-            timeout_minutes: 25
             health_command: mysqladmin ping -h 127.0.0.1 -uroot -proot --silent
           - name: MariaDB 12.3
             image: mariadb:12.3
             connection: mariadb
-            timeout_minutes: 45
             health_command: healthcheck.sh --connect --innodb_initialized
 
     services:
@@ -365,7 +342,7 @@ jobs:
         shell: bash
         run: bash tools/retry-composer.sh install --no-interaction --prefer-dist
 
-      - name: Stateful package tests
+      - name: Database contract tests
         env:
           DB_CONNECTION: ${{ matrix.connection }}
           DB_HOST: 127.0.0.1
@@ -376,6 +353,21 @@ jobs:
         run: |
           set -euo pipefail
           for package in activity auth comments content filterable forms mail-notifications media metafields pages seo settings taxonomy templates tenancy translatable translations; do
+            mapfile -t tests < <(
+              PACKAGE_NAME="$package" php -r '
+                $catalog = require "tools/package-family.php";
+                $package = getenv("PACKAGE_NAME");
+                foreach ($catalog["quality"]["packages"][$package]["migration_tests"] ?? [] as $test) {
+                    if (str_ends_with($test, "Test.php")) {
+                        echo "packages/nvl/{$package}/{$test}\n";
+                    }
+                }
+              '
+            )
+            if ((${#tests[@]} == 0)); then
+              echo "Package [nvl/$package] has no database contract tests." >&2
+              exit 1
+            fi
             database="nvl_${package//-/_}_test_ci"
             DATABASE_NAME="$database" php -r '
               $database = getenv("DATABASE_NAME");
@@ -390,7 +382,7 @@ jobs:
               --configuration="packages/nvl/$package/phpunit.xml.dist" \
               --bootstrap=vendor/autoload.php \
               --compact \
-              "packages/nvl/$package/tests"
+              "${tests[@]}"
           done
           DATABASE_NAME=nvl_package_test_integration php -r '
             $database = getenv("DATABASE_NAME");

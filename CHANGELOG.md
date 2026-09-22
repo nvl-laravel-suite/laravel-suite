@@ -16,6 +16,13 @@ Module-level implementation history remains available in each
 - Synchronized generated TypeScript declarations for existing Content
   composition format versions and Media/Metafields platform-import DTOs.
 
+### Changed
+
+- Reduced routine and release CI duplication: SQLite remains exhaustive,
+  external databases run focused persistence contracts, and publication reuses
+  the successful quality result for the exact release commit before exercising
+  the sealed archive on PHP 8.5.
+
 ### Fixed
 
 - Corrected Media Doctor persisted-path verification so soft-deleted diagnostic

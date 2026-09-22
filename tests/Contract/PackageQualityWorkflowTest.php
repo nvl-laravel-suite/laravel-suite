@@ -134,7 +134,7 @@ it('gives clean-runner integration tests a deterministic non-production applicat
         ->and((string) $testingKey['force'])->toBe('true');
 });
 
-it('runs six routine gates without scheduled fan-out', function (): void {
+it('runs six routine gates without release or scheduled fan-out', function (): void {
     $root = dirname(__DIR__, 2);
     $qualityWorkflowPath = $root.'/.github/workflows/package-quality.yml';
     $releaseWorkflowPath = $root.'/.github/workflows/package-release.yml';
@@ -149,14 +149,13 @@ it('runs six routine gates without scheduled fan-out', function (): void {
     expect(array_keys($jobs))->toBe([
         'quality',
         'current-tests',
-        'tenancy-release-adoption',
         'laravel13-lowest',
         'postgresql',
         'mysql-family',
         'changed-coverage',
     ])
         ->and($workflow['on'])->not->toHaveKey('schedule')
-        ->and($workflow['on'])->toHaveKey('workflow_call')
+        ->and($workflow['on'])->not->toHaveKey('workflow_call')
         ->and($workflow['on']['push']['branches'] ?? null)->toBe(['main'])
         ->and($workflow['on']['push']['tags'] ?? null)->toBeNull()
         ->and($workflow['concurrency']['cancel-in-progress'] ?? null)
@@ -413,7 +412,7 @@ it('exposes the root package quality runner through Composer', function (): void
         ->toBe('@php tools/run-package-quality.php');
 });
 
-it('tests the current stack Laravel 13 lowest and every supported database family with bounded timeouts', function (): void {
+it('tests the current stack and focused compatibility contracts on every supported boundary', function (): void {
     $workflow = Yaml::parseFile(dirname(__DIR__, 2).'/.github/workflows/package-quality.yml');
 
     expect($workflow)->toBeArray();
@@ -438,40 +437,48 @@ it('tests the current stack Laravel 13 lowest and every supported database famil
             '"orchestra/testbench:^11.0"',
             '--prefer-lowest',
             'composer test:integration',
-            'composer test:packages',
         )
+        ->and($lowestCommands)->not->toContain('composer test:packages')
         ->and($jobs['postgresql']['services']['postgres']['image'] ?? null)->toBe('postgres:17')
+        ->and($jobs['postgresql']['name'] ?? null)->toBe('PostgreSQL database contracts')
+        ->and($jobs['postgresql']['timeout-minutes'] ?? null)->toBe(15)
         ->and($postgresCommands)->toContain(
             'for package in activity auth comments content',
             'translatable translations',
+            '["migration_tests"]',
+            'Package [nvl/$package] has no database contract tests.',
             'database="nvl_${package//-/_}_test_ci"',
+            '"${tests[@]}"',
             'composer test:integration',
         )
         ->not->toContain('mysql')
+        ->and(collect($jobs['postgresql']['steps'] ?? [])->firstWhere('name', 'Start isolated S3-compatible storage')['if'] ?? null)
+        ->toBe("github.event_name == 'workflow_dispatch'")
         ->and($jobs['mysql-family']['strategy']['matrix']['include'] ?? [])->toBe([
             [
                 'name' => 'MySQL 8.4',
                 'image' => 'mysql:8.4',
                 'connection' => 'mysql',
-                'timeout_minutes' => 25,
                 'health_command' => 'mysqladmin ping -h 127.0.0.1 -uroot -proot --silent',
             ],
             [
                 'name' => 'MariaDB 12.3',
                 'image' => 'mariadb:12.3',
                 'connection' => 'mariadb',
-                'timeout_minutes' => 45,
                 'health_command' => 'healthcheck.sh --connect --innodb_initialized',
             ],
         ])
-        ->and($jobs['mysql-family']['timeout-minutes'] ?? null)
-        ->toBe('${{ matrix.timeout_minutes }}')
+        ->and($jobs['mysql-family']['name'] ?? null)->toBe('${{ matrix.name }} database contracts')
+        ->and($jobs['mysql-family']['timeout-minutes'] ?? null)->toBe(10)
         ->and($jobs['mysql-family']['services']['database']['options'] ?? null)
         ->toContain('--health-cmd="${{ matrix.health_command }}"')
         ->and($mysqlCommands)->toContain(
             'for package in activity auth comments content',
             'translatable translations',
+            '["migration_tests"]',
+            'Package [nvl/$package] has no database contract tests.',
             'database="nvl_${package//-/_}_test_ci"',
+            '"${tests[@]}"',
             'DB_DATABASE=nvl_package_test_integration composer test:integration',
         );
 });
@@ -510,18 +517,16 @@ it('publishes one clean suite tag only after runtime archive and previous-minor 
     expect($workflow)->toBeArray();
 
     $jobs = $workflow['jobs'] ?? [];
-    $php85 = $jobs['php85'] ?? [];
     $archive = $jobs['archive'] ?? [];
     $previousMinor = $jobs['previous-minor'] ?? [];
     $proofConsumers = $jobs['proof-consumers'] ?? [];
     $publish = $jobs['publish-release'] ?? [];
     $validateCommands = workflowCommands($jobs['validate'] ?? []);
-    $php85Commands = workflowCommands($php85);
     $archiveCommands = workflowCommands($archive);
     $previousMinorCommands = workflowCommands($previousMinor);
     $proofConsumerCommands = workflowCommands($proofConsumers);
     $publishCommands = workflowCommands($publish);
-    $php85Setup = collect($php85['steps'] ?? [])->firstWhere('uses', SUITE_SETUP_PHP_ACTION);
+    $archiveSetup = collect($archive['steps'] ?? [])->firstWhere('uses', SUITE_SETUP_PHP_ACTION);
     $previousMinorCheckout = collect($previousMinor['steps'] ?? [])->firstWhere('uses', SUITE_CHECKOUT_ACTION);
     $previousMinorDownload = collect($previousMinor['steps'] ?? [])->firstWhere('uses', SUITE_DOWNLOAD_ARTIFACT_ACTION);
     $proofConsumerDownload = collect($proofConsumers['steps'] ?? [])->firstWhere('uses', SUITE_DOWNLOAD_ARTIFACT_ACTION);
@@ -529,8 +534,6 @@ it('publishes one clean suite tag only after runtime archive and previous-minor 
 
     expect(array_keys($jobs))->toBe([
         'validate',
-        'checks',
-        'php85',
         'archive',
         'previous-minor',
         'proof-consumers',
@@ -539,17 +542,18 @@ it('publishes one clean suite tag only after runtime archive and previous-minor 
         ->and($validateCommands)->toContain(
             'refs/heads/$DEFAULT_BRANCH',
             'semver_pattern=',
+            'actions/workflows/package-quality.yml/runs',
+            '-f head_sha="$GITHUB_SHA"',
+            '-f event=push',
+            '-f status=success',
+            'Package quality must pass for release commit [$GITHUB_SHA]',
         )
-        ->and($jobs['checks']['uses'] ?? null)->toBe('./.github/workflows/package-quality.yml')
-        ->and($jobs['checks']['needs'] ?? null)->toBe('validate')
-        ->and($php85['needs'] ?? null)->toBe('validate')
-        ->and($php85Setup)->toBeArray()
-        ->and($php85Setup['with']['php-version'] ?? null)->toBe('8.5')
-        ->and($php85Commands)->toContain(
-            'bash tools/retry-composer.sh install --no-interaction --prefer-dist',
-            'composer test',
-        )
-        ->and($archive['needs'] ?? null)->toBe(['checks', 'php85'])
+        ->and($workflow['permissions']['actions'] ?? null)->toBe('read')
+        ->and($archive['needs'] ?? null)->toBe('validate')
+        ->and($archive['name'] ?? null)->toBe('Suite archive and clean PHP 8.5 consumer')
+        ->and($archive['timeout-minutes'] ?? null)->toBe(10)
+        ->and($archiveSetup)->toBeArray()
+        ->and($archiveSetup['with']['php-version'] ?? null)->toBe('8.5')
         ->and($archiveCommands)->toContain(
             'COMPOSER_ROOT_VERSION="$PACKAGE_VERSION" composer archive',
             'test "$archive_count" -eq 1',

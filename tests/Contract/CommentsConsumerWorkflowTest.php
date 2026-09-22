@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Symfony\Component\Yaml\Yaml;
 
-it('keeps Comments in the complete and Laravel 13 lowest-dependency suites', function (): void {
+it('keeps Comments exhaustive on the current stack and represented at lowest dependencies', function (): void {
     $root = dirname(__DIR__, 2);
     $workflow = commentsWorkflowDefinition($root);
     $jobs = commentsWorkflowArray($workflow, 'jobs');
@@ -16,8 +16,8 @@ it('keeps Comments in the complete and Laravel 13 lowest-dependency suites', fun
     expect(commentsWorkflowString($currentStep, 'run'))->toBe('composer test')
         ->and(commentsWorkflowString($lowestStep, 'run'))->toContain(
             'composer test:integration',
-            'composer test:packages',
-        );
+        )
+        ->and(commentsWorkflowString($lowestStep, 'run'))->not->toContain('composer test:packages');
 });
 
 it('keeps the Comments sealed artifact proof on version tags', function (): void {
@@ -39,7 +39,7 @@ it('keeps the Comments sealed artifact proof on version tags', function (): void
         );
 });
 
-it('runs the complete Comments suite against PostgreSQL', function (): void {
+it('runs the Comments database contracts against PostgreSQL', function (): void {
     $root = dirname(__DIR__, 2);
     $workflow = commentsWorkflowDefinition($root);
     $jobs = commentsWorkflowArray($workflow, 'jobs');
@@ -47,11 +47,11 @@ it('runs the complete Comments suite against PostgreSQL', function (): void {
     $services = commentsWorkflowArray($job, 'services');
     $service = commentsWorkflowArray($services, 'postgres');
     $serviceEnvironment = commentsWorkflowArray($service, 'env');
-    $step = commentsWorkflowStep($job, 'Stateful package tests');
+    $step = commentsWorkflowStep($job, 'Database contract tests');
     $stepEnvironment = commentsWorkflowArray($step, 'env');
     $command = commentsWorkflowString($step, 'run');
 
-    expect(commentsWorkflowString($job, 'name'))->toBe('PostgreSQL stateful packages')
+    expect(commentsWorkflowString($job, 'name'))->toBe('PostgreSQL database contracts')
         ->and(commentsWorkflowString($service, 'image'))->toBe('postgres:17')
         ->and($serviceEnvironment)->toBe([
             'POSTGRES_DB' => 'nvl_package_test_admin',
@@ -71,6 +71,7 @@ it('runs the complete Comments suite against PostgreSQL', function (): void {
             'for package in activity auth comments content',
             'database="nvl_${package//-/_}_test_ci"',
             'DB_DATABASE="$database" vendor/bin/pest',
+            '"${tests[@]}"',
             'DB_DATABASE=nvl_package_test_integration composer test:integration',
         );
 });

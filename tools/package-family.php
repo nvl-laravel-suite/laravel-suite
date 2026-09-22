@@ -202,7 +202,6 @@ return [
                 'migration_tests' => [
                     'tests/TestCase.php',
                     'tests/Feature/ContentPackageTest.php',
-                    'tests/Feature/ContentContractRegressionTest.php',
                     'tests/Tenancy/TenantContentTest.php',
                     'tests/Tenancy/TenantContentCompositionTest.php',
                     'tests/Tenancy/TenantAdoptionTest.php',
@@ -231,7 +230,10 @@ return [
                     'src',
                     'tests/Fixtures/FilterableRecord.php',
                 ],
-                'migration_tests' => [],
+                'migration_tests' => [
+                    'tests/Feature/FilterableTest.php',
+                    'tests/Feature/PredicatePreservationTest.php',
+                ],
             ],
             'forms' => [
                 'analysis_paths' => [
@@ -297,9 +299,6 @@ return [
                 ],
                 'migration_tests' => [
                     'tests/TestCase.php',
-                    'tests/Feature/PagesPackageTest.php',
-                    'tests/Tenancy/TenantPagesTest.php',
-                    'tests/Tenancy/TenantPageContextTest.php',
                     'tests/Tenancy/TenantAdoptionTest.php',
                 ],
             ],
@@ -399,7 +398,12 @@ return [
                     'tests/Fixtures/TenancyConsumerServiceProvider.php',
                     'tests/Fixtures/TenancyConsumerSetupCommand.php',
                 ],
-                'migration_tests' => [],
+                'migration_tests' => [
+                    'tests/Feature/TranslatableSelfStrategyTest.php',
+                    'tests/Feature/TranslatableSoftDeletesTest.php',
+                    'tests/Feature/TranslatableTest.php',
+                    'tests/Tenancy/Feature/TranslationOwnershipPartitionTest.php',
+                ],
             ],
             'translations' => [
                 'analysis_paths' => [

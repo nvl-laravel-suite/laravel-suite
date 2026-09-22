@@ -9,6 +9,7 @@ on:
         type: string
 
 permissions:
+  actions: read
   contents: read
 
 concurrency:
@@ -39,35 +40,31 @@ jobs:
             exit 1
           fi
 
-  checks:
-    name: Release quality gates
-    needs: validate
-    uses: ./.github/workflows/package-quality.yml
-
-  php85:
-    name: PHP 8.5 / Laravel 13
-    needs: validate
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: '8.5'
-          extensions: ctype, curl, dom, fileinfo, filter, gd, iconv, intl, json, libxml, mbstring, pdo_sqlite, tokenizer, xmlwriter, zip
-          coverage: none
-          tools: composer:2.10.2
-
-      - run: bash tools/retry-composer.sh install --no-interaction --prefer-dist
-      - run: composer test
+      - name: Require successful package quality for this commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          successful_run_count="$(
+            gh api --method GET \
+              "repos/$GITHUB_REPOSITORY/actions/workflows/package-quality.yml/runs" \
+              -f head_sha="$GITHUB_SHA" \
+              -f event=push \
+              -f status=success \
+              -F per_page=1 \
+              --jq '.total_count'
+          )"
+          if [[ "$successful_run_count" -lt 1 ]]; then
+            echo "Package quality must pass for release commit [$GITHUB_SHA] before publication." >&2
+            exit 1
+          fi
 
   archive:
-    name: Suite archive and clean consumer
-    needs: [checks, php85]
+    name: Suite archive and clean PHP 8.5 consumer
+    needs: validate
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -76,7 +73,7 @@ jobs:
 
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: '8.4'
+          php-version: '8.5'
           extensions: ctype, curl, dom, fileinfo, filter, gd, iconv, intl, json, libxml, mbstring, pdo_sqlite, tokenizer, xmlwriter, zip
           coverage: none
           tools: composer:2.10.2
@@ -376,7 +373,7 @@ jobs:
     name: Prepared final 1.x to candidate rehearsal
     needs: archive
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 10
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -411,7 +408,7 @@ jobs:
     name: Candidate ${{ matrix.consumer }} proof consumer
     needs: archive
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -448,7 +445,7 @@ jobs:
     name: Publish clean tag and GitHub release
     needs: [previous-minor, proof-consumers]
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     permissions:
       contents: write
 
