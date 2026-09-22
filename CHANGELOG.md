@@ -9,6 +9,26 @@ Module-level implementation history remains available in each
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-09-23
+
+### Fixed
+
+- Preserve application-owned Primitives exchange-rate and Translations
+  repository/action bindings when package providers register, including in
+  cached clean-consumer installations.
+- Correct the Activity release-consumer smoke proof for custom storage and
+  queued purge-job payloads.
+
+### Changed
+
+- Run focused Auth, Comments, Mail Notifications, Media, Taxonomy, and
+  Translatable process-race contracts on their supported real-database CI jobs.
+- Isolate package tests from an inherited `DB_URL`, leave Xdebug off by default
+  unless explicitly requested, and reuse the Primitives fixture schema between
+  transaction-isolated tests.
+- Align Translations' whole-package line-coverage floor with its measured 87%
+  baseline while retaining the 90% changed-line requirement.
+
 ## [2.0.1] - 2026-09-22
 
 - Prove standalone Tenancy archives with only Support/Data, cached configuration,
