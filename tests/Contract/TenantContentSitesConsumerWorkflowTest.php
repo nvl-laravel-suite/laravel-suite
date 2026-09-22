@@ -26,3 +26,32 @@ it('ships a sealed tenant Content and Sites consumer with cached-boot proof', fu
         'SyncSeoRedirectAction::class',
     )->and($workflow)->toContain('tools/run-tenant-content-sites-consumer.sh');
 });
+
+it('keeps the sealed tenant Content and Sites configuration cache serializable', function (): void {
+    $root = dirname(__DIR__, 2);
+    $configurationFiles = glob(
+        $root.'/tools/fixtures/tenant-content-sites-consumer/config/*.php',
+    ) ?: [];
+
+    expect($configurationFiles)->not->toBeEmpty();
+
+    foreach ($configurationFiles as $configurationFile) {
+        $configuration = require $configurationFile;
+        $cachedConfiguration = tempnam(sys_get_temp_dir(), 'nvl-config-cache-');
+
+        if ($cachedConfiguration === false) {
+            throw new RuntimeException('Unable to allocate temporary configuration cache storage.');
+        }
+
+        try {
+            file_put_contents(
+                $cachedConfiguration,
+                '<?php return '.var_export($configuration, true).';',
+            );
+
+            expect(require $cachedConfiguration)->toBe($configuration);
+        } finally {
+            unlink($cachedConfiguration);
+        }
+    }
+});
