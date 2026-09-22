@@ -6,6 +6,7 @@ use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
 use Nvl\Suite\Quality\PackageQualityRunner;
+use Nvl\Suite\Quality\PackageTestRunner;
 use Nvl\Suite\Support\SuiteModuleCatalog;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -63,6 +64,32 @@ it('keeps Composer update hooks independent of optional development tools', func
     expect($manifest['scripts']['post-update-cmd'] ?? null)
         ->toBeArray()
         ->not->toContain('@php artisan boost:update --ansi');
+});
+
+it('proves cached clean consumers keep Primitives and Translations host bindings', function (): void {
+    $root = dirname(__DIR__, 2);
+    $workflow = Yaml::parseFile($root.'/.github/workflows/package-release.yml');
+    $archiveSteps = $workflow['jobs']['archive']['steps'] ?? [];
+    $install = collect($archiveSteps)->firstWhere('name', 'Install and exercise the suite archive');
+    $command = is_array($install) ? ($install['run'] ?? null) : null;
+    $provider = file_get_contents(
+        $root.'/tools/fixtures/suite-release-consumer/app/Providers/AppServiceProvider.php',
+    );
+
+    expect($command)->toBeString()
+        ->toContain(
+            'php artisan config:cache',
+            'Package provider replaced host binding',
+            'PrimitivesServiceProvider($app))->register()',
+            'TranslationsServiceProvider($app))->register()',
+        )
+        ->and($provider)->toContain(
+            'ExchangeRateProvider::class => ConfiguredExchangeRateProvider::class',
+            'TenantTranslationRepository::class => DatabaseTenantTranslationRepository::class',
+            'UpdateTranslationEntryContract::class => UpdateTranslationEntryAction::class',
+            'ImportTranslationsContract::class => ImportTranslationsAction::class',
+            'ScanTranslationsContract::class => ScanTranslationsAction::class',
+        );
 });
 
 it('declares Laravel 13 and Testbench 11 as the suite support floor', function (): void {
@@ -437,9 +464,33 @@ it('derives bounded package test pools from the canonical family', function (): 
             "'migration_tests'",
             'new Process(',
             'count($running) < $concurrency',
-            "'APP_BASE_PATH' => \$application",
+            "\$environment['APP_BASE_PATH'] = \$application",
             "['DB_DATABASE'] = \$this->databaseName(\$package)",
         );
+});
+
+it('isolates package workers from inherited database URLs and incidental Xdebug overhead', function (): void {
+    require_once dirname(__DIR__, 2).'/tools/package-test-runner.php';
+
+    $originalMode = getenv('XDEBUG_MODE');
+    $originalDatabaseUrl = getenv('DB_URL');
+    $runner = new PackageTestRunner(sys_get_temp_dir(), []);
+    $environment = new ReflectionMethod($runner, 'preparePackageEnvironment');
+
+    try {
+        putenv('DB_URL=postgresql://unsafe.example/production');
+        putenv('XDEBUG_MODE');
+        expect($environment->invoke($runner, 'support'))->toBe([
+            'DB_URL' => '',
+            'XDEBUG_MODE' => 'off',
+        ]);
+
+        putenv('XDEBUG_MODE=debug');
+        expect($environment->invoke($runner, 'support'))->toBe(['DB_URL' => '']);
+    } finally {
+        putenv($originalMode === false ? 'XDEBUG_MODE' : "XDEBUG_MODE={$originalMode}");
+        putenv($originalDatabaseUrl === false ? 'DB_URL' : "DB_URL={$originalDatabaseUrl}");
+    }
 });
 
 it('tests the current stack and focused compatibility contracts on every supported boundary', function (): void {

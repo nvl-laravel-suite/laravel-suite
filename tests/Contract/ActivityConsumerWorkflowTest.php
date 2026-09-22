@@ -72,6 +72,13 @@ it('installs Activity from the tagged suite archive', function (): void {
         ->not->toContain('packages+=("nvl/$(basename "$directory"):$PACKAGE_VERSION")')
         ->not->toContain('composer config repositories.nvl composer')
         ->not->toContain('QUEUE_CONNECTION=sync')
+        ->and($installCommand)->toContain(
+            'tools/fixtures/activity-production-consumer/app/.',
+            'tools/fixtures/activity-production-consumer/config/activity.php',
+            'activity-consumer:smoke --format=json',
+            'php artisan config:cache',
+            'php artisan route:cache',
+        )
         ->and($releaseProvider)->toBeFile()
         ->and(file_get_contents($releaseProvider))->toContain(
             "Config::set('taxonomy.owners.users', User::class)",
@@ -147,6 +154,7 @@ it('keeps the Activity production consumer fixture representative', function ():
             'ActivityRecorder::record(',
             "config('activity.routes.management_middleware') === [AuthenticateActivityConsumer::class]",
             "config('activity.retention.allowed_purge_options') === [90]",
+            '$customStorage = $connection === \'activity_consumer\'',
             "config('queue.connections.database.retry_after')",
             'PurgeActivityLogsJob::TIMEOUT_SECONDS + 60',
             "event: 'article.internal_reviewed'",
@@ -160,6 +168,7 @@ it('keeps the Activity production consumer fixture representative', function ():
             'buildActivityTimeline(2)',
             'Artisan::call(\'queue:work\'',
             "'--queue' => 'maintenance'",
+            'ActivityPurgeCriteria::class',
             '$jobs === [[90, false], [90, true]]',
             "Schema::hasTable('failed_jobs')",
             "'/api/v1/activities?perPage=10'",

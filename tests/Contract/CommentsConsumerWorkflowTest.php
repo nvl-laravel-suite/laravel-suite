@@ -72,6 +72,13 @@ it('runs the Comments database contracts against PostgreSQL', function (): void 
         );
 });
 
+it('selects the real Comments process-race tests in the database matrix', function (): void {
+    $catalog = require dirname(__DIR__, 2).'/tools/package-family.php';
+
+    expect($catalog['quality']['packages']['comments']['migration_tests'])
+        ->toContain('tests/Feature/CommentsDatabaseConcurrencyTest.php');
+});
+
 it('does not retain the multi-package release rehearsal', function (): void {
     $root = dirname(__DIR__, 2);
 

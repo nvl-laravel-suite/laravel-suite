@@ -23,6 +23,11 @@ use Nvl\Activity\Enums\ActivityVisibility;
 use Nvl\Activity\Facades\ActivityLog as ActivityRecorder;
 use Nvl\Activity\Jobs\PurgeActivityLogsJob;
 use Nvl\Activity\Models\ActivityLog;
+use Nvl\Activity\Support\ActivityPurgeCriteria;
+use Nvl\Tenancy\Enums\TenantContextMode;
+use Nvl\Tenancy\ValueObjects\TenantContextSnapshot;
+use Nvl\Tenancy\ValueObjects\TenantId;
+use Nvl\Tenancy\ValueObjects\TenantJobEnvelope;
 use RuntimeException;
 use Throwable;
 
@@ -90,19 +95,15 @@ final class ActivityConsumerSmokeCommand extends Command
 
         $storage = (new ActivityLog)->getTable();
         $connection = (new ActivityLog)->getConnectionName();
-        $customStorage = config('activity.migrations.enabled') === false;
+        $customStorage = $connection === 'activity_consumer';
 
         $this->ensure(
             Schema::connection($connection)->hasTable($storage),
             "Activity storage [{$storage}] is missing.",
         );
         $this->ensure(
-            $customStorage === ($storage === 'activity_consumer_activity_log'),
+            $storage === ($customStorage ? 'activity_consumer_activity_log' : ActivityLog::DEFAULT_TABLE),
             'Activity storage mode and table do not agree.',
-        );
-        $this->ensure(
-            $customStorage === ($connection === 'activity_consumer'),
-            'Activity storage mode and connection do not agree.',
         );
 
         if ($customStorage) {
@@ -422,7 +423,14 @@ final class ActivityConsumerSmokeCommand extends Command
             $payload = json_decode($encodedPayload, true, 512, JSON_THROW_ON_ERROR);
             $serialized = data_get($payload, 'data.command');
             $job = is_string($serialized)
-                ? unserialize($serialized, ['allowed_classes' => [PurgeActivityLogsJob::class]])
+                ? unserialize($serialized, ['allowed_classes' => [
+                    PurgeActivityLogsJob::class,
+                    ActivityPurgeCriteria::class,
+                    TenantContextMode::class,
+                    TenantContextSnapshot::class,
+                    TenantId::class,
+                    TenantJobEnvelope::class,
+                ]])
                 : null;
 
             if (! $job instanceof PurgeActivityLogsJob) {

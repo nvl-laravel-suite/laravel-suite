@@ -76,8 +76,10 @@ it('declares executable migration evidence and database-family coverage', functi
         flags: JSON_THROW_ON_ERROR,
     );
     $workflow = Yaml::parseFile($root.'/.github/workflows/package-quality.yml');
-    $postgresCommands = workflowCommands($workflow['jobs']['postgresql'] ?? []);
-    $mysqlCommands = workflowCommands($workflow['jobs']['mysql-family'] ?? []);
+    $postgresCommands = collect($workflow['jobs']['postgresql']['steps'] ?? [])
+        ->pluck('run')->filter(static fn (mixed $command): bool => is_string($command))->implode("\n");
+    $mysqlCommands = collect($workflow['jobs']['mysql-family']['steps'] ?? [])
+        ->pluck('run')->filter(static fn (mixed $command): bool => is_string($command))->implode("\n");
     $databaseRunner = new Process([
         PHP_BINARY,
         $root.'/tools/run-package-tests.php',
@@ -123,6 +125,39 @@ it('selects at least one executable contract for every real database package', f
             expect($root.'/packages/nvl/'.$package.'/'.$testPath)->toBeFile();
         }
     }
+});
+
+it('selects the remaining-package process races on their supported database jobs', function (): void {
+    $root = dirname(__DIR__, 2);
+    $catalog = require $root.'/tools/package-family.php';
+    $selected = $catalog['quality']['packages'];
+    $workflow = Yaml::parseFile($root.'/.github/workflows/package-quality.yml');
+    $postgresDatabaseStep = collect($workflow['jobs']['postgresql']['steps'] ?? [])
+        ->firstWhere('name', 'Database contract tests');
+
+    expect($selected['taxonomy']['migration_tests'])
+        ->toContain('tests/Tenancy/TaxonomyTenancyConcurrencyTest.php')
+        ->and($selected['translatable']['migration_tests'])
+        ->toContain('tests/Tenancy/Integration/TranslationTenancyConcurrencyTest.php')
+        ->and($selected['auth']['migration_tests'])
+        ->toContain(
+            'tests/Feature/InvitationDeliveryOutcomeConcurrencyTest.php',
+            'tests/Feature/Tenancy/MembershipOwnerConcurrencyTest.php',
+        )
+        ->and($selected['media']['migration_tests'])
+        ->toContain(
+            'tests/Feature/MediaOwnerSlotDatabaseConcurrencyTest.php',
+            'tests/Tenancy/Integration/MediaTenantImportConcurrencyTest.php',
+            'tests/Tenancy/Integration/MediaTenantOwnerSlotDatabaseConcurrencyTest.php',
+        )
+        ->and($selected['mail-notifications']['migration_tests'])
+        ->toContain(
+            'tests/Concurrency/PostgreSqlQueuedFailureConcurrencyTest.php',
+            'tests/Concurrency/PostgreSqlScheduledMailConcurrencyTest.php',
+            'tests/MySqlConcurrency/MySqlQueuedFailureConcurrencyTest.php',
+        )
+        ->and($postgresDatabaseStep['env']['REDIS_HOST'] ?? null)
+        ->toBe('127.0.0.1');
 });
 
 it('release-reviews the forward-only Comments document migration without changing it', function (): void {

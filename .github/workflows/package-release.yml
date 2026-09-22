@@ -241,6 +241,34 @@ jobs:
           require "vendor/autoload.php";
           $app = require "bootstrap/app.php";
           $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+          $hostBindings = [];
+          foreach ([
+              Nvl\Primitives\Contracts\ExchangeRateProvider::class => Nvl\Primitives\Services\ConfiguredExchangeRateProvider::class,
+              Nvl\Translations\Contracts\TenantTranslationRepository::class => Nvl\Translations\Services\DatabaseTenantTranslationRepository::class,
+              Nvl\Translations\Contracts\UpdateTranslationEntryContract::class => Nvl\Translations\Actions\Entries\UpdateTranslationEntryAction::class,
+              Nvl\Translations\Contracts\ImportTranslationsContract::class => Nvl\Translations\Actions\Sync\ImportTranslationsAction::class,
+              Nvl\Translations\Contracts\ScanTranslationsContract::class => Nvl\Translations\Actions\Sync\ScanTranslationsAction::class,
+          ] as $contract => $implementation) {
+              $binding = $app->getBindings()[$contract] ?? null;
+              if (! is_array($binding)
+                  || ! ($binding["concrete"] ?? null) instanceof Closure
+                  || ! $app->make($contract) instanceof $implementation) {
+                  throw new RuntimeException("Cached clean consumer lost host binding [$contract].");
+              }
+              $hostBindings[$contract] = $binding["concrete"];
+          }
+          (new Nvl\Primitives\Providers\PrimitivesServiceProvider($app))->register();
+          (new Nvl\Translations\Providers\TranslationsServiceProvider($app))->register();
+          foreach ($hostBindings as $contract => $factory) {
+              if (($app->getBindings()[$contract]["concrete"] ?? null) !== $factory) {
+                  throw new RuntimeException("Package provider replaced host binding [$contract].");
+              }
+          }
+          '
+          php -r '
+          require "vendor/autoload.php";
+          $app = require "bootstrap/app.php";
+          $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
           $principal = new class extends Nvl\Auth\Models\User {
               protected $fillable = ["host_reference"];
           };
@@ -336,6 +364,27 @@ jobs:
               exit 1
             fi
           done < "$expected_doctors"
+          cp -R "$GITHUB_WORKSPACE/tools/fixtures/activity-production-consumer/app/." app/
+          cp "$GITHUB_WORKSPACE/tools/fixtures/activity-production-consumer/config/activity.php" config/activity.php
+          cp "$GITHUB_WORKSPACE/tools/fixtures/activity-production-consumer/bootstrap/providers.php" bootstrap/providers.php
+          cp "$GITHUB_WORKSPACE/tools/fixtures/activity-production-consumer/database/migrations/2026_08_02_000001_create_activity_consumer_articles_table.php" database/migrations/
+          php artisan config:clear
+          php artisan route:clear
+          php artisan config:cache
+          php artisan route:cache
+          php artisan migrate --force
+          activity_consumer_output=/tmp/nvl-activity-consumer-output.json
+          if ! APP_ENV=production APP_DEBUG=false \
+            QUEUE_CONNECTION=database DB_QUEUE_RETRY_AFTER=960 \
+            php artisan activity-consumer:smoke --format=json > "$activity_consumer_output" 2>&1; then
+            cat "$activity_consumer_output"
+            exit 1
+          fi
+          if ! jq -e '.ready == true and .activityRows == 5 and .timelineRows == 3 and .queuedJobs == 2' \
+            "$activity_consumer_output"; then
+            cat "$activity_consumer_output"
+            exit 1
+          fi
           bash "$GITHUB_WORKSPACE/tools/retry-composer.sh" audit --locked --no-interaction
 
       - name: Tenancy sealed adoption and lifecycle proof

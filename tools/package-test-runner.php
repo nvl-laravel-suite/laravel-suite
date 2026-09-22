@@ -329,16 +329,21 @@ final readonly class PackageTestRunner
         $filesystem = new Filesystem;
         $packageIsolation = $this->packageIsolationPath($package);
         $filesystem->remove($packageIsolation);
+        $xdebugMode = getenv('XDEBUG_MODE');
+        $environment = ['DB_URL' => ''];
+
+        if (! is_string($xdebugMode) || $xdebugMode === '') {
+            $environment['XDEBUG_MODE'] = 'off';
+        }
 
         if (in_array($package, self::APPLICATION_ISOLATED_PACKAGES, true)) {
             $application = $this->prepareIsolatedApplication($package);
+            $environment['APP_BASE_PATH'] = $application;
 
-            return [
-                'APP_BASE_PATH' => $application,
-            ];
+            return $environment;
         }
 
-        return [];
+        return $environment;
     }
 
     private function prepareIsolatedApplication(string $package): string

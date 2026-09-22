@@ -174,7 +174,9 @@ return [
                 'migration_tests' => [
                     'tests/TestCase.php',
                     'tests/Feature/AuthDeliveryContextMigrationTest.php',
+                    'tests/Feature/InvitationDeliveryOutcomeConcurrencyTest.php',
                     'tests/Feature/SchemaOwnershipTest.php',
+                    'tests/Feature/Tenancy/MembershipOwnerConcurrencyTest.php',
                 ],
             ],
             'comments' => [
@@ -186,6 +188,7 @@ return [
                 'migration_tests' => [
                     'tests/TestCase.php',
                     'tests/Feature/CommentsPackageTest.php',
+                    'tests/Feature/CommentsDatabaseConcurrencyTest.php',
                     'tests/Feature/CommentsDoctorCommandTest.php',
                     'tests/Feature/CommentRichDocumentLifecycleTest.php',
                     'tests/Tenancy/CommentsTenantTest.php',
@@ -260,6 +263,9 @@ return [
                 'migration_tests' => [
                     'tests/TestCase.php',
                     'tests/Feature/MigrationCompatibilityGuardTest.php',
+                    'tests/Concurrency/PostgreSqlQueuedFailureConcurrencyTest.php',
+                    'tests/Concurrency/PostgreSqlScheduledMailConcurrencyTest.php',
+                    'tests/MySqlConcurrency/MySqlQueuedFailureConcurrencyTest.php',
                     'tests/Tenancy/MailTenantTest.php',
                     'tests/Tenancy/MailTenantWorkerTest.php',
                     'tests/Tenancy/AdoptionTest.php',
@@ -276,6 +282,9 @@ return [
                     'tests/MediaTestCase.php',
                     'tests/Feature/G09ImplementationTest.php',
                     'tests/Feature/MediaDoctorTest.php',
+                    'tests/Feature/MediaOwnerSlotDatabaseConcurrencyTest.php',
+                    'tests/Tenancy/Integration/MediaTenantImportConcurrencyTest.php',
+                    'tests/Tenancy/Integration/MediaTenantOwnerSlotDatabaseConcurrencyTest.php',
                 ],
             ],
             'metafields' => [
@@ -366,6 +375,7 @@ return [
                 'migration_tests' => [
                     'tests/TestCase.php',
                     'tests/TaxonomyTest.php',
+                    'tests/Tenancy/TaxonomyTenancyConcurrencyTest.php',
                 ],
             ],
             'templates' => [
@@ -403,6 +413,7 @@ return [
                     'tests/Feature/TranslatableSoftDeletesTest.php',
                     'tests/Feature/TranslatableTest.php',
                     'tests/Tenancy/Feature/TranslationOwnershipPartitionTest.php',
+                    'tests/Tenancy/Integration/TranslationTenancyConcurrencyTest.php',
                 ],
             ],
             'translations' => [
