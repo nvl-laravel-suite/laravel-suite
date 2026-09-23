@@ -4,7 +4,33 @@
 declare namespace Nvl {
 namespace Tasks {
 namespace Data {
+export type TaskAssignmentData = {
+id: string,
+taskId: string,
+assigneeType: string,
+assigneeId: string,
+createdAt: string,
+};
+export type TaskData = {
+id: string,
+title: string,
+description: string | null,
+status: Nvl.Tasks.Enums.TaskStatus,
+priority: Nvl.Tasks.Enums.TaskPriority,
+dueAt: string | null,
+completedAt: string | null,
+metadata: Record<string, unknown>,
+revision: number,
+creatorType: string | null,
+creatorId: string | null,
+assigneesCount?: number,
+createdAt: string,
+updatedAt: string,
+};
 namespace Mutations {
+export type AssignTaskData = {
+assigneeId: string,
+};
 export type CreateTaskData = {
 title: string,
 description: string | null,
@@ -12,6 +38,9 @@ priority: Nvl.Tasks.Enums.TaskPriority,
 status: Nvl.Tasks.Enums.TaskStatus,
 dueAt: string | null,
 metadata: Record<string, unknown>,
+};
+export type RestoreTaskData = {
+expectedRevision: number,
 };
 export type UpdateTaskData = {
 title: string,
@@ -21,6 +50,14 @@ expectedRevision: number,
 description: string | null,
 dueAt: string | null,
 metadata: Record<string, unknown>,
+};
+}
+namespace Queries {
+export type TaskIndexQueryData = {
+status: Nvl.Tasks.Enums.TaskStatus | null,
+priority: Nvl.Tasks.Enums.TaskPriority | null,
+assigneeId: string | null,
+perPage: number | null,
 };
 }
 }
