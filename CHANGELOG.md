@@ -9,11 +9,23 @@ Module-level implementation history remains available in each
 
 ## [Unreleased]
 
+## [2.1.1] - 2026-09-23
+
 ### Added
 
 - Add the optional Tasks package with task and assignment services, opt-in
   management routes, tenant-aware access, and integrations for Media, Content,
   and Metafields.
+
+### Changed
+
+- Use package Data contracts for Tasks management input and output, and replace
+  the remaining Auth, Activity, Media, SEO, and Translations HTTP Form Requests,
+  inline validation, and JSON Resource projection with Data contracts. Existing
+  HTTP response envelopes and supported input aliases remain intact.
+- Regenerate TypeScript declarations and public contract baselines for the
+  Data-first package APIs. Direct PHP imports of the removed HTTP request and
+  resource classes must migrate to the corresponding Data contracts.
 
 ## [2.1.0] - 2026-09-23
 
