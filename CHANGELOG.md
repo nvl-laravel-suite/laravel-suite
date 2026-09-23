@@ -27,6 +27,11 @@ Module-level implementation history remains available in each
   Data-first package APIs. Direct PHP imports of the removed HTTP request and
   resource classes must migrate to the corresponding Data contracts.
 
+### Fixed
+
+- Align Content's generated JSON Schemas with required published values and
+  preserve field-local references in embedded JSON schemas.
+
 ## [2.1.0] - 2026-09-23
 
 ### Fixed
