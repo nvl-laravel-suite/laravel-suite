@@ -2,12 +2,19 @@
 
 declare(strict_types=1);
 
+use App\Providers\AppServiceProvider;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Facade;
 use Nvl\Suite\Quality\PackageQualityRunner;
 use Nvl\Suite\Quality\PackageTestRunner;
 use Nvl\Suite\Support\SuiteModuleCatalog;
+use Nvl\Tasks\Contracts\TaskAuthorization;
+use Nvl\Tasks\Data\TaskActorData;
+use Nvl\Tasks\Enums\TaskAbility;
+use Nvl\Tasks\Services\ConfiguredTaskAuthorization;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
@@ -90,6 +97,46 @@ it('proves cached clean consumers keep Primitives and Translations host bindings
             'ImportTranslationsContract::class => ImportTranslationsAction::class',
             'ScanTranslationsContract::class => ScanTranslationsAction::class',
         );
+});
+
+it('disables automatic migrations for every published schema-owning package in the release consumer', function (): void {
+    $root = dirname(__DIR__, 2);
+    $catalog = require $root.'/tools/package-family.php';
+    require_once $root.'/tools/fixtures/suite-release-consumer/app/Providers/AppServiceProvider.php';
+
+    $configuration = new Repository([
+        'nvl-release-consumer' => ['published_migrations' => true],
+    ]);
+    $application = new Application($root);
+    $application->instance('config', $configuration);
+    $previousApplication = Facade::getFacadeApplication();
+    Facade::setFacadeApplication($application);
+    Facade::clearResolvedInstance('config');
+
+    try {
+        (new AppServiceProvider($application))->register();
+
+        foreach ($catalog['stateful'] as $package) {
+            if (array_key_exists($package, $catalog['optional_migrations'])) {
+                continue;
+            }
+
+            $configurationName = $package === 'auth' ? 'nvl-auth' : $package;
+
+            expect($configuration->get("{$configurationName}.migrations.enabled"))
+                ->toBeFalse();
+        }
+
+        $taskAuthorization = $application->make(TaskAuthorization::class);
+
+        expect($taskAuthorization)->toBeInstanceOf(TaskAuthorization::class)
+            ->not->toBeInstanceOf(ConfiguredTaskAuthorization::class);
+        expect(fn () => $taskAuthorization->authorize(TaskAbility::Create, TaskActorData::system()))
+            ->toThrow(AuthorizationException::class);
+    } finally {
+        Facade::setFacadeApplication($previousApplication);
+        Facade::clearResolvedInstance('config');
+    }
 });
 
 it('declares Laravel 13 and Testbench 11 as the suite support floor', function (): void {
