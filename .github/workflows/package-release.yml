@@ -385,7 +385,7 @@ jobs:
             cat "$activity_consumer_output"
             exit 1
           fi
-          bash "$GITHUB_WORKSPACE/tools/retry-composer.sh" audit --locked --no-interaction
+          composer audit --locked --no-interaction
 
       - name: Tenancy sealed adoption and lifecycle proof
         env:

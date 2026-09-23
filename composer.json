@@ -230,8 +230,8 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
-        "format": "pint --parallel --format agent app bootstrap/app.php bootstrap/providers.php config database routes src tests packages/nvl tools/check-release-changelogs.php tools/fixtures/activity-production-consumer tools/fixtures/auth-production-consumer tools/fixtures/comments-production-consumer tools/fixtures/content-production-consumer tools/fixtures/tenancy-production-consumer tools/fixtures/suite-release-consumer",
-        "format:test": "pint --parallel --test --format agent app bootstrap/app.php bootstrap/providers.php config database routes src tests packages/nvl tools/check-release-changelogs.php tools/fixtures/activity-production-consumer tools/fixtures/auth-production-consumer tools/fixtures/comments-production-consumer tools/fixtures/content-production-consumer tools/fixtures/tenancy-production-consumer tools/fixtures/suite-release-consumer",
+        "format": "pint --parallel --format agent app bootstrap/app.php bootstrap/providers.php config database routes src tests packages/nvl tools/*.php tools/fixtures/activity-production-consumer tools/fixtures/auth-production-consumer tools/fixtures/comments-production-consumer tools/fixtures/content-production-consumer tools/fixtures/tenancy-production-consumer tools/fixtures/suite-release-consumer",
+        "format:test": "pint --parallel --test --format agent app bootstrap/app.php bootstrap/providers.php config database routes src tests packages/nvl tools/*.php tools/fixtures/activity-production-consumer tools/fixtures/auth-production-consumer tools/fixtures/comments-production-consumer tools/fixtures/content-production-consumer tools/fixtures/tenancy-production-consumer tools/fixtures/suite-release-consumer",
         "quality": [
             "@format:test",
             "@autoload:check",
@@ -245,10 +245,10 @@
         ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
-            "@php -d memory_limit=1G vendor/bin/pest --compact",
+            "@php -d memory_limit=1G vendor/bin/pest --compact --display-warnings",
             "@test:packages"
         ],
-        "test:integration": "@php -d memory_limit=1G vendor/bin/pest --compact tests/Feature/Integration",
+        "test:integration": "@php -d memory_limit=1G vendor/bin/pest --compact --display-warnings tests/Feature/Integration",
         "test:media-production": "NVL_MEDIA_PRODUCTION_INTEGRATION=true vendor/bin/pest --test-directory=packages/nvl/media/tests --configuration=packages/nvl/media/phpunit.xml.dist --bootstrap=vendor/autoload.php --compact packages/nvl/media/tests/Integration/ProductionStackTest.php",
         "test:packages": [
             "Composer\\Config::disableProcessTimeout",

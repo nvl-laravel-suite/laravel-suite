@@ -16,7 +16,9 @@ parameters:
         - tools/check-package-contracts.php
         - tools/check-release-changelogs.php
         - tools/package-quality-runner.php
+        - tools/package-test-runner.php
         - tools/run-package-quality.php
+        - tools/run-package-tests.php
         - packages/nvl/activity/src
         - packages/nvl/activity/database/factories
         - packages/nvl/activity/database/seeders

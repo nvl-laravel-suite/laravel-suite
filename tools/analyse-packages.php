@@ -34,7 +34,6 @@ foreach ($packages as $package) {
         passthru(
             'vendor/bin/phpstan analyse'.
             ' -c phpstan.neon.dist'.
-            ' --debug'.
             ' --no-progress'.
             ' --error-format=table'.
             ' --memory-limit=3G',

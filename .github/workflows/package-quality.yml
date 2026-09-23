@@ -34,6 +34,13 @@ jobs:
         shell: bash
         run: bash tools/retry-composer.sh install --no-interaction --prefer-dist
 
+      - name: Cache package analysis results
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+        with:
+          path: packages/nvl/*/.temp/phpstan/resultCache.php
+          key: phpstan-packages-${{ runner.os }}-php84-${{ hashFiles('composer.lock') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: phpstan-packages-${{ runner.os }}-php84-${{ hashFiles('composer.lock') }}-
+
       - name: Repository contract tests
         run: vendor/bin/pest --compact tests/Contract
 
@@ -55,13 +62,13 @@ jobs:
           composer packages:validate
           composer contracts:check
 
+      - name: Formatting
+        run: composer format:test
+
       - name: Static analysis
         run: |
           composer analyse
           composer packages:analyse
-
-      - name: Formatting
-        run: composer format:test
 
   current-tests:
     name: PHP 8.4 / Laravel 13 / SQLite
@@ -93,7 +100,7 @@ jobs:
         run: composer test
 
   laravel13-lowest:
-    name: PHP 8.4 / Laravel 13 / lowest
+    name: PHP 8.4 / Laravel 13 / lowest integration smoke
     runs-on: ubuntu-latest
     timeout-minutes: 20
 

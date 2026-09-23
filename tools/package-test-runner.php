@@ -467,6 +467,7 @@ final readonly class PackageTestRunner
                 'memory_limit=1G',
                 $this->root.'/vendor/bin/pest',
                 '--compact',
+                '--display-warnings',
                 $this->root.'/tests/Feature/Integration',
             ],
             $this->root,

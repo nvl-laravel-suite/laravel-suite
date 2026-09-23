@@ -313,8 +313,8 @@ it('pins Composer and retries dependency downloads without weakening TLS', funct
             'bash tools/retry-composer.sh install',
             'bash "$GITHUB_WORKSPACE/tools/retry-composer.sh" create-project',
             'bash "$GITHUB_WORKSPACE/tools/retry-composer.sh" require',
-            'bash "$GITHUB_WORKSPACE/tools/retry-composer.sh" audit',
-        );
+            'composer audit --locked --no-interaction',
+        )->not->toContain('retry-composer.sh" audit');
 });
 
 it('preserves Composer arguments and the final failure code across retries', function (): void {
@@ -428,6 +428,38 @@ it('keeps routine quality focused on formatting analysis manifests and contracts
         )
         ->not->toContain('npm ci')
         ->not->toContain('composer test:packages');
+
+    $manifest = json_decode(file_get_contents(dirname(__DIR__, 2).'/composer.json'), true, flags: JSON_THROW_ON_ERROR);
+
+    expect($manifest['scripts']['format'] ?? null)->toContain('tools/*.php')
+        ->and($manifest['scripts']['format:test'] ?? null)->toContain('tools/*.php')
+        ->and($manifest['scripts']['test'][1] ?? null)->toContain('--display-warnings')
+        ->and($manifest['scripts']['test:integration'] ?? null)->toContain('--display-warnings');
+
+    $steps = collect($quality['steps'] ?? [])->pluck('name');
+
+    expect($steps->search('Formatting'))->toBeLessThan($steps->search('Static analysis'));
+
+    $analysisCache = collect($quality['steps'] ?? [])->firstWhere('name', 'Cache package analysis results');
+
+    expect($analysisCache['uses'] ?? null)->toStartWith('actions/cache@')
+        ->and($analysisCache['with']['path'] ?? null)->toBe('packages/nvl/*/.temp/phpstan/resultCache.php')
+        ->and($analysisCache['with']['restore-keys'] ?? null)->toContain("hashFiles('composer.lock')");
+});
+
+it('keeps package static analysis at maximum level without disabling normal PHPStan execution', function (): void {
+    $root = dirname(__DIR__, 2);
+    $script = file_get_contents($root.'/tools/analyse-packages.php');
+
+    expect($script)->toContain(
+        'vendor/bin/phpstan analyse',
+        ' -c phpstan.neon.dist',
+        ' --no-progress',
+    )->not->toContain(' --debug');
+
+    foreach (glob($root.'/packages/nvl/*/phpstan.neon.dist') ?: [] as $configuration) {
+        expect(file_get_contents($configuration))->toContain('level: max');
+    }
 });
 
 it('exposes the root package quality runner through Composer', function (): void {
@@ -464,6 +496,7 @@ it('derives bounded package test pools from the canonical family', function (): 
             "'migration_tests'",
             'new Process(',
             'count($running) < $concurrency',
+            "'--display-warnings',",
             "\$environment['APP_BASE_PATH'] = \$application",
             "['DB_DATABASE'] = \$this->databaseName(\$package)",
         );
@@ -520,6 +553,7 @@ it('tests the current stack and focused compatibility contracts on every support
             'composer test:integration',
         )
         ->and($lowestCommands)->not->toContain('composer test:packages')
+        ->and($jobs['laravel13-lowest']['name'] ?? null)->toBe('PHP 8.4 / Laravel 13 / lowest integration smoke')
         ->and($jobs['postgresql']['services']['postgres']['image'] ?? null)->toBe('postgres:17')
         ->and($jobs['postgresql']['name'] ?? null)->toBe('PostgreSQL database contracts')
         ->and($jobs['postgresql']['timeout-minutes'] ?? null)->toBe(15)
@@ -652,7 +686,7 @@ it('publishes one clean suite tag only after runtime archive and previous-minor 
             'php artisan nvl:auth:doctor --strict --format=json',
             'schema.nvl_auth_invitations.index.nvl_auth_invitations_context_hash_index',
             'schema.nvl_auth_challenges.index.nvl_auth_challenges_secondary_secret_hash_unique',
-            'retry-composer.sh" audit --locked --no-interaction',
+            'composer audit --locked --no-interaction',
         )
         ->not->toContain('for directory in packages/nvl/*; do')
         ->not->toContain('build-public-composer-repository.php')
