@@ -434,7 +434,8 @@ it('keeps routine quality focused on formatting analysis manifests and contracts
     expect($manifest['scripts']['format'] ?? null)->toContain('tools/*.php')
         ->and($manifest['scripts']['format:test'] ?? null)->toContain('tools/*.php')
         ->and($manifest['scripts']['test'][1] ?? null)->toContain('--display-warnings')
-        ->and($manifest['scripts']['test:integration'] ?? null)->toContain('--display-warnings');
+        ->and($manifest['scripts']['test'][1] ?? null)->toContain('--fail-on-warning')
+        ->and($manifest['scripts']['test:integration'] ?? null)->toContain('--display-warnings', '--fail-on-warning');
 
     $steps = collect($quality['steps'] ?? [])->pluck('name');
 
@@ -497,6 +498,7 @@ it('derives bounded package test pools from the canonical family', function (): 
             'new Process(',
             'count($running) < $concurrency',
             "'--display-warnings',",
+            "'--fail-on-warning',",
             "\$environment['APP_BASE_PATH'] = \$application",
             "['DB_DATABASE'] = \$this->databaseName(\$package)",
         );
@@ -586,6 +588,25 @@ it('tests the current stack and focused compatibility contracts on every support
             'php tools/run-package-tests.php --database --concurrency=4',
         )
         ->not->toContain('for package in activity auth comments content');
+});
+
+it('prepares a root application environment before each CI job that boots it', function (): void {
+    $workflow = Yaml::parseFile(dirname(__DIR__, 2).'/.github/workflows/package-quality.yml');
+
+    expect($workflow)->toBeArray();
+
+    foreach (['current-tests', 'laravel13-lowest', 'postgresql', 'mysql-family'] as $jobName) {
+        $steps = collect($workflow['jobs'][$jobName]['steps'] ?? []);
+        $preparation = $steps->search(static fn (mixed $step): bool => is_array($step)
+            && ($step['name'] ?? null) === 'Prepare application test environment');
+        $tests = $steps->search(static fn (mixed $step): bool => is_array($step)
+            && in_array($step['name'] ?? null, ['Complete test suite', 'Compatibility tests', 'Database contract tests'], true));
+
+        expect($preparation)->not->toBeFalse()
+            ->and($tests)->not->toBeFalse()
+            ->and($preparation)->toBeLessThan($tests)
+            ->and($steps->get($preparation)['run'] ?? null)->toBe('cp .env.example .env.testing');
+    }
 });
 
 it('collects coverage only for packages with changed PHP source', function (): void {

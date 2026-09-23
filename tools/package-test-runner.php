@@ -468,6 +468,7 @@ final readonly class PackageTestRunner
                 $this->root.'/vendor/bin/pest',
                 '--compact',
                 '--display-warnings',
+                '--fail-on-warning',
                 $this->root.'/tests/Feature/Integration',
             ],
             $this->root,

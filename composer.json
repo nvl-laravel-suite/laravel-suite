@@ -245,10 +245,10 @@
         ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
-            "@php -d memory_limit=1G vendor/bin/pest --compact --display-warnings",
+            "@php -d memory_limit=1G vendor/bin/pest --compact --display-warnings --fail-on-warning",
             "@test:packages"
         ],
-        "test:integration": "@php -d memory_limit=1G vendor/bin/pest --compact --display-warnings tests/Feature/Integration",
+        "test:integration": "@php -d memory_limit=1G vendor/bin/pest --compact --display-warnings --fail-on-warning tests/Feature/Integration",
         "test:media-production": "NVL_MEDIA_PRODUCTION_INTEGRATION=true vendor/bin/pest --test-directory=packages/nvl/media/tests --configuration=packages/nvl/media/phpunit.xml.dist --bootstrap=vendor/autoload.php --compact packages/nvl/media/tests/Integration/ProductionStackTest.php",
         "test:packages": [
             "Composer\\Config::disableProcessTimeout",
