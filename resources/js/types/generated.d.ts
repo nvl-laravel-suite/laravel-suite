@@ -18,6 +18,7 @@
 /// <reference path="./generated/seo.d.ts" />
 /// <reference path="./generated/settings.d.ts" />
 /// <reference path="./generated/spatie.d.ts" />
+/// <reference path="./generated/tasks.d.ts" />
 /// <reference path="./generated/taxonomy.d.ts" />
 /// <reference path="./generated/templates.d.ts" />
 /// <reference path="./generated/tenancy.d.ts" />

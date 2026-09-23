@@ -5,7 +5,7 @@
 [![Package quality](https://github.com/nicolasvlachos/nvl-laravel-suite/actions/workflows/package-quality.yml/badge.svg?branch=main)](https://github.com/nicolasvlachos/nvl-laravel-suite/actions/workflows/package-quality.yml)
 [![License](https://img.shields.io/packagist/l/nvl/laravel-suite)](LICENSE)
 
-The NVL Laravel Suite bundles 21 focused Laravel modules and an integration workbench in one Composer package. The modules remain isolated under `packages/nvl`, retain their namespaces, providers, migrations, tests, documentation, and Laravel Boost skills, and ship together under one version.
+The NVL Laravel Suite bundles 22 focused Laravel modules and an integration workbench in one Composer package. The modules remain isolated under `packages/nvl`, retain their namespaces, providers, migrations, tests, documentation, and Laravel Boost skills, and ship together under one version.
 
 ## Standalone Tenancy foundation
 
@@ -42,6 +42,7 @@ extension contracts, operational behavior, and verification where applicable.
 | `nvl/media` | Uploads, storage, associations, variations, delivery, and localized metadata | [Documentation](packages/nvl/media/README.md) |
 | `nvl/metafields` | Typed polymorphic custom fields and localized definition/value data | [Documentation](packages/nvl/metafields/README.md) |
 | `nvl/pages` | Localized hierarchical pages, dynamic resources, Content composition, SEO, and sitemaps | [Documentation](packages/nvl/pages/README.md) |
+| `nvl/tasks` | Tenant-safe tasks, polymorphic assignees, private attachments, and opt-in management API | [Documentation](packages/nvl/tasks/README.md) |
 | `nvl/primitives` | Immutable value objects, exact money, validation, and ISO/reference catalogs | [Documentation](packages/nvl/primitives/README.md) |
 | `nvl/seo` | Localized metadata, canonical/social/structured output, robots, and sitemaps | [Documentation](packages/nvl/seo/README.md) |
 | `nvl/settings` | Typed database-backed application-wide settings | [Documentation](packages/nvl/settings/README.md) |
@@ -77,7 +78,7 @@ php artisan config:clear
 The command is dry-run-first and writes only with `--write`; replacing a file
 also requires `--force` and returns a unified diff. `--add` and `--remove`
 compose capability roots around a profile. Use `--full` when an explicit map of
-all twenty-one booleans is preferable. Publishing the unmodified full-suite default
+all twenty-two booleans is preferable. Publishing the unmodified full-suite default
 remains available with `php artisan vendor:publish --tag=suite-config`.
 
 Configure `config/nvl-suite.php` before running migrations. Including a module
@@ -379,6 +380,7 @@ Available package skill tags are:
 - `media-skills`
 - `metafields-skills`
 - `pages-skills`
+- `tasks-skills`
 - `primitives-skills`
 - `seo-skills`
 - `settings-skills`
@@ -469,4 +471,4 @@ Unresolved diagnostics and explicitly admitted platform bootstrap. See
 [Tenancy readiness and migration ownership](packages/nvl/tenancy/README.md#runtime-compatibility-and-readiness).
 
 <!-- tenancy-program-p2 -->
-The configurable-tenancy program implementation is present across all 21 distributions, including adoption, lifecycle, sealed-consumer, and release-gate surfaces. Consolidated runtime verification is pending; this statement is not a release-readiness claim.
+The configurable-tenancy program implementation covered the original 21 distributions, including adoption, lifecycle, sealed-consumer, and release-gate surfaces. Tasks adds its own tenant adoption and isolation tests; this statement is not a release-readiness claim.

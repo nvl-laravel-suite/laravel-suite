@@ -64,6 +64,9 @@ use Nvl\Settings\Definitions\Tables\SettingsTables;
 use Nvl\Settings\Providers\SettingsServiceProvider;
 use Nvl\Suite\Services\SuiteModuleSelection;
 use Nvl\Support\Providers\SupportServiceProvider;
+use Nvl\Tasks\Contracts\TaskAuthorization;
+use Nvl\Tasks\Definitions\Tables\TasksTables;
+use Nvl\Tasks\Providers\TasksServiceProvider;
 use Nvl\Taxonomy\Definitions\Tables\TaxonomyTables;
 use Nvl\Taxonomy\Providers\TaxonomyServiceProvider;
 use Nvl\Taxonomy\Services\TaxonomyOwnerRegistry;
@@ -164,6 +167,7 @@ final readonly class SuiteModuleCatalog
                 'translations',
                 'forms',
                 'pages',
+                'tasks',
             ],
         ],
     ];
@@ -461,6 +465,18 @@ final readonly class SuiteModuleCatalog
             'schedules' => [],
             'typescript' => true,
         ],
+        'tasks' => [
+            'provider' => TasksServiceProvider::class,
+            'dependencies' => ['content', 'data', 'media', 'metafields', 'support', 'tenancy'],
+            'stateful' => true,
+            'migration' => ['mode' => 'configurable', 'config' => 'tasks.migrations.enabled'],
+            'doctor' => 'nvl:tasks:doctor',
+            'contracts' => [TaskAuthorization::class],
+            'aliases' => [],
+            'queues' => [],
+            'schedules' => [],
+            'typescript' => true,
+        ],
     ];
 
     /**
@@ -653,6 +669,14 @@ final readonly class SuiteModuleCatalog
             'deprecated' => [],
             'merge_strategy' => 'deep-map-atomic-list',
         ],
+        'tasks' => [
+            'key' => 'tasks',
+            'default' => 'packages/nvl/tasks/config/tasks.php',
+            'published' => 'tasks.php',
+            'open_maps' => [],
+            'deprecated' => [],
+            'merge_strategy' => 'deep-map-atomic-list',
+        ],
     ];
 
     public function __construct(private Repository $configuration) {}
@@ -703,6 +727,7 @@ final readonly class SuiteModuleCatalog
             'media' => MediaTables::class,
             'metafields' => MetafieldsTables::class,
             'pages' => PagesTables::class,
+            'tasks' => TasksTables::class,
             'seo' => SeoTables::class,
             'settings' => SettingsTables::class,
             'taxonomy' => TaxonomyTables::class,
@@ -730,6 +755,7 @@ final readonly class SuiteModuleCatalog
             'media' => ['Nvl\\Media\\Http\\Controllers\\Api\\'],
             'metafields' => ['Nvl\\Metafields\\Http\\Controllers\\Api\\'],
             'pages' => ['Nvl\\Pages\\Http\\Controllers\\PagesManagementController'],
+            'tasks' => ['Nvl\\Tasks\\Http\\Controllers\\TasksManagementController'],
             'seo' => ['Nvl\\Seo\\Http\\Controllers\\SeoManagementController'],
             'settings' => ['Nvl\\Settings\\Http\\Controllers\\SettingsManagementController'],
             'templates' => ['Nvl\\Templates\\Http\\Controllers\\TemplatesController'],

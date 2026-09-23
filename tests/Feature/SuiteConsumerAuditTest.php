@@ -928,7 +928,7 @@ it('reports every explicitly omitted module in order for an empty legacy map', f
             ->where('code', 'consumer.implicit_module_decision')
             ->values();
 
-        expect($decisions)->toHaveCount(21)
+        expect($decisions)->toHaveCount(22)
             ->and($decisions->pluck('package')->all())->toBe([
                 'activity',
                 'auth',
@@ -946,6 +946,7 @@ it('reports every explicitly omitted module in order for an empty legacy map', f
                 'seo',
                 'settings',
                 'support',
+                'tasks',
                 'taxonomy',
                 'templates',
                 'tenancy',

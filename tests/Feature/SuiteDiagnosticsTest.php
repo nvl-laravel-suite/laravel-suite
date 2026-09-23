@@ -209,7 +209,7 @@ it('provides dependency-complete installation profiles', function (): void {
         'templates',
         'translations',
         'pages',
-    )->and($catalog->profileModules('full-suite'))->toHaveCount(21);
+    )->and($catalog->profileModules('full-suite'))->toHaveCount(22);
 
     foreach ($catalog->modules() as $definition) {
         foreach ($definition['schedules'] as $schedule) {
@@ -331,6 +331,7 @@ it('uses the shipped full-suite default when the consumer has no published confi
             'translations',
             'forms',
             'pages',
+            'tasks',
         ]);
 });
 
@@ -367,7 +368,7 @@ it('reports effective ownership implementations aliases and schedules without se
         'exclude' => [],
     ])->and($report['profile'])->not->toBeNull()
         ->and($report['profile']['matches'])->toBeTrue()
-        ->and($report['modules'])->toHaveCount(21)
+        ->and($report['modules'])->toHaveCount(22)
         ->and($report['modules']['auth']['migration']['owner'])->toBe('package')
         ->and($report['modules']['settings']['implementations'])
         ->toHaveKey(SettingsAuthorization::class)

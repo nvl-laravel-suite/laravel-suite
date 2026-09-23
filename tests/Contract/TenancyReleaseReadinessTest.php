@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-it('declares the complete 21 package tenancy release closure', function (): void {
+it('declares the complete 22 package tenancy release closure', function (): void {
     $root = dirname(__DIR__, 2);
     $family = require $root.'/tools/package-family.php';
 
-    expect($family['packages'])->toHaveCount(21)
-        ->and($family['tenancy_release']['package_count'])->toBe(21)
+    expect($family['packages'])->toHaveCount(22)
+        ->and($family['tenancy_release']['package_count'])->toBe(22)
         ->and($family['tenancy_release']['profiles'])->toBe([
             'disabled',
             'full-package-auth',

@@ -39,6 +39,7 @@ return [
         'templates',
         'metafields',
         'pages',
+        'tasks',
         'translations',
         'seo',
         'forms',
@@ -57,6 +58,7 @@ return [
         'mail-notifications' => ['settings', 'support', 'tenancy'],
         'metafields' => ['data', 'support', 'tenancy', 'translatable'],
         'pages' => ['content', 'data', 'filterable', 'metafields', 'seo', 'support', 'tenancy', 'translatable'],
+        'tasks' => ['content', 'data', 'media', 'metafields', 'support', 'tenancy'],
         'primitives' => ['data', 'support'],
         'seo' => ['data', 'support', 'tenancy', 'translatable'],
         'settings' => ['data', 'support', 'tenancy'],
@@ -80,6 +82,7 @@ return [
         'media',
         'metafields',
         'pages',
+        'tasks',
         'primitives',
         'seo',
         'settings',
@@ -100,6 +103,7 @@ return [
         'mail-notifications',
         'metafields',
         'pages',
+        'tasks',
         'seo',
         'settings',
         'taxonomy',
@@ -118,6 +122,7 @@ return [
         'mail-notifications',
         'metafields',
         'pages',
+        'tasks',
         'seo',
         'settings',
         'taxonomy',
@@ -128,7 +133,7 @@ return [
         'tenancy' => ['configuration' => 'tenancy', 'path' => 'database/migrations/tenancy'],
     ],
     'tenancy_release' => [
-        'package_count' => 21,
+        'package_count' => 22,
         'profiles' => [
             'disabled',
             'full-package-auth',
@@ -309,6 +314,17 @@ return [
                 'migration_tests' => [
                     'tests/TestCase.php',
                     'tests/Tenancy/TenantAdoptionTest.php',
+                ],
+            ],
+            'tasks' => [
+                'analysis_paths' => ['src'],
+                'migration_tests' => [
+                    'tests/TestCase.php',
+                    'tests/HttpTestCase.php',
+                    'tests/TenancyTestCase.php',
+                    'tests/Feature/TaskLifecycleTest.php',
+                    'tests/Http/TaskHttpTest.php',
+                    'tests/Tenancy/TaskTenantTest.php',
                 ],
             ],
             'primitives' => [

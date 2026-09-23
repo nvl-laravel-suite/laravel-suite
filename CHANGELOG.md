@@ -1,13 +1,19 @@
 # Changelog
 
 All notable changes to `nvl/laravel-suite` are documented in this file. The
-suite follows [Semantic Versioning](https://semver.org/) and versions all 21
+suite follows [Semantic Versioning](https://semver.org/) and versions all 22
 embedded modules together.
 
 Module-level implementation history remains available in each
 `packages/nvl/<module>/CHANGELOG.md` file.
 
 ## [Unreleased]
+
+### Added
+
+- Add the optional Tasks package with task and assignment services, opt-in
+  management routes, tenant-aware access, and integrations for Media, Content,
+  and Metafields.
 
 ## [2.1.0] - 2026-09-23
 

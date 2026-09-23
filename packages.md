@@ -1,6 +1,6 @@
 # NVL Packages
 
-The `nvl/laravel-suite` Composer package contains 21 internal Laravel modules. The installable suite supports PHP 8.4+ and Laravel 13, is headless by default, retains explicit dependency boundaries, and includes module-specific configuration, API, operational, and testing documentation.
+The `nvl/laravel-suite` Composer package contains 22 internal Laravel modules. The installable suite supports PHP 8.4+ and Laravel 13, is headless by default, retains explicit dependency boundaries, and includes module-specific configuration, API, operational, and testing documentation.
 
 ## `nvl/activity`
 
@@ -196,6 +196,16 @@ A localized, hierarchical page and dynamic-resource routing package that compose
 - Invalidates sitemap artifacts after committed page mutations.
 - Keeps public resolution and management route groups independently configurable, authorized, and disabled by default.
 - Provides typed create, update, move, delete, list, inspect, and resolve Actions plus a strict non-mutating doctor command.
+
+## `nvl/tasks`
+
+Tenant-safe task lifecycle and polymorphic assignment records for applications with their own user models and policies.
+
+- Stores UUID task roots, plain descriptions, enum-cast status and priority, due/completion times, small JSON metadata, optimistic revisions, and soft deletion.
+- Assigns one task to multiple persisted Eloquent principals without coupling the package to `nvl/auth` or a host user table.
+- Keeps Content details, typed Metafields, and private Media attachments in their owning packages while registering the task as a shared owner.
+- Offers fail-closed authorization, optional host-scoped bounded table reads, opt-in management routes, and a strict read-only doctor.
+- Supports optional tenant adoption with assignments inheriting the verified task tenant.
 
 ## `nvl/primitives`
 

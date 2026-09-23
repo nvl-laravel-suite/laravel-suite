@@ -40,6 +40,7 @@ $managementConfiguration = [
     'media' => ['media.php', "'api_enabled' => false"],
     'metafields' => ['metafields.php', "'enabled' => false"],
     'pages' => ['pages.php', "'enabled' => false"],
+    'tasks' => ['tasks.php', "'enabled' => false"],
     'seo' => ['seo.php', "'enabled' => false"],
     'settings' => ['settings.php', "'enabled' => false"],
     'translations' => ['translations.php', "'enabled' => false"],

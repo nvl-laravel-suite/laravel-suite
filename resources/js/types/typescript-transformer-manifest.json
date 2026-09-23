@@ -1,5 +1,5 @@
 {
-    "generated.d.ts": "a9b7be46686ce4962e3b61babde20d57",
+    "generated.d.ts": "2b81f27d23eb98f2557b71bb6edb9ac5",
     "generated\/activity.d.ts": "770e4bbaace76c9f0bbaac36c91ecba9",
     "generated\/auth.d.ts": "cbbd630164e45ec8527cfdde7e784671",
     "generated\/comments.d.ts": "a1ac3c153effb61963d157611a7000ea",
@@ -17,6 +17,7 @@
     "generated\/seo.d.ts": "95c3b73667f23a93fac4b094de75397b",
     "generated\/settings.d.ts": "4daf64daca828b8c9d48583b32181713",
     "generated\/spatie.d.ts": "dbc9df489e1ecbee0a6d2dcabb6ff7c2",
+    "generated\/tasks.d.ts": "1a6de7b1c83e572da5a03a87e7ad1cd6",
     "generated\/taxonomy.d.ts": "1a77f506ac7f3301c1839621887abd40",
     "generated\/templates.d.ts": "3522e512732c229e69b12975248e1028",
     "generated\/tenancy.d.ts": "747e05c2f756a18a800381994e85f324",

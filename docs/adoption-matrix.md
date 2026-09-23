@@ -66,6 +66,7 @@ explicit root enables it through dependency closure.
 | `translations` | Package/application via `translations.migrations.enabled` | None required | None | `TranslationsAuthorization`, source/export profiles | Source scopes and translation resources | Yes | `nvl:translations:doctor` |
 | `forms` | Package/application via `forms.migrations.enabled` | Host-selected submission callbacks | None | Rate limiter, spam detector, deletion and privacy policies | Handler, callback, render-data, and error-mapper aliases | Yes | `nvl:forms:doctor` |
 | `pages` | Package/application via `pages.migrations.enabled`; optional tenant expansion/adoption/final constraints | None required | None | `PageAuthorization`, `PageRequestContextResolver`, `PageUrlGenerator`, `TenantSiteResolver` | Tenant-safe Page resource and shared owner aliases | Yes; request context is server-only | `nvl:pages:doctor` |
+| `tasks` | Package/application via `tasks.migrations.enabled`; optional tenant adoption | None required | None | `TaskAuthorization`, optional `TaskQueryScope` for per-user lists, `TaskPrincipalResolver` for HTTP assignments | Content and Metafields owner aliases; private Media slot | Yes; tenant identity is server-only | `nvl:tasks:doctor` |
 
 ## Reading the effective report
 

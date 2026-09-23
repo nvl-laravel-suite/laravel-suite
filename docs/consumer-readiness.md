@@ -254,7 +254,7 @@ Translatable/Media/Content before packages that compose those capabilities.
 
 The canonical [suite adoption matrix](adoption-matrix.md) covers migration
 ownership, queues, scheduler entries, replaceable contracts, registered aliases,
-generated TypeScript, and Doctor availability for all twenty-one modules.
+generated TypeScript, and Doctor availability for all twenty-two modules.
 `nvl:suite:configuration` renders the effective application state from the same
 runtime catalog, and `nvl:suite:doctor --strict` aggregates every enabled package
 Doctor.
@@ -305,4 +305,4 @@ also verifies source registration. These gates certify foundation distribution;
 downstream tenant-owned domain integrations have separate adoption requirements.
 ## P2 readiness status
 
-All 21 package distributions now have implementation surfaces for configurable tenancy, the full sealed consumer, lifecycle/adoption rehearsal, standalone Media and Taxonomy consumers without Auth, configuration/race/query-plan fixtures, and release-contract inputs. The status remains **implementation present, consolidated verification pending**. This is not a release-readiness claim. Operators must complete the [configurable tenancy operations](tenancy-operations.md) release gate.
+The original 21 package distributions have implementation surfaces for configurable tenancy, the full sealed consumer, lifecycle/adoption rehearsal, standalone Media and Taxonomy consumers without Auth, configuration/race/query-plan fixtures, and release-contract inputs. Tasks adds a separate standalone and tenant-isolation proof. The status remains **implementation present, consolidated verification pending**. This is not a release-readiness claim. Operators must complete the [configurable tenancy operations](tenancy-operations.md) release gate.

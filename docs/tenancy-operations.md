@@ -5,7 +5,7 @@ This runbook covers the implemented P2 adoption and lifecycle surfaces. The impl
 ## Before activation
 
 1. Select one migration ownership mode for every stateful package. Never mix vendor-loaded and copied migrations for the same package.
-2. Render `nvl:suite:configuration`, inspect all 21 module decisions, then run every enabled package Doctor and `nvl:suite:doctor --production --strict`.
+2. Render `nvl:suite:configuration`, inspect all 22 module decisions, then run every enabled package Doctor and `nvl:suite:doctor --production --strict`.
 3. Produce an immutable tenant-assignment manifest. Record its mapping hash, effective configuration hash, row counts, stable identifiers, structured payload digests, binary checksums, and render checksums.
 4. Reject ambiguous owners. There is no default tenant and no activation override.
 5. Enter maintenance, drain workers, run prepare/backfill/verify/activate through `TenantAdoptionCoordinator`, rebuild caches, then restart workers.

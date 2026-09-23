@@ -48,6 +48,7 @@ parameters:
         - packages/nvl/seo/tests/Fixtures/TestSeoOwner.php
         - packages/nvl/seo/tests/Fixtures/TestStructuredDataProvider.php
         - packages/nvl/settings/src
+        - packages/nvl/tasks/src
         - packages/nvl/settings/tests/Fixtures/UsesInteractsWithSettings.php
         - packages/nvl/support/src
         - packages/nvl/taxonomy/src
