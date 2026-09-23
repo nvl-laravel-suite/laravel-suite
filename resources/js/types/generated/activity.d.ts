@@ -4,6 +4,10 @@
 declare namespace Nvl {
 namespace Activity {
 namespace Data {
+export type ActivityCauserSuggestionsQueryData = {
+search: string | null,
+limit: number | null,
+};
 export type ActivityDoctorCheckData = {
 key: string,
 severity: Nvl.Activity.Enums.ActivityDoctorSeverity,
@@ -21,11 +25,33 @@ subjectId: string | null,
 perPage: number,
 events?: string[],
 };
+export type ActivityLogsQueryData = {
+search: string | null,
+event: string | null,
+events: string | string[] | null,
+causerId: string | null,
+subjectType: string | null,
+subjectId: string | null,
+createdAtFrom: string | null,
+createdAtTo: string | null,
+perPage: number | null,
+limit: number | null,
+page: number | null,
+};
+export type ActivityPurgeData = {
+days: number,
+includeImportant: boolean | null,
+};
 export type ActivityPurgeQueuedResult = {
 queued: boolean,
 days: number,
 systemOnly: boolean,
 includeImportant: boolean,
+};
+export type ActivityTimelineQueryData = {
+subjectType: string,
+subjectId: string,
+limit: number | null,
 };
 namespace Display {
 export type ActivityCauser = {

@@ -1,8 +1,8 @@
 {
     "schemaVersion": 2,
-    "hash": "30cfc5960161e9f4fe0ae973b29cf11000a976d9f19f420764c910f4b79b6f01",
-    "transformerHash": "79bdbb3dcefe22f0d6bce6ffed089b87cc35924042fc62a9210d5b469ab426bb",
-    "generatedAt": "2026-09-23T10:58:45+00:00",
+    "hash": "2bc052da72ccdd73f58fd72fa4318b2069a720201107e95e859423289c4fd1f5",
+    "transformerHash": "6fd7db92f64dd8815dbfdd6227df34d622473139af03f8407b8a84d8e24ca548",
+    "generatedAt": "2026-09-23T11:54:40+00:00",
     "packages": {
         "nvl/activity": "unknown",
         "nvl/auth": "unknown",
@@ -123,6 +123,12 @@
     ],
     "symbols": [
         {
+            "phpType": "Nvl\\Activity\\Data\\ActivityCauserSuggestionsQueryData",
+            "typescriptType": "Nvl.Activity.Data.ActivityCauserSuggestionsQueryData",
+            "package": "nvl/activity",
+            "source": "Data/ActivityCauserSuggestionsQueryData.php"
+        },
+        {
             "phpType": "Nvl\\Activity\\Data\\ActivityDoctorCheckData",
             "typescriptType": "Nvl.Activity.Data.ActivityDoctorCheckData",
             "package": "nvl/activity",
@@ -135,10 +141,28 @@
             "source": "Data/ActivityIndexFilter.php"
         },
         {
+            "phpType": "Nvl\\Activity\\Data\\ActivityLogsQueryData",
+            "typescriptType": "Nvl.Activity.Data.ActivityLogsQueryData",
+            "package": "nvl/activity",
+            "source": "Data/ActivityLogsQueryData.php"
+        },
+        {
+            "phpType": "Nvl\\Activity\\Data\\ActivityPurgeData",
+            "typescriptType": "Nvl.Activity.Data.ActivityPurgeData",
+            "package": "nvl/activity",
+            "source": "Data/ActivityPurgeData.php"
+        },
+        {
             "phpType": "Nvl\\Activity\\Data\\ActivityPurgeQueuedResult",
             "typescriptType": "Nvl.Activity.Data.ActivityPurgeQueuedResult",
             "package": "nvl/activity",
             "source": "Data/ActivityPurgeQueuedResult.php"
+        },
+        {
+            "phpType": "Nvl\\Activity\\Data\\ActivityTimelineQueryData",
+            "typescriptType": "Nvl.Activity.Data.ActivityTimelineQueryData",
+            "package": "nvl/activity",
+            "source": "Data/ActivityTimelineQueryData.php"
         },
         {
             "phpType": "Nvl\\Activity\\Data\\Display\\ActivityCauser",
@@ -315,6 +339,18 @@
             "source": "Data/Mutations/ApplyRoleTemplateData.php"
         },
         {
+            "phpType": "Nvl\\Auth\\Data\\Mutations\\BulkUserData",
+            "typescriptType": "Nvl.Auth.Data.Mutations.BulkUserData",
+            "package": "nvl/auth",
+            "source": "Data/Mutations/BulkUserData.php"
+        },
+        {
+            "phpType": "Nvl\\Auth\\Data\\Mutations\\CloneRoleData",
+            "typescriptType": "Nvl.Auth.Data.Mutations.CloneRoleData",
+            "package": "nvl/auth",
+            "source": "Data/Mutations/CloneRoleData.php"
+        },
+        {
             "phpType": "Nvl\\Auth\\Data\\Mutations\\ConfirmPasswordData",
             "typescriptType": "Nvl.Auth.Data.Mutations.ConfirmPasswordData",
             "package": "nvl/auth",
@@ -351,6 +387,12 @@
             "source": "Data/Mutations/EnrollMembershipData.php"
         },
         {
+            "phpType": "Nvl\\Auth\\Data\\Mutations\\EnrollMembershipInputData",
+            "typescriptType": "Nvl.Auth.Data.Mutations.EnrollMembershipInputData",
+            "package": "nvl/auth",
+            "source": "Data/Mutations/EnrollMembershipInputData.php"
+        },
+        {
             "phpType": "Nvl\\Auth\\Data\\Mutations\\FinishPasskeyAuthenticationData",
             "typescriptType": "Nvl.Auth.Data.Mutations.FinishPasskeyAuthenticationData",
             "package": "nvl/auth",
@@ -367,6 +409,12 @@
             "typescriptType": "Nvl.Auth.Data.Mutations.LoginData",
             "package": "nvl/auth",
             "source": "Data/Mutations/LoginData.php"
+        },
+        {
+            "phpType": "Nvl\\Auth\\Data\\Mutations\\MembershipRevisionData",
+            "typescriptType": "Nvl.Auth.Data.Mutations.MembershipRevisionData",
+            "package": "nvl/auth",
+            "source": "Data/Mutations/MembershipRevisionData.php"
         },
         {
             "phpType": "Nvl\\Auth\\Data\\Mutations\\RequestMagicLinkData",
@@ -523,6 +571,12 @@
             "typescriptType": "Nvl.Auth.Data.Queries.InvitationIndexQueryData",
             "package": "nvl/auth",
             "source": "Data/Queries/InvitationIndexQueryData.php"
+        },
+        {
+            "phpType": "Nvl\\Auth\\Data\\Queries\\MembershipIndexQueryData",
+            "typescriptType": "Nvl.Auth.Data.Queries.MembershipIndexQueryData",
+            "package": "nvl/auth",
+            "source": "Data/Queries/MembershipIndexQueryData.php"
         },
         {
             "phpType": "Nvl\\Auth\\Data\\Queries\\PermissionIndexQueryData",
@@ -1605,6 +1659,12 @@
             "source": "Data/Display/MediaLibraryItem.php"
         },
         {
+            "phpType": "Nvl\\Media\\Data\\Display\\MediaManagementData",
+            "typescriptType": "Nvl.Media.Data.Display.MediaManagementData",
+            "package": "nvl/media",
+            "source": "Data/Display/MediaManagementData.php"
+        },
+        {
             "phpType": "Nvl\\Media\\Data\\Display\\MediaPayload",
             "typescriptType": "Nvl.Media.Data.Display.MediaPayload",
             "package": "nvl/media",
@@ -2217,16 +2277,34 @@
             "source": "Data/ResolvedSeoData.php"
         },
         {
+            "phpType": "Nvl\\Seo\\Data\\SeoArchiveProfileData",
+            "typescriptType": "Nvl.Seo.Data.SeoArchiveProfileData",
+            "package": "nvl/seo",
+            "source": "Data/SeoArchiveProfileData.php"
+        },
+        {
             "phpType": "Nvl\\Seo\\Data\\SeoDoctorCheckData",
             "typescriptType": "Nvl.Seo.Data.SeoDoctorCheckData",
             "package": "nvl/seo",
             "source": "Data/SeoDoctorCheckData.php"
         },
         {
+            "phpType": "Nvl\\Seo\\Data\\SeoDuplicateProfileData",
+            "typescriptType": "Nvl.Seo.Data.SeoDuplicateProfileData",
+            "package": "nvl/seo",
+            "source": "Data/SeoDuplicateProfileData.php"
+        },
+        {
             "phpType": "Nvl\\Seo\\Data\\SeoOwnerRevisionData",
             "typescriptType": "Nvl.Seo.Data.SeoOwnerRevisionData",
             "package": "nvl/seo",
             "source": "Data/SeoOwnerRevisionData.php"
+        },
+        {
+            "phpType": "Nvl\\Seo\\Data\\SeoPreviewQueryData",
+            "typescriptType": "Nvl.Seo.Data.SeoPreviewQueryData",
+            "package": "nvl/seo",
+            "source": "Data/SeoPreviewQueryData.php"
         },
         {
             "phpType": "Nvl\\Seo\\Data\\SeoProfileData",
@@ -2251,6 +2329,30 @@
             "typescriptType": "Nvl.Seo.Data.SeoProfileTranslationData",
             "package": "nvl/seo",
             "source": "Data/SeoProfileTranslationData.php"
+        },
+        {
+            "phpType": "Nvl\\Seo\\Data\\SeoRevisionData",
+            "typescriptType": "Nvl.Seo.Data.SeoRevisionData",
+            "package": "nvl/seo",
+            "source": "Data/SeoRevisionData.php"
+        },
+        {
+            "phpType": "Nvl\\Seo\\Data\\SeoScopeQueryData",
+            "typescriptType": "Nvl.Seo.Data.SeoScopeQueryData",
+            "package": "nvl/seo",
+            "source": "Data/SeoScopeQueryData.php"
+        },
+        {
+            "phpType": "Nvl\\Seo\\Data\\SeoSitemapQueryData",
+            "typescriptType": "Nvl.Seo.Data.SeoSitemapQueryData",
+            "package": "nvl/seo",
+            "source": "Data/SeoSitemapQueryData.php"
+        },
+        {
+            "phpType": "Nvl\\Seo\\Data\\SeoStoreProfileData",
+            "typescriptType": "Nvl.Seo.Data.SeoStoreProfileData",
+            "package": "nvl/seo",
+            "source": "Data/SeoStoreProfileData.php"
         },
         {
             "phpType": "Nvl\\Seo\\Data\\StructuredDataContextData",
@@ -2721,6 +2823,18 @@
             "source": "TranslationResourceQuery.php"
         },
         {
+            "phpType": "Nvl\\Translations\\Data\\ExportTranslationsData",
+            "typescriptType": "Nvl.Translations.Data.ExportTranslationsData",
+            "package": "nvl/translations",
+            "source": "Data/ExportTranslationsData.php"
+        },
+        {
+            "phpType": "Nvl\\Translations\\Data\\ImportTranslationsData",
+            "typescriptType": "Nvl.Translations.Data.ImportTranslationsData",
+            "package": "nvl/translations",
+            "source": "Data/ImportTranslationsData.php"
+        },
+        {
             "phpType": "Nvl\\Translations\\Data\\TranslationCatalogStatisticsData",
             "typescriptType": "Nvl.Translations.Data.TranslationCatalogStatisticsData",
             "package": "nvl/translations",
@@ -2731,6 +2845,12 @@
             "typescriptType": "Nvl.Translations.Data.TranslationEntryPayload",
             "package": "nvl/translations",
             "source": "Data/TranslationEntryPayload.php"
+        },
+        {
+            "phpType": "Nvl\\Translations\\Data\\TranslationIndexQueryData",
+            "typescriptType": "Nvl.Translations.Data.TranslationIndexQueryData",
+            "package": "nvl/translations",
+            "source": "Data/TranslationIndexQueryData.php"
         },
         {
             "phpType": "Nvl\\Translations\\Data\\TranslationsDoctorCheckData",
@@ -2786,24 +2906,24 @@
         "filename": "generated.d.ts",
         "bytes": 1268,
         "hash": "9cb83287704f028ebe0223e68b95ba306e53ddc2fd05f4a8597595e4f66f50c6",
-        "lastModified": "2026-09-23T10:58:45+00:00"
+        "lastModified": "2026-09-23T11:54:40+00:00"
     },
     "files": [
         {
             "scope": "activity",
             "path": "generated/activity.d.ts",
             "filename": "activity.d.ts",
-            "bytes": 4072,
-            "hash": "f158403587dd92c28283c72204b228af625e8bdd9866a5f68bd5a76def3b4186",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "bytes": 4687,
+            "hash": "723ad59b1f762bcaedd7c1094442ee2c3089b02ddc40756f524acc2527d9200f",
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "auth",
             "path": "generated/auth.d.ts",
             "filename": "auth.d.ts",
-            "bytes": 9726,
-            "hash": "ed63776284b1b74682465f612b2724cc4bf1ac3ff7cafab7caeb6dc19cb9ebbd",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "bytes": 10181,
+            "hash": "352e048d34c37949f7e9880108f7f376cc6e100588e8f7f8c6dbfa0101dcb010",
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "comments",
@@ -2811,7 +2931,7 @@
             "filename": "comments.d.ts",
             "bytes": 10139,
             "hash": "087ef55fc3b2b2f19a20f6c775b81d003433af7a623b60df32713e6976139739",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "content",
@@ -2819,7 +2939,7 @@
             "filename": "content.d.ts",
             "bytes": 9299,
             "hash": "c3d40817c8d87e9dfd6aae8ba004f046bf8932816896bd2048173201bd1488e8",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "csv",
@@ -2827,7 +2947,7 @@
             "filename": "csv.d.ts",
             "bytes": 4214,
             "hash": "b1f4fb1b745726ebb9d24ac18025f00148b4d4726b491cbe969be9c5268eba35",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "data",
@@ -2835,7 +2955,7 @@
             "filename": "data.d.ts",
             "bytes": 376,
             "hash": "2e71c2bfc92b5b17856cc679cdd13b03a0a40f6adbc9537364c57c32f405c56a",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "filterable",
@@ -2843,7 +2963,7 @@
             "filename": "filterable.d.ts",
             "bytes": 933,
             "hash": "d207b741ec396458e51716907d84fd084a80caa4a4a8174f8b76f65c7e1e7a74",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "forms",
@@ -2851,7 +2971,7 @@
             "filename": "forms.d.ts",
             "bytes": 8131,
             "hash": "ac3ce5523dc31e8b817e7c6df642023b00ec3e7ef6111650cbdf5550805aeac0",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "illuminate",
@@ -2859,7 +2979,7 @@
             "filename": "illuminate.d.ts",
             "bytes": 1097,
             "hash": "a64e8e4cb0e546a5b5e90c715bff6c89a7c82113a50bd9e9876697839f5001c0",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "mail-notifications",
@@ -2867,15 +2987,15 @@
             "filename": "mail-notifications.d.ts",
             "bytes": 823,
             "hash": "a91379352730651c696723a96dc29dce4f493efb8d0bb255c19ab189835e8059",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "media",
             "path": "generated/media.d.ts",
             "filename": "media.d.ts",
-            "bytes": 9422,
-            "hash": "bb3eab714c7744be2b530afcc54161629aef607ad6a7575d789d8817cad5e777",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "bytes": 10087,
+            "hash": "a194e398112db03dedb656cca0d5e914dab563633d2d661d94c39ff821bd8e6d",
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "metafields",
@@ -2883,7 +3003,7 @@
             "filename": "metafields.d.ts",
             "bytes": 5876,
             "hash": "e44b6538f7ae51920057ea1117d7dc269a025c039ab00376507209ba7abcd6b2",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "pages",
@@ -2891,7 +3011,7 @@
             "filename": "pages.d.ts",
             "bytes": 4363,
             "hash": "ec61e9965e5a9710e4ff2bc4e338d1d4a2a22b90f2da6d4c89d786f3bd4835a3",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "primitives",
@@ -2899,15 +3019,15 @@
             "filename": "primitives.d.ts",
             "bytes": 676,
             "hash": "6f27c2008478672e9b15805b8ce551e871eca89ca860c3327129adafdbd47c1c",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "seo",
             "path": "generated/seo.d.ts",
             "filename": "seo.d.ts",
-            "bytes": 4894,
-            "hash": "896250c0447d588bd6f6fac000dedb2e8adac60b774e4bd7d2d31dee9d5172e8",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "bytes": 5519,
+            "hash": "40aab808634fd84339f6b3c4ec77dfdafc874e606b54522a066e56245f052d38",
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "settings",
@@ -2915,7 +3035,7 @@
             "filename": "settings.d.ts",
             "bytes": 1811,
             "hash": "c9a4720bea393a812256b6b487c996da8e4272c5e592bcdef2820157ffd4b79b",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "spatie",
@@ -2923,7 +3043,7 @@
             "filename": "spatie.d.ts",
             "bytes": 356,
             "hash": "da79f3f2d2619c04eb76942edf6f1e54d229ffc3be5e2a4c238b2699770c513b",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "tasks",
@@ -2931,7 +3051,7 @@
             "filename": "tasks.d.ts",
             "bytes": 1732,
             "hash": "e72b82e175626d1c8e070e0a366a06cc6cad00afd17ea0f17f0bdd15e6809600",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "taxonomy",
@@ -2939,7 +3059,7 @@
             "filename": "taxonomy.d.ts",
             "bytes": 747,
             "hash": "f81c91c733eb28d1408e1cf6ea56f0350b5f3bcd6b5b983fca6507b61a3685fb",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "templates",
@@ -2947,7 +3067,7 @@
             "filename": "templates.d.ts",
             "bytes": 5573,
             "hash": "d0f88ae9b7bcee9a3f0e66f554bb8a59756ba4618bd39680280634b183306bbd",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "tenancy",
@@ -2955,7 +3075,7 @@
             "filename": "tenancy.d.ts",
             "bytes": 576,
             "hash": "760768a66652e8f59e9a649e8f86913005503ca81d551c33eaee007c96f4e049",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "translatable",
@@ -2963,20 +3083,20 @@
             "filename": "translatable.d.ts",
             "bytes": 2076,
             "hash": "0d11e4f1e2ffa0f00a272175d79a6e9a8aaff61b0422c15786db430ad201fab7",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "lastModified": "2026-09-23T11:54:40+00:00"
         },
         {
             "scope": "translations",
             "path": "generated/translations.d.ts",
             "filename": "translations.d.ts",
-            "bytes": 1607,
-            "hash": "8fa3cde0a5d5102c663fd37f9f6a1093ebbf70802da86c1de6cbb5dabde8451f",
-            "lastModified": "2026-09-23T10:58:45+00:00"
+            "bytes": 2093,
+            "hash": "abe0e0b85fb7011e4d1fe7d66a7f894f30d29811e303526af83b3796e43af441",
+            "lastModified": "2026-09-23T11:54:40+00:00"
         }
     ],
     "archive": {
         "enabled": true,
-        "filename": "generated-types-30cfc5960161.zip"
+        "filename": "generated-types-2bc052da72cc.zip"
     },
-    "revision": "c6def9683b2352e22a24a5b87d78cd81876003662f1a43c10061b87c7153a7ea"
+    "revision": "28cd7f9506bbb9f898cdb8ea5a69c84001c76e5e427ec2deaa87d09710d2aad6"
 }

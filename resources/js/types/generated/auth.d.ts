@@ -137,6 +137,14 @@ export type ApplyRoleTemplateData = {
 template: string,
 roleName: string | null,
 };
+export type BulkUserData = {
+operation: Nvl.Auth.Enums.UserBulkOperation,
+userIds: string[],
+};
+export type CloneRoleData = {
+name: string,
+displayName: string | null,
+};
 export type ConfirmPasswordData = {
 password: string,
 };
@@ -159,6 +167,12 @@ subject: { type: string; identifier: string },
 roles: string[],
 permissions: string[],
 };
+export type EnrollMembershipInputData = {
+subjectType: string,
+subjectId: string,
+roles: string[],
+permissions: string[],
+};
 export type FinishPasskeyAuthenticationData = {
 ceremonyId: string,
 response: Record<string, any>,
@@ -172,6 +186,9 @@ export type LoginData = {
 identifier: string,
 password: string,
 remember: boolean,
+};
+export type MembershipRevisionData = {
+expectedRevision: number,
 };
 export type RequestMagicLinkData = {
 recipient: string,
@@ -342,6 +359,10 @@ lifecycle: string | null,
 expiresAfter: string | null,
 expiresBefore: string | null,
 context: string | null,
+perPage: number | null,
+};
+export type MembershipIndexQueryData = {
+search: string | null,
 perPage: number | null,
 };
 export type PermissionIndexQueryData = {

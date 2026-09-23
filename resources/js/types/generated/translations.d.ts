@@ -4,6 +4,20 @@
 declare namespace Nvl {
 namespace Translations {
 namespace Data {
+export type ExportTranslationsData = {
+scope: string | string[] | null,
+locales: string | string[] | null,
+format: string | null,
+target: string | null,
+prune: boolean | null,
+dryRun: boolean | null,
+force: boolean | null,
+};
+export type ImportTranslationsData = {
+scope: string | string[] | null,
+format: string | null,
+dryRun: boolean | null,
+};
 export type TranslationCatalogStatisticsData = {
 total: number,
 missing: number,
@@ -29,6 +43,12 @@ lastImportedAt: string | null,
 lastExportedAt: string | null,
 createdAt: string,
 updatedAt: string,
+};
+export type TranslationIndexQueryData = {
+perPage: number | null,
+limit: number | null,
+filter: Record<string, any> | null,
+sort: any,
 };
 export type TranslationsDoctorCheckData = {
 key: string,

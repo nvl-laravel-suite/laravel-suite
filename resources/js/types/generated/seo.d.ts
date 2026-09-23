@@ -22,11 +22,21 @@ openGraphLocales: Array<string>,
 twitter: Record<string, string>,
 structuredData: Array<Record<string, unknown>>,
 };
+export type SeoArchiveProfileData = {
+archived: boolean,
+expectedRevision: number,
+};
 export type SeoDoctorCheckData = {
 key: string,
 severity: 'error' | 'warning',
 passed: boolean,
 message: string,
+};
+export type SeoDuplicateProfileData = {
+ownerAlias: string,
+ownerId: string | number,
+scope: string | null,
+copyPaths: boolean | null,
 };
 export type SeoOwnerRevisionData = {
 ownerAlias: string,
@@ -34,6 +44,9 @@ ownerId: string,
 scope: string,
 profileId: string | null,
 revision: number,
+};
+export type SeoPreviewQueryData = {
+locale: string | null,
 };
 export type SeoProfileData = {
 id: string,
@@ -87,6 +100,21 @@ structuredData: unknown[] | Record<string, unknown> | null,
 metadata: Record<string, unknown> | null,
 createdAt: string,
 updatedAt: string,
+};
+export type SeoRevisionData = {
+expectedRevision: number,
+};
+export type SeoScopeQueryData = {
+scope: string | null,
+};
+export type SeoSitemapQueryData = {
+scope: string | null,
+};
+export type SeoStoreProfileData = {
+ownerAlias: string,
+ownerId: string | number,
+profile: Nvl.Seo.Data.Mutations.SeoProfilePayload,
+scope: string | null,
 };
 export type StructuredDataContextData = {
 resourceType: string,
