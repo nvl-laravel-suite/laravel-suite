@@ -13,6 +13,7 @@ use Nvl\Metafields\Definitions\Tables\MetafieldsTables;
 use Nvl\Pages\Definitions\Tables\PagesTables;
 use Nvl\Seo\Definitions\Tables\SeoTables;
 use Nvl\Settings\Definitions\Tables\SettingsTables;
+use Nvl\Tasks\Definitions\Tables\TasksTables;
 use Nvl\Taxonomy\Definitions\Tables\TaxonomyTables;
 use Nvl\Templates\Definitions\Tables\TemplatesTables;
 use Nvl\Translations\Definitions\Tables\TranslationsTables;
@@ -90,6 +91,10 @@ const PACKAGE_TABLE_CONTRACTS = [
         'Redirects' => 'seo_redirects',
     ]],
     'settings' => [SettingsTables::class, ['Settings' => 'settings']],
+    'tasks' => [TasksTables::class, [
+        'Tasks' => 'nvl_tasks',
+        'Assignments' => 'nvl_task_assignments',
+    ]],
     'taxonomy' => [TaxonomyTables::class, [
         'Terms' => 'terms',
         'I18n' => 'terms_i18n',

@@ -45,6 +45,7 @@ Action or explicit service, not a separate policy class.
 | `seo` | Pass | Pass | N/A | Pass | Pass | N/A | Pass |
 | `settings` | Pass | Pass | N/A | N/A | N/A | N/A | Pass |
 | `support` | Pass | N/A | N/A | N/A | N/A | N/A | N/A |
+| `tasks` | Pass | Pass | Pass | N/A | Pass | N/A | Pass |
 | `taxonomy` | Pass | Pass | N/A | Pass | Pass | N/A | Pass |
 | `templates` | Pass | Pass | Pass | Pass | Pass | N/A | Pass |
 | `tenancy` | Pass | Pass | N/A | N/A | N/A | N/A | Pass |
@@ -76,6 +77,7 @@ canonical application boundary and fail the Suite consumer audit in 2.0.
 | `seo` | SEO Actions including owner profile/revision reads, owner traits, resolver, renderer, and sitemap contracts | Prohibited in 2.0: direct profile queries and relation aggregates fail the audit; owner-trait relationships remain allowed. |
 | `settings` | `SettingRepository`, typed Actions, value-free event subjects, and `Setting` facade | Prohibited in 2.0: consumer Setting-model queries fail the audit; use the repository, facade, or Actions. |
 | `support` | `BusinessException` and `ResponseCode` | N/A: Support exposes no package model. |
+| `tasks` | Authorized task Actions, `TaskActorData`, and bounded `TaskData` projections | Prohibited in 2.0: consumer Task queries fail the audit; use the authorized Actions and host policy binding. |
 | `taxonomy` | Taxonomy Actions, tree/resolver services, and owner traits | Prohibited in 2.0: direct Term queries and relation aggregates fail the audit; owner-trait relationships remain allowed. |
 | `templates` | Render/list/mutation Actions and renderer/asset contracts | Prohibited in 2.0: consumer Template-model queries fail the audit; use render/list/mutation Actions. |
 | `tenancy` | `TenantContext`, `TenantRunner`, `TenantBoundary`, and `TenantAdoptionCoordinator` | N/A: Tenancy exposes no package model; use authorized context, directory, and adoption APIs. |
@@ -126,6 +128,7 @@ the catalog points to the authoritative package or integration test.
 | Pages | Exact key/availability, localized options, public children, editor summaries, complete editor bootstrap, publication, resolve, and navigation Actions own package composition and hard 100-row limits. | Constant 1-to-25 option/public-child/editor-summary and Pages package tests | Uncached: locale, publication, hierarchy, authorization, Content, SEO, Metafields, and dynamic resources are request-sensitive. |
 | SEO | Owner profile projections authorize before SQL and eager-load translations; bounded bulk reads batch up to 100 owners; revision reads select only identity/revision fields; sitemap sources chunk and cap output. | Constant one-to-25 bulk-owner, owner consumer-contract, cross-package, and sitemap tests | Sitemap only: origin/scope/version key, configured TTL, after-commit invalidation, atomic build lock. |
 | Settings | Repository fetches the bounded setting catalog once and `getMany` uses one storage query. | Settings query-count tests | Cached primitive records: configured key/store, forever TTL, after-commit invalidation, bounded-miss stampede policy. |
+| Tasks | Authorized, tenant-scoped list reads paginate at a configured maximum of 100 and count assignees without loading their rows. | Task lifecycle tests | Uncached: status and assignments must stay fresh. |
 | Taxonomy | Tree and owner reads eager-load translations and attachments; maintenance commands chunk. | Constant localized-tree test | Uncached results; cache is used only for mutation/maintenance locks. |
 | Templates | Stored definition/list/render Actions load versions, assignments, translations, and assets deliberately and paginate. | Templates package tests | Uncached metadata; generated artifacts have explicit render lifecycle. |
 | Translatable | Related rows use eager loads and self rows select one deterministic row per group. | Constant eager-loading test | Uncached: transactionally mutable locale rows. |

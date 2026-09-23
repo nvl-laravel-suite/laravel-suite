@@ -48,6 +48,7 @@ it('renders a dependency-complete profile without writing by default', function 
                 'translations' => false,
                 'forms' => false,
                 'pages' => false,
+                'tasks' => false,
             ]);
     } finally {
         File::delete($path);
@@ -361,6 +362,7 @@ it('reports incomplete published module decisions and their operational reviews'
             ['module' => 'seo', 'message' => 'The omitted module flag is requested-disabled and is effectively disabled in Suite 2.0.'],
             ['module' => 'settings', 'message' => 'The omitted module flag is requested-disabled and is effectively disabled in Suite 2.0.'],
             ['module' => 'support', 'message' => 'The omitted module flag is requested-disabled and is effectively enabled in Suite 2.0 through dependency closure.'],
+            ['module' => 'tasks', 'message' => 'The omitted module flag is requested-disabled and is effectively disabled in Suite 2.0.'],
             ['module' => 'taxonomy', 'message' => 'The omitted module flag is requested-disabled and is effectively disabled in Suite 2.0.'],
             ['module' => 'templates', 'message' => 'The omitted module flag is requested-disabled and is effectively disabled in Suite 2.0.'],
             ['module' => 'tenancy', 'message' => 'The omitted module flag is requested-disabled and is effectively enabled in Suite 2.0 through dependency closure.'],

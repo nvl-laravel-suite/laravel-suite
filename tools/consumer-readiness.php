@@ -111,6 +111,16 @@ use Nvl\Settings\Events\SettingChanged;
 use Nvl\Settings\Services\SettingCache;
 use Nvl\Support\Contracts\ResponseCode;
 use Nvl\Support\Exceptions\BusinessException;
+use Nvl\Tasks\Actions\AssignTaskAction;
+use Nvl\Tasks\Actions\CreateTaskAction;
+use Nvl\Tasks\Actions\GetTaskAction;
+use Nvl\Tasks\Actions\ListTasksAction;
+use Nvl\Tasks\Actions\UpdateTaskAction;
+use Nvl\Tasks\Console\TasksDoctorCommand;
+use Nvl\Tasks\Contracts\TaskAuthorization;
+use Nvl\Tasks\Data\TaskActorData;
+use Nvl\Tasks\Data\TaskData;
+use Nvl\Tasks\Definitions\Tables\TasksTables;
 use Nvl\Taxonomy\Actions\ResolveTermsAction;
 use Nvl\Taxonomy\Commands\TaxonomyDoctorCommand;
 use Nvl\Taxonomy\Definitions\Tables\TaxonomyTables;
@@ -200,6 +210,7 @@ return [
             'media' => MediaTables::class,
             'metafields' => MetafieldsTables::class,
             'pages' => PagesTables::class,
+            'tasks' => TasksTables::class,
             'seo' => SeoTables::class,
             'settings' => SettingsTables::class,
             'taxonomy' => TaxonomyTables::class,
@@ -215,6 +226,7 @@ return [
             'media' => ['Nvl\\Media\\Http\\Controllers\\Api\\'],
             'metafields' => ['Nvl\\Metafields\\Http\\Controllers\\Api\\'],
             'pages' => ['Nvl\\Pages\\Http\\Controllers\\PagesManagementController'],
+            'tasks' => ['Nvl\\Tasks\\Http\\Controllers\\TasksManagementController'],
             'seo' => ['Nvl\\Seo\\Http\\Controllers\\SeoManagementController'],
             'settings' => ['Nvl\\Settings\\Http\\Controllers\\SettingsManagementController'],
             'templates' => ['Nvl\\Templates\\Http\\Controllers\\TemplatesController'],
@@ -875,6 +887,39 @@ return [
                 'doctor' => ['symbol' => FormsDoctorCommand::class, 'command' => 'nvl:forms:doctor'],
                 'adoption' => 'application_owned',
                 'documentation' => 'packages/nvl/forms/UPGRADING.md#upgrading-to-10',
+            ],
+        ],
+        'tasks' => [
+            'stateful' => true,
+            'application_api' => [
+                'symbols' => [
+                    TaskAuthorization::class,
+                    TaskActorData::class,
+                    TaskData::class,
+                    CreateTaskAction::class,
+                    UpdateTaskAction::class,
+                    GetTaskAction::class,
+                    ListTasksAction::class,
+                    AssignTaskAction::class,
+                ],
+                'direct_model_access' => 'prohibited_v2',
+                'rationale' => null,
+                'documentation' => 'packages/nvl/tasks/README.md#application-use',
+            ],
+            'performance' => [
+                ...$pass(['packages/nvl/tasks/README.md#application-use']),
+                'query_tests' => ['packages/nvl/tasks/tests/Feature/TaskLifecycleTest.php'],
+                'cache' => ['mode' => 'none', 'rationale' => 'Authorized task lists are tenant-scoped and bounded; mutable assignments and status should remain fresh.'],
+            ],
+            'media_lifecycle' => $pass(['packages/nvl/tasks/README.md#purpose-and-boundaries', 'packages/nvl/tasks/tests/Feature/TaskLifecycleTest.php']),
+            'locale_fallback' => $notApplicable('Tasks stores a plain title and description; optional localized detail belongs to Content.'),
+            'boundaries' => $pass(['packages/nvl/tasks/README.md#purpose-and-boundaries']),
+            'presets' => $notApplicable('Task status and priority are package lifecycle vocabulary; app-specific workflows and labels remain host-owned.'),
+            'operations' => [
+                ...$pass(['packages/nvl/tasks/README.md#development-and-verification']),
+                'doctor' => ['symbol' => TasksDoctorCommand::class, 'command' => 'nvl:tasks:doctor'],
+                'adoption' => 'application_owned',
+                'documentation' => 'packages/nvl/tasks/README.md#requirements-and-installation',
             ],
         ],
     ],

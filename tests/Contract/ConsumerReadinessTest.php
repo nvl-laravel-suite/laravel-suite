@@ -338,6 +338,7 @@ it('limits explicit model query exceptions and built-in presets to reviewed capa
         'pages',
         'seo',
         'settings',
+        'tasks',
         'taxonomy',
         'templates',
         'translations',
