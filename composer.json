@@ -1,0 +1,38 @@
+{
+    "name": "nvl/laravel-suite",
+    "description": "Composer composition of all NVL Laravel Suite packages",
+    "type": "metapackage",
+    "license": "MIT",
+    "homepage": "https://github.com/nvl-laravel-suite",
+    "require": {
+        "php": "^8.4",
+        "nvl/activity": "^2.0",
+        "nvl/auth": "^2.0",
+        "nvl/comments": "^2.0",
+        "nvl/content": "^2.0",
+        "nvl/core": "^2.0",
+        "nvl/csv": "^2.0",
+        "nvl/filterable": "^2.0",
+        "nvl/forms": "^2.0",
+        "nvl/mail-notifications": "^2.0",
+        "nvl/media": "^2.0",
+        "nvl/metafields": "^2.0",
+        "nvl/pages": "^2.0",
+        "nvl/primitives": "^2.0",
+        "nvl/seo": "^2.0",
+        "nvl/settings": "^2.0",
+        "nvl/tasks": "^2.0",
+        "nvl/taxonomy": "^2.0",
+        "nvl/templates": "^2.0",
+        "nvl/tenancy": "^2.0",
+        "nvl/translatable": "^2.0",
+        "nvl/translations": "^2.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "3.x-dev"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
