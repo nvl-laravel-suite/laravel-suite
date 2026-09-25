@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.3] - 2026-09-26
+
+### Documentation
+
+- Point package issue guidance to the public repository list.
+
 ## [3.0.2] - 2026-09-25
 
 ### Documentation
