@@ -10,7 +10,7 @@ Use PHP 8.4+ and Laravel 13:
 composer require nvl/laravel-suite:^3.0
 ```
 
-Follow the [installation and publishing guide](INSTALLATION.md) before migrating an existing application. It lists every package's configuration, migration, skill, translation, view, and adoption publish tag.
+Follow the [installation and publishing guide](docs/installation.md) before migrating an existing application. It lists every package's configuration, migration, skill, translation, view, and adoption publish tag.
 
 For a smaller application, install only the packages you need, for example:
 
