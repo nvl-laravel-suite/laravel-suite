@@ -1,3 +1,7 @@
 # Contributing
 
-The [source monorepo](https://github.com/nicolasvlachos/nvl-laravel-suite) owns all package code and release history. Please open issues and pull requests there, following its [contribution guide](https://github.com/nicolasvlachos/nvl-laravel-suite/blob/main/CONTRIBUTING.md). This repository is a publication mirror.
+The package repositories are publication mirrors of a private source monorepo. Open an issue in the affected package repository to report a bug or propose a change. For installation or cross-package composition questions, open a [suite issue](https://github.com/nvl-laravel-suite/laravel-suite/issues). Include the package name, version, Laravel and PHP versions, reproduction steps, and any proposed patch.
+
+Maintainers apply accepted changes in the source monorepo and publish them through the release workflow. A pull request against a mirror does not update the source monorepo, so please start with an issue.
+
+Report vulnerabilities through the affected package's private vulnerability reporting form, or the [suite form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
