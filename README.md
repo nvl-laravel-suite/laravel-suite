@@ -10,13 +10,15 @@ Use PHP 8.4+ and Laravel 13:
 composer require nvl/laravel-suite:^3.0
 ```
 
+Follow the [installation and publishing guide](INSTALLATION.md) before migrating an existing application. It lists every package's configuration, migration, skill, translation, view, and adoption publish tag.
+
 For a smaller application, install only the packages you need, for example:
 
 ```bash
 composer require nvl/core:^2.0 nvl/filterable:^2.0
 ```
 
-Composer resolves each package's declared dependencies. Core contains the shared Support and Data namespaces. Filterable remains an independent package. Tenancy is required by packages that use its contracts, but tenant behavior starts disabled; installing a package does not enable its features. Consult each package README before enabling routes, migrations, or integrations.
+Composer resolves each package's declared dependencies. Core contains the shared Support and Data namespaces. Filterable remains an independent package. Tenancy is required by packages that use its contracts, but tenant behavior starts disabled. The full suite also installs Auth, whose package ingress is enabled by default and can select package authentication models; review its adoption requirements before installing the suite in an existing application. Consult each package README before enabling routes, migrations, or integrations.
 
 Package-owned agent skills can be published from the relevant provider with its documented `vendor:publish` tag. Core provides both `support-skills` and `data-skills`; for example, Filterable provides `filterable-skills`. Installing the suite does not publish those files automatically.
 

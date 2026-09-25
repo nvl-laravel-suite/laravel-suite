@@ -4,7 +4,7 @@
 
 ### Documentation
 
-- Point package issue guidance to the public repository list.
+- Add the consumer installation and publishing guide, and point package issue guidance to the public repository list.
 
 ## [3.0.2] - 2026-09-25
 
