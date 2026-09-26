@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.4] - 2026-09-26
+
+### Documentation
+
+- Explain the private source, public mirror, independent release, and contribution workflow.
+
 ## [3.0.3] - 2026-09-26
 
 ### Documentation
