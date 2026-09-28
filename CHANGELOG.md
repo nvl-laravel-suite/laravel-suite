@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.0] - 2026-09-28
+
+### Changed
+
+- Require Tasks 3.x and Activity 2.3 or later in the 2.x series. Review the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md) before updating an existing installation.
+- Keep Billing and Payments as separate, optional installs.
+
 ## [3.0.4] - 2026-09-26
 
 ### Documentation

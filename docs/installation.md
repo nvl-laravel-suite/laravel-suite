@@ -13,8 +13,10 @@ composer require nvl/media:^2.0
 To install all 21 code packages, use the Composer metapackage:
 
 ```bash
-composer require nvl/laravel-suite:^3.0
+composer require nvl/laravel-suite:^4.0
 ```
+
+Suite 4.x selects Tasks 3.x and Activity 2.3 or later in the 2.x series. Before upgrading from suite 3.x, follow the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md), run the new Tasks migrations in your chosen ownership mode, and restart workers. Billing and Payments remain separate optional installs.
 
 The metapackage contains no provider or application code. Installing it discovers every package provider and can add package migrations to the next `php artisan migrate`. In particular, `nvl/auth` is enabled by default and can select its own User and authentication models. Review [Auth installation](https://github.com/nvl-laravel-suite/auth#installation) and [principal adoption](https://github.com/nvl-laravel-suite/auth/blob/main/docs/principal-adoption.md) before adding the full suite to an existing application. Installing `nvl/tenancy` as a dependency leaves tenant behavior and its core migrations disabled by default.
 

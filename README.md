@@ -1,13 +1,13 @@
 # NVL Laravel Suite
 
-`nvl/laravel-suite` 3.x is a Composer metapackage that installs the 21 independently published NVL Laravel packages. It contains no application code or service provider. Each package has its own repository, release tags, configuration, and documentation.
+`nvl/laravel-suite` 4.x is a Composer metapackage that installs the 21 independently published NVL Laravel packages. It contains no application code or service provider. Each package has its own repository, release tags, configuration, and documentation.
 
 ## Install
 
 Use PHP 8.4+ and Laravel 13:
 
 ```bash
-composer require nvl/laravel-suite:^3.0
+composer require nvl/laravel-suite:^4.0
 ```
 
 Follow the [installation and publishing guide](docs/installation.md) before migrating an existing application. It lists every package's configuration, migration, skill, translation, view, and adoption publish tag.
@@ -36,6 +36,6 @@ Maintainers merge and test changes in the source monorepo, then publish the affe
 
 ## Versions and support
 
-The 3.x suite requires compatible 2.x versions of all 21 packages. The historical 2.x suite was a bundled library; upgrading to 3.x changes the Composer dependency graph. See the package READMEs for activation and migration guidance. Report vulnerabilities through the affected package's private vulnerability reporting form, or use the [suite's private form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
+The 4.x suite installs Tasks 3.x, Activity 2.3 or later in the 2.x series, and compatible 2.x versions of the other 19 packages. The 3.x suite remains on Tasks 2.x. Before upgrading an existing application from suite 3.x, read the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md): apply the new Tasks migrations using your existing migration ownership mode, review removed Content and Metafields integrations, and restart workers. The historical 2.x suite was a bundled library; upgrading from it also changes the Composer dependency graph. See each package README for activation and migration guidance. Report vulnerabilities through the affected package's private vulnerability reporting form, or use the [suite's private form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
 
 Released under the [MIT License](LICENSE).

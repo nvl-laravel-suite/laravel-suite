@@ -6,7 +6,7 @@
     "homepage": "https://github.com/nvl-laravel-suite",
     "require": {
         "php": "^8.4",
-        "nvl/activity": "^2.0",
+        "nvl/activity": "^2.3",
         "nvl/auth": "^2.0",
         "nvl/comments": "^2.0",
         "nvl/content": "^2.0",
@@ -21,7 +21,7 @@
         "nvl/primitives": "^2.0",
         "nvl/seo": "^2.0",
         "nvl/settings": "^2.0",
-        "nvl/tasks": "^2.0",
+        "nvl/tasks": "^3.0",
         "nvl/taxonomy": "^2.0",
         "nvl/templates": "^2.0",
         "nvl/tenancy": "^2.0",
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "3.x-dev"
+            "dev-main": "4.x-dev"
         }
     },
     "minimum-stability": "stable",
