@@ -1,0 +1,17 @@
+# Upgrading the NVL Laravel Suite metapackage
+
+## Major 5
+
+All 21 suite members require `^5.0`. Billing and Payments remain separate optional `^5.0` installations. Every NVL family member shares major 5; minors and patches may advance independently. The prepared source does not establish that stable mirror tags have been published.
+
+Review each installed package's upgrade guide before changing Composer constraints. Back up package storage and Laravel migration history, pause affected writes and workers, and choose one migration owner. Configure canonical `nvl-<package>.php` files and `NVL_<PACKAGE>_*` env inputs before rebuilding config caches. Legacy config/env inputs require explicit Core compatibility and are retained for one major.
+
+Run `php artisan nvl:schema:upgrade --package=<installed-package> --claim-legacy --migration-owner=vendor --dry-run --format=json` only for NVL legacy storage you own. A published owner uses `--migration-owner=published`, explicitly declared copies and disabled vendor loading. Inspect and apply the identical reviewed selection, then run `php artisan nvl:schema:preflight` before Laravel migrations. Core preserves native and custom host migrators; it does not rewrite published files or claim host tables.
+
+Auth ingress and principal, password-broker and Spatie storage adoption start disabled. Activity global model replacement, Cashier routes/models, global Markdown presentation, generic Media permission bridging, and Data transformer replacement also require explicit adoption. Enabling Tenancy is a separate choice. Rebuild route caches and restart workers after configuration changes.
+
+Declare host owner model classes through `nvl-core.owners`; NVL stores Laravel's `getMorphClass()`. Retained mismatched identities are diagnosed without data rewrites. Use the new Media `HasNvlMedia` / `InteractsWithNvlMedia` capability and `nvlMedia()` API when composing with Spatie Media.
+
+Run `php artisan nvl:doctor --strict --format=json` before resuming traffic. Inspect task outbox scheduler/lock readiness and native failed-job persistence. Retry quarantined envelopes with `nvl:queue:retry`; ordinary failed jobs retain native retry behavior. Major-5 tags require the complete acceptance suite and native PostgreSQL, MySQL and MariaDB evidence.
+
+See the [installation guide](docs/installation.md) and each public package's `UPGRADING.md` for exact options, compatibility groups and route cutover.

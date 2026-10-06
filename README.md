@@ -1,13 +1,13 @@
 # NVL Laravel Suite
 
-`nvl/laravel-suite` 4.x is a Composer metapackage that installs the 21 independently published NVL Laravel packages. It contains no application code or service provider. Each package has its own repository, release tags, configuration, and documentation.
+`nvl/laravel-suite` 5.x is a Composer metapackage that installs the 21 independently published NVL Laravel packages. It contains no application code or service provider. Each package has its own repository, release tags, configuration, and documentation.
 
 ## Install
 
 Use PHP 8.4+ and Laravel 13:
 
 ```bash
-composer require nvl/laravel-suite:^4.0
+composer require nvl/laravel-suite:^5.0
 ```
 
 Follow the [installation and publishing guide](docs/installation.md) before migrating an existing application. It lists every package's configuration, migration, skill, translation, view, and adoption publish tag.
@@ -15,12 +15,12 @@ Follow the [installation and publishing guide](docs/installation.md) before migr
 For a smaller application, install only the packages you need, for example:
 
 ```bash
-composer require nvl/core:^2.0 nvl/filterable:^2.0
+composer require nvl/core:^5.0 nvl/filterable:^5.0
 ```
 
-Composer resolves each package's declared dependencies. Core contains the shared Support and Data namespaces. Filterable remains an independent package. Tenancy is required by packages that use its contracts, but tenant behavior starts disabled. The full suite also installs Auth, whose package ingress is enabled by default and can select package authentication models; review its adoption requirements before installing the suite in an existing application. Consult each package README before enabling routes, migrations, or integrations.
+Composer resolves each package's declared dependencies. Core contains the shared Support and Data namespaces. Filterable remains an independent package. Tenancy is required by packages that use its contracts, but tenant behavior starts disabled. The full suite installs Auth with HTTP ingress and host adoption disabled. Principal, password broker and Spatie storage adoption are independent explicit choices; review their configured host targets before enabling them. Consult each package README before enabling routes, migrations, or integrations.
 
-Package-owned agent skills can be published from the relevant provider with its documented `vendor:publish` tag. Core provides both `support-skills` and `data-skills`; for example, Filterable provides `filterable-skills`. Installing the suite does not publish those files automatically.
+Package-owned agent skills can be published from the relevant provider with its documented `vendor:publish` tag. Use canonical `nvl-<package>-skills` tags documented by each provider; Core ships both Support and Data guidance. Installing the suite does not publish those files automatically.
 
 ## Packages
 
@@ -36,6 +36,9 @@ Maintainers merge and test changes in the source monorepo, then publish the affe
 
 ## Versions and support
 
-The 4.x suite installs Tasks 3.x, Activity 2.3 or later in the 2.x series, and compatible 2.x versions of the other 19 packages. The 3.x suite remains on Tasks 2.x. Before upgrading an existing application from suite 3.x, read the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md): apply the new Tasks migrations using your existing migration ownership mode, review removed Content and Metafields integrations, and restart workers. The historical 2.x suite was a bundled library; upgrading from it also changes the Composer dependency graph. See each package README for activation and migration guidance. Report vulnerabilities through the affected package's private vulnerability reporting form, or use the [suite's private form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
+The prepared 5.x suite requires `^5.0` for all 21 members. Billing and Payments are separate `^5.0` installs. All family majors move together; package minors and patches stay independent. This source is a candidate, and stable mirror tags must pass release gates before installation. Historical suite 4.x selected Tasks 3.x and Activity 2.3; suite 3.x remained on Tasks 2.x. Before upgrading an existing application from suite 3.x, read the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md): apply the new Tasks migrations using your existing migration ownership mode, review removed Content and Metafields integrations, and restart workers. The historical 2.x suite was a bundled library; upgrading from it also changes the Composer dependency graph. See each package README for activation and migration guidance. Report vulnerabilities through the affected package's private vulnerability reporting form, or use the [suite's private form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
 
 Released under the [MIT License](LICENSE).
+
+## Canonical configuration ownership
+This provider-free metapackage ships no config file or environment inputs of its own. Configure each installed capability through its shipped canonical files; Core ships both `nvl-core.php` and `nvl-data.php`.
