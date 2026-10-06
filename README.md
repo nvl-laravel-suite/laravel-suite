@@ -1,5 +1,13 @@
 # NVL Laravel Suite
 
+## Quickstart
+
+Install individual capabilities where possible. The metapackage composes 21 members and has no runtime services; Billing and Payments are separate opt-in installs. Follow the [standalone getting-started guide](https://github.com/nvl-laravel-suite/laravel-suite/blob/main/docs/getting-started.md), then use `nvl:install <loaded-package>` and each package's native bindings/configuration. Installation does not adopt host Auth/Tenancy or enable ingress.
+
+## Testing your app
+
+Use each installed package's focused contracts, native container substitution and shipped fixtures. The metapackage has no model factory, fake or event schema. Include Core's optional consumer-audit.neon in host PHPStan; suite workbench tools are maintenance-only. See each member's README and events catalog for runtime contracts. New candidate gates remain pending until actual evidence is recorded.
+
 `nvl/laravel-suite` 5.x is a Composer metapackage that installs the 21 independently published NVL Laravel packages. It contains no application code or service provider. Each package has its own repository, release tags, configuration, and documentation.
 
 ## Install
@@ -42,3 +50,7 @@ Released under the [MIT License](LICENSE).
 
 ## Canonical configuration ownership
 This provider-free metapackage ships no config file or environment inputs of its own. Configure each installed capability through its shipped canonical files; Core ships both `nvl-core.php` and `nvl-data.php`.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

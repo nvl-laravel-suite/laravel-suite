@@ -3,7 +3,7 @@
     "description": "Composer composition of all NVL Laravel Suite packages",
     "type": "metapackage",
     "license": "MIT",
-    "homepage": "https://github.com/nvl-laravel-suite",
+    "homepage": "https://github.com/nvl-laravel-suite/laravel-suite",
     "require": {
         "php": "^8.4",
         "nvl/activity": "^5.0",
@@ -34,5 +34,27 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Nicolas Vlachos",
+            "homepage": "https://github.com/nicolasvlachos",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/nvl-laravel-suite/laravel-suite",
+        "docs": "https://github.com/nvl-laravel-suite/laravel-suite#readme",
+        "issues": "https://github.com/nvl-laravel-suite/laravel-suite/issues",
+        "security": "https://github.com/nvl-laravel-suite/laravel-suite/security/policy"
+    },
+    "archive": {
+        "exclude": [
+            "/.gitattributes",
+            "/**/.gitattributes",
+            "/.gitignore",
+            "/**/.gitignore",
+            "/**/.gitkeep"
+        ]
+    }
 }
