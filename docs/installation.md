@@ -1,6 +1,6 @@
 # Installing NVL Laravel packages
 
-NVL packages are published individually on Packagist from the public repositories in the [NVL Laravel Suite organization](https://github.com/nvl-laravel-suite). Use PHP 8.4 or newer and Laravel 13. A consumer application needs no access to the private source repository and no custom Composer repository entry.
+NVL packages are published individually on Packagist from the public repositories in the [NVL Laravel Suite organization](https://github.com/nvl-laravel-suite). Use PHP 8.4–8.5 and Laravel 12–13. A consumer application needs no access to the private source repository and no custom Composer repository entry.
 
 ## Choose a package composition
 
@@ -71,32 +71,35 @@ If the application uses Laravel Boost, install it as a development dependency an
 
 Run `php artisan vendor:publish --tag=<tag>` with a tag from this table. A dash means the package exposes no tag of that type. Config files land in `config/`; migration files in `database/migrations/`; skills in `.agents/skills/`. Package READMEs explain the destination and use of other resources.
 
-| Package | Config tag | Migration tag | Skill tag | Other tags |
-| --- | --- | --- | --- | --- |
-| Core | `data-config` | — | `nvl-core-skills`, `nvl-data-skills` | `nvl-data-config` (config alias), `nvl-data-generated-types-tooling` |
-| Filterable | — | — | `nvl-filterable-skills` | — |
-| Tenancy | `nvl-tenancy-config` | `nvl-tenancy-migrations` (opt-in) | `nvl-tenancy-skills` | — |
-| Activity | `nvl-activity-config` | `nvl-activity-migrations` | `nvl-activity-skills` | `nvl-activity-translations` |
-| Auth | `nvl-auth-config` | `nvl-auth-migrations` | `nvl-auth-skills` | `nvl-auth-adoption` |
-| Comments | `nvl-comments-config` | `nvl-comments-migrations` | `nvl-comments-skills` | — |
-| Content | `nvl-content-config` | `nvl-content-migrations` | `nvl-content-skills` | `nvl-content-views` |
-| CSV | — | — | `nvl-csv-skills` | — |
-| Forms | `nvl-forms-config` | `nvl-forms-migrations` | `nvl-forms-skills` | `nvl-forms-translations` |
-| Mail Notifications | `nvl-mail-notifications-config` | `nvl-mail-notifications-migrations` | `nvl-mail-notifications-skills` | `nvl-mail-notifications-adoption`, `mail-notifications-mail-views` |
-| Media | `nvl-media-config` | `nvl-media-migrations` | `nvl-media-skills` | `nvl-media-translations` |
-| Metafields | `nvl-metafields-config` | `nvl-metafields-migrations` | `nvl-metafields-skills` | `nvl-metafields-translations` |
-| Pages | `nvl-pages-config` | `nvl-pages-migrations` | `nvl-pages-skills` | — |
-| Primitives | `nvl-primitives-config` | — | `nvl-primitives-skills` | `nvl-primitives-translations` |
-| SEO | `nvl-seo-config` | `nvl-seo-migrations` | `nvl-seo-skills` | — |
-| Settings | `nvl-settings-config` | `nvl-settings-migrations` | `nvl-settings-skills` | — |
-| Tasks | `nvl-tasks-config` | `nvl-tasks-migrations` | `nvl-tasks-skills` | — |
-| Taxonomy | `nvl-taxonomy-config` | `nvl-taxonomy-migrations` | `nvl-taxonomy-skills` | — |
-| Templates | `nvl-templates-config` | `nvl-templates-migrations` | `nvl-templates-skills` | `nvl-templates-views` |
-| Translatable | `nvl-translatable-config` | — | `nvl-translatable-skills` | — |
-| Translations | `nvl-translations-config` | `nvl-translations-migrations` | `nvl-translations-skills` | `nvl-translations-translations` |
-| Laravel Suite | — | — | — | — |
+<!-- BEGIN GENERATED PUBLISH TAGS -->
+| Package | Available canonical publish tags |
+| --- | --- |
+| `nvl/core` | `nvl-core-config`, `nvl-core-skills`, `nvl-core-translations`, `nvl-data-config`, `nvl-data-generated-types-tooling`, `nvl-data-skills` |
+| `nvl/tenancy` | `nvl-tenancy-config`, `nvl-tenancy-migrations`, `nvl-tenancy-skills`, `nvl-tenancy-translations` |
+| `nvl/auth` | `nvl-auth-adoption`, `nvl-auth-config`, `nvl-auth-migrations`, `nvl-auth-skills`, `nvl-auth-translations` |
+| `nvl/billing` | `nvl-billing-config`, `nvl-billing-migrations`, `nvl-billing-skills`, `nvl-billing-translations` |
+| `nvl/payments` | `nvl-payments-config`, `nvl-payments-migrations`, `nvl-payments-skills`, `nvl-payments-translations` |
+| `nvl/csv` | `nvl-csv-skills`, `nvl-csv-translations` |
+| `nvl/filterable` | `nvl-filterable-skills`, `nvl-filterable-translations` |
+| `nvl/translatable` | `nvl-translatable-config`, `nvl-translatable-skills`, `nvl-translatable-translations` |
+| `nvl/primitives` | `nvl-primitives-config`, `nvl-primitives-skills`, `nvl-primitives-translations` |
+| `nvl/settings` | `nvl-settings-config`, `nvl-settings-migrations`, `nvl-settings-skills`, `nvl-settings-translations` |
+| `nvl/activity` | `nvl-activity-config`, `nvl-activity-migrations`, `nvl-activity-skills`, `nvl-activity-translations` |
+| `nvl/taxonomy` | `nvl-taxonomy-config`, `nvl-taxonomy-migrations`, `nvl-taxonomy-skills`, `nvl-taxonomy-translations` |
+| `nvl/media` | `nvl-media-config`, `nvl-media-migrations`, `nvl-media-skills`, `nvl-media-translations` |
+| `nvl/mail-notifications` | `nvl-mail-notifications-adoption`, `nvl-mail-notifications-config`, `nvl-mail-notifications-mail-views`, `nvl-mail-notifications-migrations`, `nvl-mail-notifications-skills`, `nvl-mail-notifications-translations` |
+| `nvl/content` | `nvl-content-config`, `nvl-content-migrations`, `nvl-content-skills`, `nvl-content-translations`, `nvl-content-views` |
+| `nvl/comments` | `nvl-comments-config`, `nvl-comments-migrations`, `nvl-comments-skills`, `nvl-comments-translations` |
+| `nvl/templates` | `nvl-templates-config`, `nvl-templates-migrations`, `nvl-templates-skills`, `nvl-templates-translations`, `nvl-templates-views` |
+| `nvl/metafields` | `nvl-metafields-config`, `nvl-metafields-migrations`, `nvl-metafields-skills`, `nvl-metafields-translations` |
+| `nvl/pages` | `nvl-pages-config`, `nvl-pages-migrations`, `nvl-pages-skills`, `nvl-pages-translations` |
+| `nvl/tasks` | `nvl-tasks-config`, `nvl-tasks-migrations`, `nvl-tasks-skills`, `nvl-tasks-translations` |
+| `nvl/translations` | `nvl-translations-config`, `nvl-translations-migrations`, `nvl-translations-skills`, `nvl-translations-translations` |
+| `nvl/seo` | `nvl-seo-config`, `nvl-seo-migrations`, `nvl-seo-skills`, `nvl-seo-translations` |
+| `nvl/forms` | `nvl-forms-config`, `nvl-forms-migrations`, `nvl-forms-skills`, `nvl-forms-translations` |
+<!-- END GENERATED PUBLISH TAGS -->
 
-For Core, `data-config` and `nvl-data-config` publish the same `config/nvl-data.php`; choose one. The generated-types tooling tag copies optional ESLint and Prettier fragments into the application root. Publishing translation tags copies override files; package translations are available without publishing them. Publishing Content or Templates views is optional when application-specific templates are needed.
+Core publishes both Support and Data defaults with `nvl-core-config`; the retained `nvl-data-config` alias publishes Data defaults. Regenerate this table with `php -d memory_limit=1G tools/sync-installation-tags.php`. The generated-types tooling tag copies optional ESLint and Prettier fragments into the application root. Publishing translation tags copies override files; package translations are available without publishing them. Publishing Content or Templates views is optional when application-specific templates are needed.
 
 ## Check an installation and upgrade safely
 
