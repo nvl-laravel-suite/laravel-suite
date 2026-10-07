@@ -12,7 +12,7 @@ Use each installed package's focused contracts, native container substitution an
 
 ## Install
 
-Use PHP 8.4+ and Laravel 13:
+Use PHP 8.4+ and Laravel 12–13:
 
 ```bash
 composer require nvl/laravel-suite:^5.0
