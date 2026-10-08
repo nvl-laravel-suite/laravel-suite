@@ -1,10 +1,12 @@
 # Changelog
 
-## [5.0.0] — release candidate (unpublished)
+## [Unreleased]
+
+## [5.0.0] - 2026-10-08
 
 ### Changed
 
-- Prepare lockstep major 5 with required and development NVL peer floors of `^5.0`. This candidate has not been tagged or published.
+- Adopt lockstep major 5 with required and development NVL peer floors of `^5.0`.
 - Compose the established 21 code packages through ^5.0 floors; keep Billing and Payments as separate installs.
 - Align all family majors while allowing package minors and patches to advance independently.
 - Review [UPGRADING.md](UPGRADING.md) before adopting the new names and infrastructure boundaries.
