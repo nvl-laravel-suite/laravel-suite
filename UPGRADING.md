@@ -2,7 +2,7 @@
 
 ## Major 5
 
-All 21 suite members require `^5.0`. Billing and Payments remain separate optional `^5.0` installations. Every NVL family member shares major 5; minors and patches may advance independently. The prepared source does not establish that stable mirror tags have been published.
+All 21 suite members require `^5.0`. Billing and Payments remain separate optional `^5.0` installations. Every NVL family member shares major 5; minors and patches may advance independently. Stable 5.0.0 mirror tags are published and indexed by Packagist; a fresh PHP 8.4/Laravel 13 public installation is verified.
 
 Review each installed package's upgrade guide before changing Composer constraints. Back up package storage and Laravel migration history, pause affected writes and workers, and choose one migration owner. Configure canonical `nvl-<package>.php` files and `NVL_<PACKAGE>_*` env inputs before rebuilding config caches. Legacy config/env inputs require explicit Core compatibility and are retained for one major.
 
@@ -12,6 +12,6 @@ Auth ingress and principal, password-broker and Spatie storage adoption start di
 
 Declare host owner model classes through `nvl-core.owners`; NVL stores Laravel's `getMorphClass()`. Retained mismatched identities are diagnosed without data rewrites. Use the new Media `HasNvlMedia` / `InteractsWithNvlMedia` capability and `nvlMedia()` API when composing with Spatie Media.
 
-Run `php artisan nvl:doctor --strict --format=json` before resuming traffic. Inspect task outbox scheduler/lock readiness and native failed-job persistence. Retry quarantined envelopes with `nvl:queue:retry`; ordinary failed jobs retain native retry behavior. Major-5 tags require the complete acceptance suite and native PostgreSQL, MySQL and MariaDB evidence.
+Run `php artisan nvl:doctor --strict --format=json` before resuming traffic. Inspect task outbox scheduler/lock readiness and native failed-job persistence. Retry quarantined envelopes with `nvl:queue:retry`; ordinary failed jobs retain native retry behavior. Major-5 tags require exact-source local Dagger evidence, including MySQL/PostgreSQL contracts and sealed Tenancy consumers, then public artifact verification. MariaDB and additional compatibility legs need separate evidence.
 
 See the [installation guide](docs/installation.md) and each public package's `UPGRADING.md` for exact options, compatibility groups and route cutover.

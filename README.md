@@ -6,13 +6,13 @@ Install individual capabilities where possible. The metapackage composes 21 memb
 
 ## Testing your app
 
-Use each installed package's focused contracts, native container substitution and shipped fixtures. The metapackage has no model factory, fake or event schema. Include Core's optional consumer-audit.neon in host PHPStan; suite workbench tools are maintenance-only. See each member's README and events catalog for runtime contracts. New candidate gates remain pending until actual evidence is recorded.
+Use each installed package's focused contracts, native container substitution and shipped fixtures. The metapackage has no model factory, fake or event schema. Include Core's optional consumer-audit.neon in host PHPStan; suite workbench tools are maintenance-only. See each member's README and events catalog for runtime contracts. The published 5.x family is verified through the local Dagger release gate on PHP 8.4/Laravel 13, including owning suites, MySQL/PostgreSQL persistence contracts and sealed Tenancy consumers. Fresh public Composer installation, discovery and configuration/route caching are verified. PHP 8.5, Laravel 12, MariaDB and the full independent archive matrix require separate evidence. See the [verification and release policy](https://github.com/nvl-laravel-suite/laravel-suite#verification-and-releases).
 
 `nvl/laravel-suite` 5.x is a Composer metapackage that installs the 21 independently published NVL Laravel packages. It contains no application code or service provider. Each package has its own repository, release tags, configuration, and documentation.
 
 ## Install
 
-Use PHP 8.4+ and Laravel 12–13:
+The verified release configuration is PHP 8.4 with Laravel 13. Composer also admits PHP 8.5 and Laravel 12; those compatibility legs require separate evidence. Install the published stable family:
 
 ```bash
 composer require nvl/laravel-suite:^5.0
@@ -44,7 +44,7 @@ Maintainers merge and test changes in the source monorepo, then publish the affe
 
 ## Versions and support
 
-The prepared 5.x suite requires `^5.0` for all 21 members. Billing and Payments are separate `^5.0` installs. All family majors move together; package minors and patches stay independent. This source is a candidate, and stable mirror tags must pass release gates before installation. Historical suite 4.x selected Tasks 3.x and Activity 2.3; suite 3.x remained on Tasks 2.x. Before upgrading an existing application from suite 3.x, read the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md): apply the new Tasks migrations using your existing migration ownership mode, review removed Content and Metafields integrations, and restart workers. The historical 2.x suite was a bundled library; upgrading from it also changes the Composer dependency graph. See each package README for activation and migration guidance. Report vulnerabilities through the affected package's private vulnerability reporting form, or use the [suite's private form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
+The published 5.x suite requires `^5.0` for all 21 members. Billing and Payments are separate `^5.0` installs. All family majors move together; package minors and patches stay independent. Stable 5.0.0 tags for all 23 code packages and the metapackage are available on Packagist. Fresh public installation of the suite plus Billing and Payments passed, including package discovery and configuration/route caches. Historical suite 4.x selected Tasks 3.x and Activity 2.3; suite 3.x remained on Tasks 2.x. Before upgrading an existing application from suite 3.x, read the [Tasks 3 upgrade guide](https://github.com/nvl-laravel-suite/tasks/blob/main/UPGRADING.md): apply the new Tasks migrations using your existing migration ownership mode, review removed Content and Metafields integrations, and restart workers. The historical 2.x suite was a bundled library; upgrading from it also changes the Composer dependency graph. See each package README for activation and migration guidance. Report vulnerabilities through the affected package's private vulnerability reporting form, or use the [suite's private form](https://github.com/nvl-laravel-suite/laravel-suite/security/advisories/new) if the affected package is uncertain.
 
 Released under the [MIT License](LICENSE).
 
@@ -54,3 +54,11 @@ This provider-free metapackage ships no config file or environment inputs of its
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Verification and releases
+
+Maintainer CI runs locally through a pinned Dagger engine on Docker. The release gate checks standards, maximum PHPStan analysis, root and owning package suites, MySQL 8.4/PostgreSQL 17 persistence contracts and sealed Tenancy consumers with Redis and S3-compatible storage. Passing evidence is bound to the exact clean source commit. The 5.0.0 gate passed at `4950de7e818ed1578b5753afe045d2c70637f32c` on 2026-10-08.
+
+GitHub Actions is used only for explicitly requested package publishing. Pushes, pull requests and schedules start no hosted quality jobs; Dagger Cloud Checks are disabled. Each public repository is a release mirror of the private monorepo. Maintainers develop in source, verify locally, then publish an immutable package tag; Packagist indexes that tag. A compatible package patch can be released independently within family major 5.
+
+Consumers use ordinary `composer require nvl/<package>:^5.0` without private repository access. Commit the application lockfile, review installed package defaults and upgrade guides, select migration ownership, bind host authorization, then run strict Doctor and the application's own tests before enabling features. Package verification covers the listed configurations; it does not certify an arbitrary host application or every declared compatibility leg.
