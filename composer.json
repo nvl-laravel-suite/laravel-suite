@@ -5,7 +5,6 @@
     "license": "MIT",
     "homepage": "https://github.com/nvl-laravel-suite/laravel-suite",
     "require": {
-        "php": "^8.4",
         "nvl/activity": "^5.0",
         "nvl/auth": "^5.0",
         "nvl/comments": "^5.0",
@@ -17,6 +16,7 @@
         "nvl/mail-notifications": "^5.0",
         "nvl/media": "^5.0",
         "nvl/metafields": "^5.0",
+        "nvl/ownership": "^5.0",
         "nvl/pages": "^5.0",
         "nvl/primitives": "^5.0",
         "nvl/seo": "^5.0",
@@ -26,7 +26,8 @@
         "nvl/templates": "^5.0",
         "nvl/tenancy": "^5.0",
         "nvl/translatable": "^5.0",
-        "nvl/translations": "^5.0"
+        "nvl/translations": "^5.0",
+        "php": "^8.4"
     },
     "extra": {
         "branch-alias": {
