@@ -9,7 +9,7 @@
         "nvl/auth": "^5.0",
         "nvl/comments": "^5.0",
         "nvl/content": "^5.0",
-        "nvl/core": "^5.0",
+        "nvl/core": "^5.1",
         "nvl/csv": "^5.0",
         "nvl/filterable": "^5.0",
         "nvl/forms": "^5.0",
@@ -24,7 +24,6 @@
         "nvl/tasks": "^5.0",
         "nvl/taxonomy": "^5.0",
         "nvl/templates": "^5.0",
-        "nvl/tenancy": "^5.0",
         "nvl/translatable": "^5.0",
         "nvl/translations": "^5.0",
         "php": "^8.4"
@@ -57,5 +56,11 @@
             "/**/.gitignore",
             "/**/.gitkeep"
         ]
+    },
+    "suggest": {
+        "nvl/tenancy": "Temporary compatibility bridge; install and select it explicitly for a legacy tenant application."
+    },
+    "conflict": {
+        "nvl/tenancy": "<5.0 || >=6.0"
     }
 }
