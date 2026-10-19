@@ -7,18 +7,18 @@ NVL packages are published individually on Packagist from the public repositorie
 Install only the capability you need. Composer installs its declared dependencies, including `nvl/core` for shared Support and Data contracts:
 
 ```bash
-composer require nvl/media:^5.0
+composer require nvl/media:^6.0
 ```
 
-To install all 21 code packages, use the Composer metapackage:
+To install the 21 selected code packages, use the Composer metapackage:
 
 ```bash
-composer require nvl/laravel-suite:^5.0
+composer require nvl/laravel-suite:^6.0
 ```
 
-The published Suite 5 family selects major 5 of all 21 included code packages. Billing and Payments remain separate optional installs. Follow [the major 5 upgrade guide](../UPGRADING.md) before adoption; stable 5.0.0 artifacts are indexed by Packagist and the PHP 8.4/Laravel 13 public consumer boot is verified. See the [verification policy](../README.md#verification-and-releases) for coverage.
+The prepared Suite 6 family selects major 6 of its 21 included code packages, including default-off Ownership instead of Tenancy. Billing, Payments and the deprecated Tenancy bridge remain separate optional installs. Follow [the upgrade guide](../UPGRADING.md) before adoption. These examples require 6.0.0 publication or a reviewed local archive repository; public 5.0.0 evidence does not establish 6.x availability. See the [verification policy](../README.md#verification-and-releases) for coverage.
 
-The metapackage contains no provider or application code. Installing it discovers every package provider and can add package migrations to the next `php artisan migrate`. Auth's package ingress is disabled by default; enable it only after reviewing the host routes and bindings; adopting the host principal, password broker, and Spatie storage each requires explicit configuration. Review [Auth installation](https://github.com/nvl-laravel-suite/auth#installation) and [principal adoption](https://github.com/nvl-laravel-suite/auth/blob/main/docs/principal-adoption.md) before adding the full suite to an existing application. Installing `nvl/tenancy` as a dependency leaves tenant behavior and its core migrations disabled by default.
+The metapackage contains no provider or application code. Installing it discovers every package provider and can add package migrations to the next `php artisan migrate`. Auth's package ingress is disabled by default; enable it only after reviewing the host routes and bindings; adopting the host principal, password broker, and Spatie storage each requires explicit configuration. Review [Auth installation](https://github.com/nvl-laravel-suite/auth#installation) and [principal adoption](https://github.com/nvl-laravel-suite/auth/blob/main/docs/principal-adoption.md) before adding the full suite to an existing application. Installing Ownership leaves its enforcement and protocol migrations disabled by default. Existing Tenancy hosts explicitly retain the separate bridge during migration.
 
 Each code package has its own [README and upgrade guide](https://github.com/orgs/nvl-laravel-suite/repositories) for feature setup. Composer discovery normally registers its service provider; do not register a second copy manually. If the application disables Laravel package discovery, register every installed package provider, including dependencies, or restore discovery before using publish tags and commands.
 
@@ -75,6 +75,7 @@ Run `php artisan vendor:publish --tag=<tag>` with a tag from this table. A dash 
 | Package | Available canonical publish tags |
 | --- | --- |
 | `nvl/core` | `nvl-core-config`, `nvl-core-skills`, `nvl-core-translations`, `nvl-data-config`, `nvl-data-generated-types-tooling`, `nvl-data-skills` |
+| `nvl/ownership` | `nvl-ownership-config`, `nvl-ownership-migrations`, `nvl-ownership-skills` |
 | `nvl/tenancy` | `nvl-tenancy-config`, `nvl-tenancy-migrations`, `nvl-tenancy-skills`, `nvl-tenancy-translations` |
 | `nvl/auth` | `nvl-auth-adoption`, `nvl-auth-config`, `nvl-auth-migrations`, `nvl-auth-skills`, `nvl-auth-translations` |
 | `nvl/billing` | `nvl-billing-config`, `nvl-billing-migrations`, `nvl-billing-skills`, `nvl-billing-translations` |

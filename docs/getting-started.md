@@ -1,13 +1,13 @@
 # Build a standalone Comments feature
 
-This tutorial uses `nvl/comments:^5.0` in a Laravel host with PHP 8.4+. Composer installs its required Core and Filterable dependencies. Install only the package you need; the suite's workbench commands are not part of consumer applications. The declared Laravel/PHP support matrix and external acceptance status are tracked in [verification policy](../README.md#verification-and-releases).
+This tutorial uses `nvl/comments:^6.0` in a Laravel host with PHP 8.4+. Composer installs its required Core and Filterable dependencies. Install only the package you need; the suite's workbench commands are not part of consumer applications. The declared Laravel/PHP support matrix and external acceptance status are tracked in [verification policy](../README.md#verification-and-releases).
 
 The copyable host source is in [the Comments examples](examples/getting-started/). Its two PHP acceptance tests and strict TypeScript compilation passed. Keep the host's existing application provider and merge the shown methods rather than replacing unrelated application registration.
 
 ## Install and publish
 
 ```sh
-composer require nvl/comments:^5.0
+composer require nvl/comments:^6.0
 php artisan nvl:install comments --dry-run
 php artisan nvl:install comments
 ```

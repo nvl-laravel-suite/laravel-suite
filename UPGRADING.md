@@ -1,5 +1,12 @@
 # Upgrading the NVL Laravel Suite metapackage
 
+## Major 6 ownership rollout
+
+Compose 21 selected code packages with optional Ownership instead of mandatory Tenancy. Billing, Payments and the deprecated Tenancy bridge remain separate installs; installation alone never enables isolation or adopts host Auth.
+
+Upgrade the selected NVL dependency closure together to `^6.0`. Ordinary unowned hosts retain the default unscoped declarations and need no ownership context. For isolation, use the installed Ownership README and UPGRADING guide, exact configured subclasses and reviewed adoption before accepting traffic. Disabling or removing Ownership is not rollback; Core retains durable denial guards. Keep existing tenant IDs and migration history. The explicit Tenancy bridge remains deprecated through major 6; its retirement is a separate reviewed migration no earlier than major 7.
+
+
 ## Major 5
 
 All 21 suite members require `^5.0`. Billing and Payments remain separate optional `^5.0` installations. Every NVL family member shares major 5; minors and patches may advance independently. Stable 5.0.0 mirror tags are published and indexed by Packagist; a fresh PHP 8.4/Laravel 13 public installation is verified.

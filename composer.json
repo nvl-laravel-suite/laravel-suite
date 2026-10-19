@@ -5,32 +5,32 @@
     "license": "MIT",
     "homepage": "https://github.com/nvl-laravel-suite/laravel-suite",
     "require": {
-        "nvl/activity": "^5.0",
-        "nvl/auth": "^5.0",
-        "nvl/comments": "^5.0",
-        "nvl/content": "^5.0",
-        "nvl/core": "^5.1",
-        "nvl/csv": "^5.0",
-        "nvl/filterable": "^5.0",
-        "nvl/forms": "^5.0",
-        "nvl/mail-notifications": "^5.0",
-        "nvl/media": "^5.0",
-        "nvl/metafields": "^5.0",
-        "nvl/ownership": "^5.0",
-        "nvl/pages": "^5.0",
-        "nvl/primitives": "^5.0",
-        "nvl/seo": "^5.0",
-        "nvl/settings": "^5.0",
-        "nvl/tasks": "^5.0",
-        "nvl/taxonomy": "^5.0",
-        "nvl/templates": "^5.0",
-        "nvl/translatable": "^5.0",
-        "nvl/translations": "^5.0",
+        "nvl/activity": "^6.0",
+        "nvl/auth": "^6.0",
+        "nvl/comments": "^6.0",
+        "nvl/content": "^6.0",
+        "nvl/core": "^6.0",
+        "nvl/csv": "^6.0",
+        "nvl/filterable": "^6.0",
+        "nvl/forms": "^6.0",
+        "nvl/mail-notifications": "^6.0",
+        "nvl/media": "^6.0",
+        "nvl/metafields": "^6.0",
+        "nvl/ownership": "^6.0",
+        "nvl/pages": "^6.0",
+        "nvl/primitives": "^6.0",
+        "nvl/seo": "^6.0",
+        "nvl/settings": "^6.0",
+        "nvl/tasks": "^6.0",
+        "nvl/taxonomy": "^6.0",
+        "nvl/templates": "^6.0",
+        "nvl/translatable": "^6.0",
+        "nvl/translations": "^6.0",
         "php": "^8.4"
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "5.x-dev"
+            "dev-main": "6.x-dev"
         }
     },
     "minimum-stability": "stable",
@@ -61,6 +61,6 @@
         "nvl/tenancy": "Temporary compatibility bridge; install and select it explicitly for a legacy tenant application."
     },
     "conflict": {
-        "nvl/tenancy": "<5.0 || >=6.0"
+        "nvl/tenancy": "<6.0 || >=7.0"
     }
 }

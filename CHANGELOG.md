@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [6.0.0] - 2026-10-20
+
+### Changed
+
+- Compose 21 selected code packages with optional Ownership instead of mandatory Tenancy. Billing, Payments and the deprecated Tenancy bridge remain separate installs; installation alone never enables isolation or adopts host Auth.
+- Align required/development NVL peers on `^6.0`, optional peer conflicts on major 6, and `dev-main` on `6.x-dev`. Review [UPGRADING.md](UPGRADING.md) before rollout.
+
 ## [5.0.1] - 2026-10-08
 
 ### Changed
