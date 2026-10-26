@@ -6,16 +6,18 @@ namespace App\Comments;
 
 use App\Models\Article;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Nvl\Comments\Contracts\CommentAuthorization;
 use Nvl\Comments\Contracts\CommentBatchQueryScope;
 use Nvl\Comments\Contracts\CommentQueryScope;
-use Nvl\Comments\Data\CommentActorData;
 use Nvl\Comments\Enums\CommentAbility;
 use Nvl\Comments\Enums\CommentAudience;
 use Nvl\Comments\Models\Comment;
 use Nvl\Comments\Services\ConfiguredCommentAuthorization;
+use Nvl\Support\Enums\PublicActor;
+use Nvl\Support\Enums\SystemActor;
 use Nvl\Support\Owners\OwnerBatch;
 
 /** Admits public articles and retains the package's visibility and author rules. */
@@ -24,7 +26,7 @@ final readonly class ApplicationCommentAuthorization implements CommentAuthoriza
     public function __construct(private ConfiguredCommentAuthorization $baseline) {}
 
     /** @param array<string, mixed> $context */
-    public function allows(CommentAbility $ability, CommentActorData $actor, ?Comment $comment = null, ?Model $target = null, CommentAudience $audience = CommentAudience::Public, array $context = []): bool
+    public function allows(CommentAbility $ability, Authenticatable|SystemActor|PublicActor $actor, ?Comment $comment = null, ?Model $target = null, CommentAudience $audience = CommentAudience::Public, array $context = []): bool
     {
         if ($target !== null && (! $target instanceof Article || ! $target->is_public)) {
             return false;
@@ -34,7 +36,7 @@ final readonly class ApplicationCommentAuthorization implements CommentAuthoriza
     }
 
     /** @param Builder<Comment> $query */
-    public function scopeComments(Builder $query, CommentActorData $actor, Model $target, CommentAudience $audience, CommentAbility $ability): void
+    public function scopeComments(Builder $query, Authenticatable|SystemActor|PublicActor $actor, Model $target, CommentAudience $audience, CommentAbility $ability): void
     {
         if (! $target instanceof Article || ! $target->is_public) {
             throw new AuthorizationException;
@@ -42,7 +44,7 @@ final readonly class ApplicationCommentAuthorization implements CommentAuthoriza
         $this->baseline->scopeComments($query, $actor, $target, $audience, $ability);
     }
 
-    public function authorizeOwners(OwnerBatch $owners, CommentActorData $actor, CommentAudience $audience): void
+    public function authorizeOwners(OwnerBatch $owners, Authenticatable|SystemActor|PublicActor $actor, CommentAudience $audience): void
     {
         foreach ($owners->owners() as $owner) {
             if (! $this->allows(CommentAbility::List, $actor, target: $owner, audience: $audience)) {
@@ -52,13 +54,13 @@ final readonly class ApplicationCommentAuthorization implements CommentAuthoriza
     }
 
     /** @param Builder<Comment> $query */
-    public function scopeBatchComments(Builder $query, OwnerBatch $owners, CommentActorData $actor, CommentAudience $audience): void
+    public function scopeBatchComments(Builder $query, OwnerBatch $owners, Authenticatable|SystemActor|PublicActor $actor, CommentAudience $audience): void
     {
         $this->baseline->scopeBatchComments($query, $owners, $actor, $audience);
     }
 
     /** @param Builder<Comment> $query */
-    public function scopeHostComments(Builder $query, Model $ownerPrototype, CommentActorData $actor, CommentAudience $audience): void
+    public function scopeHostComments(Builder $query, Model $ownerPrototype, Authenticatable|SystemActor|PublicActor $actor, CommentAudience $audience): void
     {
         if (! $ownerPrototype instanceof Article) {
             throw new AuthorizationException;

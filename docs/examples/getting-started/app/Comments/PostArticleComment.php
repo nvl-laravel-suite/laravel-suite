@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace App\Comments;
 
 use App\Models\Article;
-use Nvl\Comments\Contracts\CreateCommentContract;
-use Nvl\Comments\Data\CommentActorData;
-use Nvl\Comments\Data\Mutations\CreateCommentData;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Nvl\Comments\Enums\CommentAudience;
+use Nvl\Comments\Services\CommentWriter;
+use Nvl\Support\Enums\SystemActor;
 
-/** Application workflow substitutable without running package persistence. */
+/** Application orchestration over the complete native comment operation. */
 final readonly class PostArticleComment
 {
-    public function __construct(private CreateCommentContract $comments) {}
+    public function __construct(private CommentWriter $comments) {}
 
-    public function execute(Article $article, string $body, CommentActorData $actor): string
+    public function execute(Article $article, string $body, Authenticatable|SystemActor $actor): string
     {
-        return $this->comments->execute($article, new CreateCommentData(body: $body), $actor)->id;
+        return $this->comments->create($article, ['body' => $body], $actor, CommentAudience::Member)->id;
     }
 }

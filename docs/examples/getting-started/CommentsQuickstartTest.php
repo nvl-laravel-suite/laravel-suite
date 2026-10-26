@@ -5,15 +5,13 @@ declare(strict_types=1);
 use App\Comments\PostArticleComment;
 use App\Models\Article;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Schema;
-use Nvl\Comments\Contracts\CreateCommentContract;
-use Nvl\Comments\Contracts\ListOwnerCommentSummariesContract;
-use Nvl\Comments\Data\CommentActorData;
-use Nvl\Comments\Data\Mutations\CreateCommentData;
 use Nvl\Comments\Enums\CommentAudience;
 use Nvl\Comments\Models\Comment;
+use Nvl\Comments\Services\CommentReader;
 
 uses(RefreshDatabase::class);
 
@@ -28,18 +26,15 @@ beforeEach(function (): void {
 
 it('writes and reads authorized comments through public contracts', function (): void {
     $article = Article::query()->create(['title' => 'First article', 'is_public' => true]);
-    $actor = CommentActorData::fromAuthenticatable(User::factory()->create());
+    $actor = User::factory()->create();
     app(PostArticleComment::class)->execute($article, 'Hello from the host', $actor);
-    $summaries = app(ListOwnerCommentSummariesContract::class)->execute([$article], $actor, CommentAudience::Member);
-    expect($summaries->owners->{$article->getMorphClass()}->{(string) $article->getKey()}->visibleCount)->toBe(1);
+    $summaries = app(CommentReader::class)->forOwners([$article], $actor, CommentAudience::Member);
+    expect($summaries['values'][$article->getMorphClass()][(string) $article->getKey()]['visibleCount'])->toBe(1);
 });
 
-it('isolates the host workflow with a native contract mock', function (): void {
-    $article = new Article(['title' => 'Mocked workflow', 'is_public' => true]);
-    $actor = new CommentActorData('member', '7');
-    $result = Comment::factory()->withoutParents()->make(['id' => '91e383d4-3a78-4d93-a23d-aee913109582']);
-    $fake = Mockery::mock(CreateCommentContract::class);
-    $fake->shouldReceive('execute')->once()->with($article, Mockery::on(fn (CreateCommentData $data): bool => $data->body === 'Test'), $actor)->andReturn($result);
-    $this->app->instance(CreateCommentContract::class, $fake);
-    expect($this->app->make(PostArticleComment::class)->execute($article, 'Test', $actor))->toBe($result->id);
+it('keeps a private host article denied through the same native workflow', function (): void {
+    $article = Article::query()->create(['title' => 'Private article', 'is_public' => false]);
+    $actor = User::factory()->create();
+    expect(fn () => app(PostArticleComment::class)->execute($article, 'Test', $actor))->toThrow(AuthorizationException::class);
+    expect(Comment::query()->count())->toBe(0);
 });

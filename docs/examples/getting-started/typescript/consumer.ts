@@ -1,10 +1,9 @@
-/// <reference path="../types/generated.d.ts" />
-
-export type CommentInput = Nvl.Comments.Data.Mutations.CreateCommentData;
+// Host-owned transport types, independent of installed PHP package internals.
+export type CommentInput = { body: string };
 export type ArticleCommentsProps = {
     articleId: string | number;
-    summaries: Nvl.Comments.Data.OwnerCommentSummaries;
-    createUrl: string; // Host-provided named route URL, never guessed by this module.
+    summaries: Record<string, Record<string, { visibleCount: number }>>;
+    createUrl: string;
 };
 export type PackageFailure = {
     message: string;
