@@ -5,32 +5,32 @@
     "license": "MIT",
     "homepage": "https://github.com/nvl-laravel-suite/laravel-suite",
     "require": {
-        "nvl/activity": "^6.0",
-        "nvl/auth": "^6.0",
-        "nvl/comments": "^6.0",
-        "nvl/content": "^6.0",
-        "nvl/core": "^6.0",
-        "nvl/csv": "^6.0",
-        "nvl/filterable": "^6.0",
-        "nvl/forms": "^6.0",
-        "nvl/mail-notifications": "^6.0",
-        "nvl/media": "^6.0",
-        "nvl/metafields": "^6.0",
-        "nvl/ownership": "^6.0",
-        "nvl/pages": "^6.0",
-        "nvl/primitives": "^6.0",
-        "nvl/seo": "^6.0",
-        "nvl/settings": "^6.0",
-        "nvl/tasks": "^6.0",
-        "nvl/taxonomy": "^6.0",
-        "nvl/templates": "^6.0",
-        "nvl/translatable": "^6.0",
-        "nvl/translations": "^6.0",
+        "nvl/activity": "^7.0",
+        "nvl/auth": "^7.0",
+        "nvl/comments": "^7.0",
+        "nvl/content": "^7.0",
+        "nvl/core": "^7.0",
+        "nvl/csv": "^7.0",
+        "nvl/filterable": "^7.0",
+        "nvl/forms": "^7.0",
+        "nvl/mail-notifications": "^7.0",
+        "nvl/media": "^7.0",
+        "nvl/metafields": "^7.0",
+        "nvl/ownership": "^7.0",
+        "nvl/pages": "^7.0",
+        "nvl/primitives": "^7.0",
+        "nvl/seo": "^7.0",
+        "nvl/settings": "^7.0",
+        "nvl/tasks": "^7.0",
+        "nvl/taxonomy": "^7.0",
+        "nvl/templates": "^7.0",
+        "nvl/translatable": "^7.0",
+        "nvl/translations": "^7.0",
         "php": "^8.4"
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "6.x-dev"
+            "dev-main": "7.x-dev"
         }
     },
     "minimum-stability": "stable",
@@ -54,13 +54,12 @@
             "/**/.gitattributes",
             "/.gitignore",
             "/**/.gitignore",
-            "/**/.gitkeep"
+            "/**/.gitkeep",
+            "/.DS_Store",
+            "/**/.DS_Store",
+            ".DS_Store"
         ]
     },
-    "suggest": {
-        "nvl/tenancy": "Temporary compatibility bridge; install and select it explicitly for a legacy tenant application."
-    },
-    "conflict": {
-        "nvl/tenancy": "<6.0 || >=7.0"
-    }
+    "suggest": {},
+    "conflict": {}
 }
