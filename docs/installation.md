@@ -6,11 +6,20 @@ Install only the package capabilities you need, or select the suite metapackage 
 
 ## Configure and migrate
 
+Use only canonical `nvl-<package>` configuration roots, `NVL_` environment names and `nvl-<package>-<resource>` publish tags. Generic roots, old storage/table/queue aliases and compatibility switches are unavailable. Nested maps merge recursively; a supplied list replaces the default list, including an empty list. Package infrastructure inherits non-null Core defaults and then Laravel defaults where the owning resolver documents inheritance. Use `connection`, logical `tables` keys, `queue.connection`, `queue.name`, `locks.store` and `authorization.guard` rather than historical aliases. Operation-specific lock stores live at `locks.<operation>.store`.
+
+
 Package defaults load without publishing. Publish configuration only when overrides are needed, for example `php artisan vendor:publish --tag=nvl-media-config`. Review copied configuration on upgrades; publishing does not merge future defaults into host files.
 
-For stateful packages choose exactly one migration source: vendor loading or published host migrations. Keep vendor loading disabled when executing published copies. Existing table names are not proof of migration ownership. Back up storage and history, review the owning package’s supported migration/adoption plan, then execute native Laravel migrations for the selected paths and connection. Core no longer registers the old schema preflight command.
+For stateful packages choose exactly one migration source: vendor loading or published host migrations. Keep vendor loading disabled when executing published copies. Existing table names are not proof of migration ownership. Back up storage and history, review the owning package’s supported migration/adoption plan, then execute native Laravel migrations for the selected paths and connection. Core exposes no generic schema preflight or upgrade command. Follow the owning package’s migration and adoption instructions.
 
 Configure registered resources, explicit policies, host adapters, queues and optional storage/provider dependencies before enabling operations. Use the package's Doctor command where supplied. Rebuild configuration/event caches and restart workers after deployment.
+
+## Optional setup tools
+
+Laravel `vendor:publish` and package-specific Doctor commands work without a suite installer. To opt into the shared developer commands, add `Nvl\Support\Providers\DoctorServiceProvider::class` to `bootstrap/providers.php`. This provider exposes `nvl:install` and `nvl:doctor` only in console execution; it is not auto-discovered by Core.
+
+Run `php artisan nvl:install pages --dry-run --format=json` to preview common configuration for loaded packages. Omit `--dry-run` only when you want files written. Existing files are preserved; `--force` creates backups before replacement. Installation never enables features, runs migrations or creates application controllers. Run `php artisan nvl:doctor --strict --format=json` after configuring the selected packages. An installation preview reports binding metadata; it does not prove schema or runtime readiness.
 
 ## Development guidance
 
