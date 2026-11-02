@@ -14,6 +14,7 @@
         "nvl/csv": "^7.0",
         "nvl/filterable": "^7.0",
         "nvl/forms": "^7.0",
+        "nvl/mail-notification-bridge": "^7.0",
         "nvl/mail-notifications": "^7.0",
         "nvl/media": "^7.0",
         "nvl/metafields": "^7.0",
