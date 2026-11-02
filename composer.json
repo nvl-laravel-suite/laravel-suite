@@ -7,6 +7,7 @@
     "require": {
         "nvl/activity": "^7.0",
         "nvl/auth": "^7.0",
+        "nvl/auth-identity-bridge": "^7.0",
         "nvl/comments": "^7.0",
         "nvl/content": "^7.0",
         "nvl/core": "^7.0",
