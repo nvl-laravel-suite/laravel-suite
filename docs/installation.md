@@ -45,15 +45,16 @@ The consumer owns HTTP endpoints, Actions, data classes, response resources and 
 | `nvl/activity` | `nvl-activity-config`, `nvl-activity-migrations`, `nvl-activity-skills`, `nvl-activity-translations` |
 | `nvl/taxonomy` | `nvl-taxonomy-config`, `nvl-taxonomy-migrations`, `nvl-taxonomy-skills`, `nvl-taxonomy-translations` |
 | `nvl/media` | `nvl-media-config`, `nvl-media-migrations`, `nvl-media-skills`, `nvl-media-translations` |
-| `nvl/mail-notifications` | `nvl-mail-notifications-adoption`, `nvl-mail-notifications-config`, `nvl-mail-notifications-migrations`, `nvl-mail-notifications-skills`, `nvl-mail-notifications-translations` |
+| `nvl/mail-notifications` | `nvl-mail-notifications-adoption`, `nvl-mail-notifications-assets`, `nvl-mail-notifications-config`, `nvl-mail-notifications-migrations`, `nvl-mail-notifications-skills`, `nvl-mail-notifications-translations` |
 | `nvl/content` | `nvl-content-config`, `nvl-content-migrations`, `nvl-content-skills`, `nvl-content-translations` |
 | `nvl/comments` | `nvl-comments-config`, `nvl-comments-migrations`, `nvl-comments-skills`, `nvl-comments-translations` |
-| `nvl/templates` | `nvl-templates-config`, `nvl-templates-migrations`, `nvl-templates-skills`, `nvl-templates-translations`, `nvl-templates-views` |
+| `nvl/templates` | `nvl-templates-config`, `nvl-templates-migrations`, `nvl-templates-skills` |
 | `nvl/metafields` | `nvl-metafields-config`, `nvl-metafields-migrations`, `nvl-metafields-skills`, `nvl-metafields-translations` |
 | `nvl/pages` | `nvl-pages-config`, `nvl-pages-migrations`, `nvl-pages-skills`, `nvl-pages-translations` |
 | `nvl/tasks` | `nvl-tasks-config`, `nvl-tasks-migrations`, `nvl-tasks-skills`, `nvl-tasks-translations` |
 | `nvl/translations` | `nvl-translations-config`, `nvl-translations-migrations`, `nvl-translations-skills`, `nvl-translations-translations` |
 | `nvl/seo` | `nvl-seo-config`, `nvl-seo-migrations`, `nvl-seo-skills`, `nvl-seo-translations` |
 | `nvl/forms` | `nvl-forms-config`, `nvl-forms-migrations`, `nvl-forms-skills`, `nvl-forms-translations` |
+| `nvl/mail-notification-bridge` | `nvl-mail-notification-bridge-config`, `nvl-mail-notification-bridge-migrations`, `nvl-mail-notification-bridge-skills` |
 | `nvl/auth-identity-bridge` | `identity-config`, `nvl-auth-identity-bridge-config`, `nvl-auth-identity-bridge-migrations`, `nvl-auth-identity-bridge-skills`, `nvl-auth-identity-bridge-views` |
 <!-- END GENERATED PUBLISH TAGS -->
