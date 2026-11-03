@@ -55,4 +55,5 @@ The consumer owns HTTP endpoints, Actions, data classes, response resources and 
 | `nvl/translations` | `nvl-translations-config`, `nvl-translations-migrations`, `nvl-translations-skills`, `nvl-translations-translations` |
 | `nvl/seo` | `nvl-seo-config`, `nvl-seo-migrations`, `nvl-seo-skills`, `nvl-seo-translations` |
 | `nvl/forms` | `nvl-forms-config`, `nvl-forms-migrations`, `nvl-forms-skills`, `nvl-forms-translations` |
+| `nvl/auth-identity-bridge` | `identity-config`, `nvl-auth-identity-bridge-config`, `nvl-auth-identity-bridge-migrations`, `nvl-auth-identity-bridge-skills`, `nvl-auth-identity-bridge-views` |
 <!-- END GENERATED PUBLISH TAGS -->
