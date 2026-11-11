@@ -1,6 +1,6 @@
 # Getting started with NVL Light
 
-This guide describes the upcoming family 7 contracts on PHP 8.4 and Laravel 13. Select the matching release when available; published 6.x examples use older APIs.
+This guide describes the family 7 contracts on PHP 8.4 and Laravel 13. Install matching 7.x releases; published 6.x examples use older APIs.
 
 1. Choose the package from the [package index](https://github.com/nvl-laravel-suite), then install its declared dependencies. Optional integrations are separate choices.
 2. Read its configuration and native service PHPDoc. Publish configuration only when overrides are needed, using the package's documented Laravel publish tag.

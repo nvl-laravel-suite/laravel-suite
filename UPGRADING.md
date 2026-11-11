@@ -1,6 +1,6 @@
 # Upgrading the NVL Laravel Suite metapackage
 
-## NVL Light: planned family 7
+## NVL Light: family 7
 
 Light requires PHP 8.4 and Laravel 13. Replace retired package Actions, transport DTOs, HTTP endpoints and generated frontend types with host-owned adapters around the native services documented in [README.md](README.md). Models remain ordinary Eloquent models; domain operations retain their documented policies, validation, locks and lifecycle guarantees. Pass explicit admitted actors and configure optional integrations deliberately.
 
@@ -23,12 +23,14 @@ All 21 suite members require `^5.0`. Billing and Payments remain separate option
 
 Review each installed package's upgrade guide before changing Composer constraints. Back up package storage and Laravel migration history, pause affected writes and workers, and choose one migration owner. Configure canonical `nvl-<package>.php` files and `NVL_<PACKAGE>_*` env inputs before rebuilding config caches. Legacy config/env inputs require explicit Core compatibility and are retained for one major.
 
+The `nvl:schema:*` commands ship through the 6.x line only. Family 7 does not register them, so complete this step before upgrading to 7.
+
 Run `php artisan nvl:schema:upgrade --package=<installed-package> --claim-legacy --migration-owner=vendor --dry-run --format=json` only for NVL legacy storage you own. A published owner uses `--migration-owner=published`, explicitly declared copies and disabled vendor loading. Inspect and apply the identical reviewed selection, then run `php artisan nvl:schema:preflight` before Laravel migrations. Core preserves native and custom host migrators; it does not rewrite published files or claim host tables.
 
 Auth ingress and principal, password-broker and Spatie storage adoption start disabled. Activity global model replacement, Cashier routes/models, global Markdown presentation, generic Media permission bridging, and Data transformer replacement also require explicit adoption. Enabling Tenancy is a separate choice. Rebuild route caches and restart workers after configuration changes.
 
 Declare host owner model classes through `nvl-core.owners`; NVL stores Laravel's `getMorphClass()`. Retained mismatched identities are diagnosed without data rewrites. Use the new Media `HasNvlMedia` / `InteractsWithNvlMedia` capability and `nvlMedia()` API when composing with Spatie Media.
 
-Run `php artisan nvl:doctor --strict --format=json` before resuming traffic. Inspect task outbox scheduler/lock readiness and native failed-job persistence. Retry quarantined envelopes with `nvl:queue:retry`; ordinary failed jobs retain native retry behavior. Major-5 tags require exact-source local Dagger evidence, including MySQL/PostgreSQL contracts and sealed Tenancy consumers, then public artifact verification. MariaDB and additional compatibility legs need separate evidence.
+Run `php artisan nvl:doctor --strict --format=json` before resuming traffic. In family 7, register `Nvl\Support\Providers\DoctorServiceProvider` in the host first; it is not auto-discovered. Inspect task outbox scheduler/lock readiness and native failed-job persistence. Retry quarantined envelopes with `nvl:queue:retry`; ordinary failed jobs retain native retry behavior. Major-5 tags require exact-source local Dagger evidence, including MySQL/PostgreSQL contracts and sealed Tenancy consumers, then public artifact verification. MariaDB and additional compatibility legs need separate evidence.
 
 See the [installation guide](docs/installation.md) and each public package's `UPGRADING.md` for exact options, compatibility groups and route cutover.

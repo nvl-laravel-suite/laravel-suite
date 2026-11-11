@@ -1,6 +1,6 @@
 # NVL Laravel Suite
 
-The suite is a Composer metapackage selecting independent NVL packages. It has no application provider or domain services of its own. NVL Light targets PHP 8.4 and Laravel 13 and prepares a coordinated breaking family 7 release. Published 6.x releases use earlier contracts.
+The suite is a Composer metapackage selecting independent NVL packages. It has no application provider or domain services of its own. NVL Light targets PHP 8.4 and Laravel 13 and is published as the coordinated breaking family 7. Published 6.x releases use earlier contracts.
 
 Prefer individual packages when the application needs a smaller dependency graph. Use the metapackage manifest for the exact selection. Billing and Payments are separate optional integrations. Native Ownership is configured explicitly; the retired Tenancy bridge is not a Light integration.
 

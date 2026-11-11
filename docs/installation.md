@@ -1,6 +1,6 @@
 # Installing NVL Light
 
-Light targets PHP 8.4 and Laravel 13. This branch prepares family 7; use a matching release when available. Do not combine published 6.x packages with the native contracts described here.
+Light targets PHP 8.4 and Laravel 13 and is published as family 7; install matching 7.x releases. Do not combine published 6.x packages with the native contracts described here.
 
 Install only the package capabilities you need, or select the suite metapackage for its declared composition. Composer installs required dependencies and Laravel normally discovers their providers. Optional integrations require their own dependencies and configuration. Check the installed package's manifest and README rather than assuming every suite feature is enabled.
 
