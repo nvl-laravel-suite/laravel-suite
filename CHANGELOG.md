@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [7.0.1] - 2026-11-11
+
+<!-- NVL GENERATED CHANGES START -->
+### Changed
+
+- align installation and upgrade guidance with family 7
+<!-- NVL GENERATED CHANGES END -->
+
 ## [7.0.0] - 2026-11-03
 
 - Adopt the reviewed NVL 7 family for PHP 8.4+ and Laravel 13, with compatible required and optional NVL peers. Review the package upgrade guide before deployment.
