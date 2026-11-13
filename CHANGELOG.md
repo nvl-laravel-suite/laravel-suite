@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Repair consumer API documentation links and align the getting-started reference consumer with PHPStan level `max`.
+
 ## [7.0.1] - 2026-11-11
 
 <!-- NVL GENERATED CHANGES START -->

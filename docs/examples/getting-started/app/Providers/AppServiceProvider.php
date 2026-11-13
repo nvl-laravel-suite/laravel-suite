@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Comments\ApplicationCommentAuthorization;
 use App\Comments\ArticleCommentTargetResolver;
 use App\Models\Article;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 use Nvl\Comments\Contracts\CommentAuthorization;
@@ -21,8 +22,9 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->bind(CommentAuthorization::class, ApplicationCommentAuthorization::class);
         $this->app->bind(CommentQueryScope::class, ApplicationCommentAuthorization::class);
         $this->app->bind(CommentBatchQueryScope::class, ApplicationCommentAuthorization::class);
-        $this->app['config']->set('nvl-core.owners', [Article::class]);
-        $this->app['config']->set('nvl-comments.targets', ['article' => ArticleCommentTargetResolver::class]);
+        $config = $this->app->make(Repository::class);
+        $config->set('nvl-core.owners', [Article::class]);
+        $config->set('nvl-comments.targets', ['article' => ArticleCommentTargetResolver::class]);
     }
 
     public function boot(): void

@@ -65,7 +65,7 @@ final readonly class ApplicationCommentAuthorization implements CommentAuthoriza
         if (! $ownerPrototype instanceof Article) {
             throw new AuthorizationException;
         }
-        $query->whereHasMorph('commentable', [Article::class], fn (Builder $owners) => $owners->where('is_public', true));
+        $query->whereHasMorph('commentable', [Article::class], static fn (Builder $owners) => $owners->getQuery()->where($owners->getModel()->qualifyColumn('is_public'), true));
         $this->baseline->scopeHostComments($query, $ownerPrototype, $actor, $audience);
     }
 }

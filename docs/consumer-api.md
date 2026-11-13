@@ -1,6 +1,6 @@
 # Native consumer APIs
 
-NVL Light exposes focused domain services, ordinary Eloquent models, enums, validated value objects and documented arrays. Package READMEs describe the supported entry points; source PHPDoc is authoritative for arguments, patch semantics and return shapes. See the [package index](../README.md#packages-and-api-documentation).
+NVL Light exposes focused domain services, ordinary Eloquent models, enums, validated value objects and documented arrays. Package READMEs describe the supported entry points; source PHPDoc is authoritative for arguments, patch semantics and return shapes. See the [package index](../README.md).
 
 Applications own orchestration Actions, DTOs, HTTP controllers/routes, request validation, API resources, exception rendering and frontend contracts. Map untrusted requests into native inputs and pass explicit persisted actors. Never derive a privileged actor, owner or permission from a submitted identifier. System actors identify background work and still require the package's explicit policy admission.
 
