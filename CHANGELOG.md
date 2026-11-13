@@ -2,9 +2,17 @@
 
 ## [Unreleased]
 
+## [7.0.2] - 2026-11-13
+
 ### Fixed
 
 - Repair consumer API documentation links and align the getting-started reference consumer with PHPStan level `max`.
+
+<!-- NVL GENERATED CHANGES START -->
+### Changed
+
+- harden package runtime safety, PostgreSQL portability and test performance
+<!-- NVL GENERATED CHANGES END -->
 
 ## [7.0.1] - 2026-11-11
 
