@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- List Core's publish tags in the installation guide.
+
 ## [7.0.2] - 2026-11-13
 
 ### Fixed

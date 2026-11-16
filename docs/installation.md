@@ -32,7 +32,7 @@ The consumer owns HTTP endpoints, Actions, data classes, response resources and 
 <!-- BEGIN GENERATED PUBLISH TAGS -->
 | Package | Available canonical publish tags |
 | --- | --- |
-| `nvl/core` | `nvl-core-config`, `nvl-core-skills`, `nvl-core-translations` |
+| `nvl/core` | `nvl-core-config`, `nvl-core-migrations`, `nvl-core-skills`, `nvl-core-translations` |
 | `nvl/ownership` | `nvl-ownership-config`, `nvl-ownership-migrations`, `nvl-ownership-skills` |
 | `nvl/auth` | `nvl-auth-adoption`, `nvl-auth-config`, `nvl-auth-migrations`, `nvl-auth-skills`, `nvl-auth-translations` |
 | `nvl/billing` | `nvl-billing-config`, `nvl-billing-migrations`, `nvl-billing-skills`, `nvl-billing-translations` |
