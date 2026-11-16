@@ -2,9 +2,17 @@
 
 ## [Unreleased]
 
+## [7.1.0] - 2026-11-16
+
 ### Fixed
 
 - List Core's publish tags in the installation guide.
+
+<!-- NVL GENERATED CHANGES START -->
+### Changed
+
+- adoption flow, PostgreSQL proof, release health and 7.2 floors
+<!-- NVL GENERATED CHANGES END -->
 
 ## [7.0.2] - 2026-11-13
 
